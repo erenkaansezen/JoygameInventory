@@ -1,0 +1,59 @@
+﻿@model LoginViewModel
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    body, html {
+        height: 100%; /* Sayfa yüksekliği %100 */
+        margin: 0; /* Marginleri sıfırlıyoruz */
+        display: flex; /* Flexbox kullanıyoruz */
+        justify-content: center; /* Yatayda ortalamak için */
+        align-items: center; /* Dikeyde ortalamak için */
+    }
+    .input-sm {
+        width: 300px; /* Genişlik ayarı, ihtiyacınıza göre değiştirebilirsiniz */
+        height: 40px;
+        justify-content: center;
+
+    }
+
+    .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+</style>
+<div class="container">
+    <h2 class="text-center">
+        <img src="~/img/Joygamelogo.jpg" width="200px" height="200px" />
+        
+    </h2>
+    <hr />
+    <form asp-action="Login" method="post" class="login-form-container">
+        <div class="login-form">
+            <div class="mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control input-sm" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password">Şifre</label>
+                <input asp-for="Password" class="form-control input-sm" />
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Beni Hatırla</label>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-dark">Giriş Yap</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
