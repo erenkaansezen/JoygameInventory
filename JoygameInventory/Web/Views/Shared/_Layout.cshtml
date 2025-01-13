@@ -8,16 +8,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JoygameInventory.styles.css" asp-append-version="true" />
     <style>
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
+
     </style>
 </head>
 
 <body>
-
+    @if(User.Identity?.IsAuthenticated == true)
+    {
      <partial name="_Navbar" />
+
+    }
+    else
+    {
+
+    }
       <div class="content">
         <div class="container">
             <main role="main" class="pb-3">
