@@ -18,30 +18,30 @@
             transition: 0.3s;
         }
 
-            #sidebar ul {
-                list-style: none;
-                padding: 0;
-            }
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
 
-                #sidebar ul li {
-                    padding: 15px;
-                    text-align: left;
-                }
+        #sidebar ul li {
+            padding: 15px;
+            text-align: left;
+        }
 
-                    #sidebar ul li a {
-                        color: black;
-                        text-decoration: none;
-                        display: block;
-                        padding: 10px;
-                        font-size: 16px;
-                        text-align: center;
-                    }
+        #sidebar ul li a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
 
-                        #sidebar ul li a:hover {
-                            background-color: #212529;
-                            border-radius: 5px;
-                            color:white;
-                        }
+        #sidebar ul li a:hover {
+            background-color: #212529;
+            border-radius: 5px;
+            color: white;
+        }
 
         .sidebar-header {
             padding: 20px;
@@ -49,56 +49,32 @@
             text-align: center;
         }
 
-            .sidebar-header img {
-                max-width: 150px;
-                height: auto;
-            }
+        .sidebar-header img {
+            max-width: 150px;
+            height: auto;
+        }
 
         /* İçerik kısmı */
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
+
 
         /* Sidebar'ın açılıp kapanmasını sağlar */
         #sidebar.collapsed {
             width: 80px;
         }
 
-            #sidebar.collapsed ul li a {
-                font-size: 12px;
-                text-align: center;
-            }
-
-                #sidebar.collapsed ul li a i {
-                    font-size: 18px;
-                }
-
-        /* Responsive tasarım: Mobilde sidebar gizlenir */
-        media (max-width: 768px) {
-            #sidebar
-
-        {
-            position: absolute;
-            left: -250px;
-            width: 250px;
-            height: 100vh;
-            transition: 0.3s;
+        #sidebar.collapsed ul li a {
+            font-size: 12px;
+            text-align: center;
         }
 
-        #sidebar.show {
-            left: 0;
+        #sidebar.collapsed ul li a i {
+            font-size: 18px;
         }
 
-        .content {
-            margin-left: 0;
-        }
-
-        }
     </style>
 </head>
-<body>
 
+<nav>
     <!-- Sidebar -->
     <div id="sidebar" class="d-flex flex-column">
         <div class="sidebar-header">
@@ -110,31 +86,25 @@
                     <i class="fas fa-tachometer-alt"></i> Kullanıcı Yönetimi
                 </a>
                 <hr style="color:black" />
-
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Management" asp-action="ProductList">
                     <i class="fas fa-users"></i> Envanter Yönetimi
                 </a>
                 <hr style="color:black" />
-
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-cogs"></i> Sunucu Listesi
                 </a>
                 <hr style="color:black" />
-
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-cogs"></i> Personel Listesi
                 </a>
                 <hr style="color:black" />
-
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-chart-line"></i> Zimmet Listesi
@@ -146,9 +116,7 @@
                     <i class="fas fa-sign-out-alt"></i> Çıkış
                 </a>
                 <hr style="color:black" />
-
             </li>
         </ul>
     </div>
-
-</body>
+</nav>
