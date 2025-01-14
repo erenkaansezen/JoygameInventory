@@ -39,9 +39,9 @@ namespace JoygameInventory.Data.Context
 
             // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(
-                new Product { Id = 1, ProductName = "Laptop", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", img = "ürün.jpg" },
-                new Product { Id = 2, ProductName = "Mouse", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", img = "ürün.jpg" },
-                new Product { Id = 3, ProductName = "Keyboard", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", img = "ürün.jpg" }
+                new Product { Id = 1, ProductName = "Laptop", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", img = "ürün.jpg",ProductBarkod ="JGNB054" },
+                new Product { Id = 2, ProductName = "Mouse", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", img = "ürün.jpg", ProductBarkod = "JGNB060" },
+                new Product { Id = 3, ProductName = "Keyboard", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", img = "ürün.jpg", ProductBarkod = "JGNB024" }
             );
 
             // Add Users (Kullanıcılar) - IdentityUser örneği olarak string Id kullanıyoruz.
@@ -66,8 +66,8 @@ namespace JoygameInventory.Data.Context
 
             // Add InventoryAssigments (Zimmetler)
             modelBuilder.Entity<InventoryAssigment>().HasData(
-                new InventoryAssigment { Id = 1, ProductId = 1, UserId = "1", AssignmentDate = DateTime.UtcNow },
-                new InventoryAssigment { Id = 2, ProductId = 2, UserId = "2", AssignmentDate = DateTime.UtcNow }
+                new InventoryAssigment { Id = 1, ProductId = 1, UserId = "1", AssignmentDate = DateTime.UtcNow,Status = "active" },
+                new InventoryAssigment { Id = 2, ProductId = 2, UserId = "2", AssignmentDate = DateTime.UtcNow, Status = "active" }
             );
         }
     }

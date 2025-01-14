@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JoygameInventory.Migrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20250111131741_01NewMig")]
-    partial class _01NewMig
+    [Migration("20250114210523_newmig02")]
+    partial class newmig02
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace JoygameInventory.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("ReturnedDate")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -51,15 +52,17 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 1, 11, 13, 17, 41, 155, DateTimeKind.Utc).AddTicks(7824),
+                            AssignmentDate = new DateTime(2025, 1, 14, 21, 5, 23, 673, DateTimeKind.Utc).AddTicks(674),
                             ProductId = 1,
+                            Status = "active",
                             UserId = "1"
                         },
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 1, 11, 13, 17, 41, 155, DateTimeKind.Utc).AddTicks(7827),
+                            AssignmentDate = new DateTime(2025, 1, 14, 21, 5, 23, 673, DateTimeKind.Utc).AddTicks(679),
                             ProductId = 2,
+                            Status = "active",
                             UserId = "2"
                         });
                 });
@@ -178,14 +181,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4f9c29ab-5506-48a7-89ac-a4a390c39748",
+                            ConcurrencyStamp = "2169176e-9945-4884-8739-8206fe570dd4",
                             Email = "john@example.com",
                             EmailConfirmed = false,
                             FirstName = "John",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c769d077-9c62-4516-801d-97e31c52581b",
+                            SecurityStamp = "28e992e2-53be-4edb-914a-3982d25543cf",
                             TwoFactorEnabled = false,
                             UserName = "john_doe"
                         },
@@ -193,14 +196,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc3ea436-e15c-4a57-b886-32e0f2c331e7",
+                            ConcurrencyStamp = "bd8325a2-9630-4112-bd75-54beaf75371e",
                             Email = "jane@example.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b21dbb67-a43f-4c54-8916-882d93350de2",
+                            SecurityStamp = "1c6f1ac6-8503-4ca4-9eaa-4224e3184c42",
                             TwoFactorEnabled = false,
                             UserName = "jane_doe"
                         });

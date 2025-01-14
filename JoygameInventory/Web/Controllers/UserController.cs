@@ -29,7 +29,7 @@ namespace JoygameInventory.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(usermail, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserList", "Management");
                 }
 
             }

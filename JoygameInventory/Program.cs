@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
+builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
+
 
 
 builder.Services.AddControllersWithViews()

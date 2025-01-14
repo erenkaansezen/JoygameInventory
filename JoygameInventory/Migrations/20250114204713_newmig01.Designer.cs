@@ -3,6 +3,7 @@ using System;
 using JoygameInventory.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JoygameInventory.Migrations
 {
     [DbContext(typeof(InventoryContext))]
-    partial class InventoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250114204713_newmig01")]
+    partial class newmig01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
@@ -29,8 +32,7 @@ namespace JoygameInventory.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
+                    b.Property<DateTime?>("ReturnedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -49,17 +51,15 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 1, 14, 21, 52, 46, 598, DateTimeKind.Utc).AddTicks(9456),
+                            AssignmentDate = new DateTime(2025, 1, 14, 20, 47, 12, 949, DateTimeKind.Utc).AddTicks(7942),
                             ProductId = 1,
-                            Status = "active",
                             UserId = "1"
                         },
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 1, 14, 21, 52, 46, 598, DateTimeKind.Utc).AddTicks(9460),
+                            AssignmentDate = new DateTime(2025, 1, 14, 20, 47, 12, 949, DateTimeKind.Utc).AddTicks(7946),
                             ProductId = 2,
-                            Status = "active",
                             UserId = "2"
                         });
                 });
@@ -178,14 +178,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1ffd7f1-c057-458e-9788-c61419c20fd3",
+                            ConcurrencyStamp = "8825a24f-4e86-4514-85d7-44976da8dc16",
                             Email = "john@example.com",
                             EmailConfirmed = false,
                             FirstName = "John",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bac3af06-a2c2-462e-a2e5-05a8f0ca34b9",
+                            SecurityStamp = "6c505d85-421f-4d47-8d6a-369c9d7cd76d",
                             TwoFactorEnabled = false,
                             UserName = "john_doe"
                         },
@@ -193,14 +193,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4e6745e-e3c9-47aa-bb74-e88fb721bc10",
+                            ConcurrencyStamp = "58dd568d-4666-421b-80ed-6da100c4d21f",
                             Email = "jane@example.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "593333f8-9ac9-4358-bcbe-7299a63d4f92",
+                            SecurityStamp = "7a9d0f67-efc8-40c9-8087-d9e1f545d4c2",
                             TwoFactorEnabled = false,
                             UserName = "jane_doe"
                         });
@@ -217,10 +217,6 @@ namespace JoygameInventory.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ProductAddDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProductBarkod")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProductName")
@@ -245,7 +241,6 @@ namespace JoygameInventory.Migrations
                             Id = 1,
                             Description = "High-performance laptop",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductBarkod = "JGNB054",
                             ProductName = "Laptop",
                             SerialNumber = "3872-5930-4832",
                             img = "ürün.jpg"
@@ -255,7 +250,6 @@ namespace JoygameInventory.Migrations
                             Id = 2,
                             Description = "Wireless mouse",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductBarkod = "JGNB060",
                             ProductName = "Mouse",
                             SerialNumber = "3840294-9F5A3C2D",
                             img = "ürün.jpg"
@@ -265,7 +259,6 @@ namespace JoygameInventory.Migrations
                             Id = 3,
                             Description = "Mechanical keyboard",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductBarkod = "JGNB024",
                             ProductName = "Keyboard",
                             SerialNumber = "A2B3-5829-20250111",
                             img = "ürün.jpg"

@@ -4,6 +4,9 @@
     {
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
+
+        public string ProductBarkod { get; set; } = string.Empty;
+
         public string Description { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime ProductAddDate { get; set; }
