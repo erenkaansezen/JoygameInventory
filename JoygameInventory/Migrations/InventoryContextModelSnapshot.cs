@@ -49,7 +49,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 1, 14, 22, 16, 10, 661, DateTimeKind.Utc).AddTicks(9456),
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8971),
                             ProductId = 1,
                             Status = "active",
                             UserId = "1"
@@ -57,7 +57,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 1, 14, 22, 16, 10, 661, DateTimeKind.Utc).AddTicks(9461),
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8974),
                             ProductId = 2,
                             Status = "active",
                             UserId = "2"
@@ -65,7 +65,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 1, 14, 22, 16, 10, 661, DateTimeKind.Utc).AddTicks(9462),
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8976),
                             ProductId = 5,
                             Status = "active",
                             UserId = "1"
@@ -73,10 +73,42 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 1, 14, 22, 16, 10, 661, DateTimeKind.Utc).AddTicks(9464),
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8977),
                             ProductId = 6,
+                            Status = "inactive",
+                            UserId = "2"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8978),
+                            ProductId = 3,
                             Status = "active",
-                            UserId = "1"
+                            UserId = "3"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8979),
+                            ProductId = 4,
+                            Status = "active",
+                            UserId = "4"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8980),
+                            ProductId = 7,
+                            Status = "active",
+                            UserId = "5"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AssignmentDate = new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8981),
+                            ProductId = 8,
+                            Status = "inactive",
+                            UserId = "6"
                         });
                 });
 
@@ -109,12 +141,137 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = "1",
-                            Name = "Admin"
+                            Name = "Madbyte"
                         },
                         new
                         {
                             Id = "2",
-                            Name = "User"
+                            Name = "Joygame"
+                        });
+                });
+
+            modelBuilder.Entity("JoygameInventory.Data.Entities.JoyStaff", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JoyStaffs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Email = "eren.sezen@joygame.com",
+                            Name = "Eren",
+                            PhoneNumber = "555-0101",
+                            Surname = "Sezen",
+                            UserName = "eren_sezen"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Email = "osman.benlice@joygame.com",
+                            Name = "Osman",
+                            PhoneNumber = "555-0102",
+                            Surname = "Benlice",
+                            UserName = "osman_benlice"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            Email = "onur.unlu@joygame.com",
+                            Name = "Onur",
+                            PhoneNumber = "555-0103",
+                            Surname = "Ünlü",
+                            UserName = "onur_unlu"
+                        },
+                        new
+                        {
+                            Id = "4",
+                            Email = "ali.karatas@joygame.com",
+                            Name = "Ali",
+                            PhoneNumber = "555-0104",
+                            Surname = "Karataş",
+                            UserName = "ali_karatas"
+                        },
+                        new
+                        {
+                            Id = "5",
+                            Email = "ayse.duran@joygame.com",
+                            Name = "Ayşe",
+                            PhoneNumber = "555-0105",
+                            Surname = "Duran",
+                            UserName = "ayse_duran"
+                        },
+                        new
+                        {
+                            Id = "6",
+                            Email = "fatma.ozdemir@joygame.com",
+                            Name = "Fatma",
+                            PhoneNumber = "555-0106",
+                            Surname = "Özdemir",
+                            UserName = "fatma_ozdemir"
+                        },
+                        new
+                        {
+                            Id = "7",
+                            Email = "mehmet.bayar@joygame.com",
+                            Name = "Mehmet",
+                            PhoneNumber = "555-0107",
+                            Surname = "Bayar",
+                            UserName = "mehmet_bayar"
+                        },
+                        new
+                        {
+                            Id = "8",
+                            Email = "hasan.sahin@joygame.com",
+                            Name = "Hasan",
+                            PhoneNumber = "555-0108",
+                            Surname = "Şahin",
+                            UserName = "hasan_sahin"
+                        },
+                        new
+                        {
+                            Id = "9",
+                            Email = "zeynep.kucuk@joygame.com",
+                            Name = "Zeynep",
+                            PhoneNumber = "555-0109",
+                            Surname = "Küçük",
+                            UserName = "zeynep_kucuk"
+                        },
+                        new
+                        {
+                            Id = "10",
+                            Email = "yusuf.bozkurt@joygame.com",
+                            Name = "Yusuf",
+                            PhoneNumber = "555-0110",
+                            Surname = "Bozkurt",
+                            UserName = "yusuf_bozkurt"
                         });
                 });
 
@@ -194,14 +351,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3cb22093-6c43-44d2-b8b2-2bdca451390c",
+                            ConcurrencyStamp = "0a721cbe-02b3-4649-b064-4682720c9195",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b6917636-6940-4420-b05e-1d19a50d2344",
+                            SecurityStamp = "6c0e3bc1-41e7-4e85-9fa5-59393149a4a5",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -209,14 +366,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "154cec72-dc7b-487b-98b6-80ea1d476a59",
+                            ConcurrencyStamp = "68d26f9b-af39-4fdf-aab3-1d45e68c5fc4",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f6de6d7-a589-4772-a3f1-da5c18c24ac6",
+                            SecurityStamp = "935035ea-1595-44b3-9076-cd9bc3cc5ad2",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -224,14 +381,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7b0a9a9-b5c9-443c-af80-41325f8791f8",
+                            ConcurrencyStamp = "c381811a-7c14-4b88-8526-3beb6039fe85",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2a5d9f54-9e14-4dc6-af79-eb9dc51b85c3",
+                            SecurityStamp = "b8ffc4f0-098c-41db-aaa7-b6724269b964",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });
@@ -330,6 +487,146 @@ namespace JoygameInventory.Migrations
                             ProductName = "USB Drive",
                             SerialNumber = "USB-3847502",
                             img = "usbdrive.jpg"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Latest model smartphone with 5G",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB130",
+                            ProductName = "Smartphone",
+                            SerialNumber = "SMP-1234A678",
+                            img = "smartphone.jpg"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "10-inch tablet with stylus support",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB145",
+                            ProductName = "Tablet",
+                            SerialNumber = "TAB-5467D2025",
+                            img = "tablet.jpg"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Fitness smartwatch with heart-rate monitor",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB162",
+                            ProductName = "Smartwatch",
+                            SerialNumber = "SW-9476253",
+                            img = "smartwatch.jpg"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "High-DPI gaming mouse",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB170",
+                            ProductName = "Gaming Mouse",
+                            SerialNumber = "GM-845320",
+                            img = "gamingmouse.jpg"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Description = "Protective laptop sleeve",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB183",
+                            ProductName = "Laptop Sleeve",
+                            SerialNumber = "LS-210987",
+                            img = "laptopsleeve.jpg"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Description = "DSLR camera with 24MP sensor",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB195",
+                            ProductName = "Camera",
+                            SerialNumber = "CAM-584230",
+                            img = "camera.jpg"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Description = "Portable Bluetooth speaker with rich sound",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB210",
+                            ProductName = "Bluetooth Speaker",
+                            SerialNumber = "BTS-789403",
+                            img = "bluetoothspeaker.jpg"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Description = "10,000mAh power bank",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB230",
+                            ProductName = "Power Bank",
+                            SerialNumber = "PB-543210",
+                            img = "powerbank.jpg"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Description = "Virtual reality headset for immersive experiences",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB245",
+                            ProductName = "VR Headset",
+                            SerialNumber = "VR-902384",
+                            img = "vrheadset.jpg"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Description = "2TB external hard drive",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB260",
+                            ProductName = "External Hard Drive",
+                            SerialNumber = "EHDD-098723",
+                            img = "externalharddrive.jpg"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Description = "Ergonomic gaming chair",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB275",
+                            ProductName = "Gaming Chair",
+                            SerialNumber = "GC-765493",
+                            img = "gamingchair.jpg"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Description = "Foldable electric scooter",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB280",
+                            ProductName = "Electric Scooter",
+                            SerialNumber = "ES-129845",
+                            img = "electricscooter.jpg"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Description = "4K camera drone with flight stabilization",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB295",
+                            ProductName = "Drone",
+                            SerialNumber = "DRN-589301",
+                            img = "drone.jpg"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Description = "Portable mini projector",
+                            ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductBarkod = "JGNB310",
+                            ProductName = "Projector",
+                            SerialNumber = "PRJ-765123",
+                            img = "projector.jpg"
                         });
                 });
 
@@ -455,7 +752,7 @@ namespace JoygameInventory.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JoygameInventory.Data.Entities.JoyUser", "User")
+                    b.HasOne("JoygameInventory.Data.Entities.JoyStaff", "User")
                         .WithMany("InventoryAssigments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -517,7 +814,7 @@ namespace JoygameInventory.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("JoygameInventory.Data.Entities.JoyUser", b =>
+            modelBuilder.Entity("JoygameInventory.Data.Entities.JoyStaff", b =>
                 {
                     b.Navigation("InventoryAssigments");
                 });

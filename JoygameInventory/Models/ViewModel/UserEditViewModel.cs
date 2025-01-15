@@ -25,8 +25,7 @@ namespace JoygameInventory.Models.ViewModel
 
         public IList<string>? SelectedRoles { get; set; }
 
-        // Zimmetli envanterler
-        public IEnumerable<InventoryAssigment> InventoryAssigments { get; set; } // Koleksiyon
+
     }
 
 

@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
-
+builder.Services.AddScoped<JoyStaffService>();
 
 
 builder.Services.AddControllersWithViews()
@@ -28,7 +28,8 @@ builder.Services.AddDbContext<InventoryContext>(options =>
     options.UseSqlite(builder.Configuration["ConnectionStrings:Dbconnection"]));
 
 builder.Services.AddIdentity<JoyUser, JoyRole>()
-    .AddEntityFrameworkStores<InventoryContext>().AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<InventoryContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

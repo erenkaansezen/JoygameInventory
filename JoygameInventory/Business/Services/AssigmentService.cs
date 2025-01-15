@@ -13,6 +13,7 @@ namespace JoygameInventory.Business.Services
             _context = context;
         }
 
+        
         public async Task<IEnumerable<InventoryAssigment>> GetInventoryAssignmentsAsync(string userId)
         {
             var inventoryAssignments = await _context.InventoryAssigments
