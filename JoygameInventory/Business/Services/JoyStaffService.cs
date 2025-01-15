@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace JoygameInventory.Business.Services
 {
 
-        public class JoyStaffService
-        {
+     public class JoyStaffService
+     {
             private readonly InventoryContext _context;
 
             // Constructor ile context'i alıyoruz
@@ -28,7 +28,20 @@ namespace JoygameInventory.Business.Services
             // Veritabanından staff'ı ID ile arıyoruz
             return await _context.JoyStaffs.FirstOrDefaultAsync(s => s.Id == id);
             }
-        }
 
+        public async Task<IEnumerable<JoyStaff>> SearchStaff(string searchTerm)
+        {
+            var query = _context.JoyStaffs.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(staff => EF.Functions.Like(staff.Name, "%" + searchTerm + "%") ||
+                                              EF.Functions.Like(staff.Surname, "%" + searchTerm + "%"));
+            }
+
+            return await query.ToListAsync();
+        }
     }
+
+}
 

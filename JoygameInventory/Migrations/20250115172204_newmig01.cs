@@ -237,9 +237,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "0a721cbe-02b3-4649-b064-4682720c9195", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "6c0e3bc1-41e7-4e85-9fa5-59393149a4a5", false, "eren_sezen" },
-                    { "2", 0, "68d26f9b-af39-4fdf-aab3-1d45e68c5fc4", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "935035ea-1595-44b3-9076-cd9bc3cc5ad2", false, "osman_benlice" },
-                    { "3", 0, "c381811a-7c14-4b88-8526-3beb6039fe85", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "b8ffc4f0-098c-41db-aaa7-b6724269b964", false, "onur.unlu" }
+                    { "1", 0, "1d1b3481-c367-4322-baa1-5ae9b6d56865", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "3888bd3c-2121-4976-bebc-a67cb44e463c", false, "eren_sezen" },
+                    { "2", 0, "aa9b2369-cfba-445a-9fbd-4e22031257a6", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "acbac564-ba9a-4ed6-ad9a-35c5fe5fb3b2", false, "osman_benlice" },
+                    { "3", 0, "104f1608-ba37-4136-9306-f092511fb2b9", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "f5b8c271-209e-480b-907a-4f2324e0bbe8", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -300,14 +300,14 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "ProductId", "Status", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8971), 1, "active", "1" },
-                    { 2, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8974), 2, "active", "2" },
-                    { 3, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8976), 5, "active", "1" },
-                    { 4, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8977), 6, "inactive", "2" },
-                    { 5, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8978), 3, "active", "3" },
-                    { 6, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8979), 4, "active", "4" },
-                    { 7, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8980), 7, "active", "5" },
-                    { 8, new DateTime(2025, 1, 15, 13, 36, 23, 604, DateTimeKind.Utc).AddTicks(8981), 8, "inactive", "6" }
+                    { 1, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3534), 1, "active", "1" },
+                    { 2, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3539), 2, "active", "2" },
+                    { 3, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3541), 5, "active", "1" },
+                    { 4, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3542), 6, "inactive", "2" },
+                    { 5, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3543), 3, "active", "3" },
+                    { 6, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3544), 4, "active", "4" },
+                    { 7, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3545), 7, "active", "5" },
+                    { 8, new DateTime(2025, 1, 15, 17, 22, 4, 620, DateTimeKind.Utc).AddTicks(3546), 8, "inactive", "6" }
                 });
 
             migrationBuilder.CreateIndex(

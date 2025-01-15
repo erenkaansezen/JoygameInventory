@@ -96,11 +96,22 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
-
-        public async Task<IActionResult> StaffList()
+        public async Task<IActionResult> StaffList(string searchTerm)
         {
-            var staff = await _staffmanager.GetAllStaffsAsync();  // kullanıcıların listesini UserManager üzerinden çekiyoruz.
-            return View("StaffManagement/StaffList", staff);
+            // Arama terimi varsa, arama sonuçlarını alıyoruz
+            var joyStaffs = await _staffmanager.SearchStaff(searchTerm);
+
+            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                joyStaffs = await _staffmanager.GetAllStaffsAsync();
+            }
+
+            // Arama terimi ViewBag içinde gönderiliyor
+            ViewBag.SearchTerm = searchTerm;
+
+            // Arama sonuçlarını view'a gönderiyoruz
+            return View("StaffManagement/StaffList", joyStaffs);
         }
 
         public async Task<IActionResult> StaffDetails(string id)
@@ -114,7 +125,7 @@ namespace JoygameInventory.Web.Controllers
                 {
                     Id = staff.Id,
                     Name = staff.Name,
-                    Surname = staff.Name,
+                    Surname = staff.Surname,
                     Email = staff.Email,
                     PhoneNumber = staff.PhoneNumber,
                     Document = staff.Document,
@@ -122,7 +133,7 @@ namespace JoygameInventory.Web.Controllers
 
                 };
 
-                return View("UserManagement/StaffDetails", model);
+                return View("StaffManagement/StaffDetails", model);
 
 
 
