@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JoygameInventory.Migrations
 {
     /// <inheritdoc />
-    public partial class netmig01 : Migration
+    public partial class netmig02 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,7 +60,7 @@ namespace JoygameInventory.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
@@ -238,9 +238,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "9c01b5e8-1543-4384-a693-fb01eb44a359", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "c95f3324-7d84-4cc8-8562-ed9325a6b038", false, "eren_sezen" },
-                    { "2", 0, "c55a3ae7-aa99-45d3-8aac-2de3eb3329c8", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "84a9f17b-8c48-4cb4-b1b4-40ca10f2cdfe", false, "osman_benlice" },
-                    { "3", 0, "e0f77aef-6a7b-4a48-a485-cd215a53a872", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "a5b9ba13-79a3-4661-8c74-ae3f64f631b5", false, "onur.unlu" }
+                    { "1", 0, "5adf5870-7ba3-43a0-9d76-10165c2e207f", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "925b425b-5056-457c-8642-c8ca0d9909ae", false, "eren_sezen" },
+                    { "2", 0, "a33e9009-b214-4790-b8c9-480476437fc3", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "4a751d00-09e5-409a-9a6b-76adab8045f2", false, "osman_benlice" },
+                    { "3", 0, "7abc19b1-6894-41a8-b9a2-19bf5d601ef1", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "afb003b6-a939-496d-90ee-f0200c2073ec", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -308,14 +308,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3070), 1, 1 },
-                    { 2, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3072), 2, 2 },
-                    { 3, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3073), 5, 1 },
-                    { 4, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3074), 6, 2 },
-                    { 5, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3075), 3, 3 },
-                    { 6, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3076), 4, 4 },
-                    { 7, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3077), 7, 5 },
-                    { 8, new DateTime(2025, 1, 16, 7, 18, 40, 187, DateTimeKind.Utc).AddTicks(3078), 8, 6 }
+                    { 1, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2723), 1, 1 },
+                    { 2, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2726), 2, 2 },
+                    { 3, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2728), 5, 1 },
+                    { 4, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2729), 6, 2 },
+                    { 5, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2730), 3, 3 },
+                    { 6, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2732), 4, 4 },
+                    { 7, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2733), 7, 5 },
+                    { 8, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2734), 8, 6 },
+                    { 9, new DateTime(2025, 1, 16, 10, 21, 42, 924, DateTimeKind.Utc).AddTicks(2736), 9, 6 }
                 });
 
             migrationBuilder.CreateIndex(

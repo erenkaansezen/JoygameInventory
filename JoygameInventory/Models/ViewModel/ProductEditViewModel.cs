@@ -14,10 +14,11 @@ namespace JoygameInventory.Models.ViewModel
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime ProductAddDate { get; set; }
         public string Status { get; set; } = null!;
+        public int SelectedUserId { get; set; } // Seçilen personel ID'si
 
-        public int MyProperty { get; set; }
-        public List<InventoryAssigment> PreviousAssignments { get; set; } // Önceki atamalar
-        public IEnumerable<InventoryAssigment> InventoryAssigments { get; set; }
+        public List<JoyStaff> JoyStaffs { get; set; } // Önceki atamalar
+        public List<InventoryAssigment>? PreviousAssignments { get; set; } // Önceki atamalar
+        public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
 
 
     }

@@ -10,7 +10,6 @@
         public string Description { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime ProductAddDate { get; set; }
-        public string img { get; set; } = string.Empty;
 
         public string Status { get; set; } = null!;
 

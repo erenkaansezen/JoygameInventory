@@ -45,7 +45,11 @@ namespace JoygameInventory.Business.Services
 
             return previousAssignments;
         }
-
+        public async Task UpdateProductAsync(InventoryAssigment assigment)
+        {
+            _context.InventoryAssigments.Update(assigment);
+            await _context.SaveChangesAsync();
+        }
 
     }
 

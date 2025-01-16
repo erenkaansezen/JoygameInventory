@@ -15,27 +15,21 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="ProductBarkod" class="form-label">Ürün Barkodu</label>
-                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" />
+                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="ProductName" class="form-label">Ürün Adı</label>
-                    <input asp-for="ProductName" id="ProductName" class="form-control" />
+                    <input asp-for="ProductName" id="ProductName" class="form-control" value="@Model.ProductName" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="Description" class="form-label">Açıklama</label>
-                    <input asp-for="Description" id="Description" class="form-control" />
+                    <input asp-for="Description" id="Description" class="form-control" value="@Model.Description" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="SerialNumber" class="form-label">Seri Numarası</label>
-                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="Status" class="form-label">Durum</label>
-                    <input asp-for="Status" id="Status" class="form-control" />
+                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" />
                 </div>
             </div>
         </section>
@@ -56,6 +50,19 @@
                         </div>
                     }
                 </div>
+                    <!-- Dropdown ile Personel Seçimi -->
+                    <div class="mb-3">
+                    <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
+                    <select name="SelectedUserId" class="form-control">
+                            <option value="">Seçin</option>
+                            @foreach (var assignment in Model.JoyStaffs)
+                            {
+                                <option value="@assignment.Id">
+                                    @assignment.Name @assignment.Surname
+                                </option>
+                            }
+                        </select>
+                    </div>
             }
             else
             {
@@ -85,8 +92,10 @@
         </section>
 
         <!-- Kaydet Butonu -->
-        <div class="text-center">
-            <button class="btn btn-primary">Kaydet</button>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-dark">Bilgileri Güncelle</button>
+            </div>
         </div>
     </form>
 </div>

@@ -44,26 +44,26 @@ namespace JoygameInventory.Data.Context
 
             // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(
-                    new Product { Id = 1, ProductName = "Laptop", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", img = "laptop.jpg", ProductBarkod = "JGNB054",Status="Zimmetli" },
-                    new Product { Id = 2, ProductName = "Mouse", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", img = "mouse.jpg", ProductBarkod = "JGNB060", Status = "Zimmetli" },
-                    new Product { Id = 3, ProductName = "Keyboard", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", img = "keyboard.jpg", ProductBarkod = "JGNB024", Status = "Zimmetli" },
-                    new Product { Id = 4, ProductName = "Monitor", Description = "27-inch 4K monitor", SerialNumber = "WLG-384029-2024", img = "monitor.jpg", ProductBarkod = "JGNB095", Status = "Zimmetli" },
-                    new Product { Id = 5, ProductName = "Headphones", Description = "Noise-cancelling over-ear headphones", SerialNumber = "HDP-230904", img = "headphones.jpg", ProductBarkod = "JGNB101", Status = "Zimmetli" },
-                    new Product { Id = 6, ProductName = "USB Drive", Description = "128GB USB 3.0 Flash Drive", SerialNumber = "USB-3847502", img = "usbdrive.jpg", ProductBarkod = "JGNB112", Status = "Zimmetli" },
-                    new Product { Id = 7, ProductName = "Smartphone", Description = "Latest model smartphone with 5G", SerialNumber = "SMP-1234A678", img = "smartphone.jpg", ProductBarkod = "JGNB130", Status = "Zimmetli" },
-                    new Product { Id = 8, ProductName = "Tablet", Description = "10-inch tablet with stylus support", SerialNumber = "TAB-5467D2025", img = "tablet.jpg", ProductBarkod = "JGNB145", Status = "Zimmetli" },
-                    new Product { Id = 9, ProductName = "Smartwatch", Description = "Fitness smartwatch with heart-rate monitor", SerialNumber = "SW-9476253", img = "smartwatch.jpg", ProductBarkod = "JGNB162" },
-                    new Product { Id = 10, ProductName = "Gaming Mouse", Description = "High-DPI gaming mouse", SerialNumber = "GM-845320", img = "gamingmouse.jpg", ProductBarkod = "JGNB170" },
-                    new Product { Id = 11, ProductName = "Laptop Sleeve", Description = "Protective laptop sleeve", SerialNumber = "LS-210987", img = "laptopsleeve.jpg", ProductBarkod = "JGNB183" },
-                    new Product { Id = 12, ProductName = "Camera", Description = "DSLR camera with 24MP sensor", SerialNumber = "CAM-584230", img = "camera.jpg", ProductBarkod = "JGNB195" },
-                    new Product { Id = 13, ProductName = "Bluetooth Speaker", Description = "Portable Bluetooth speaker with rich sound", SerialNumber = "BTS-789403", img = "bluetoothspeaker.jpg", ProductBarkod = "JGNB210" },
-                    new Product { Id = 14, ProductName = "Power Bank", Description = "10,000mAh power bank", SerialNumber = "PB-543210", img = "powerbank.jpg", ProductBarkod = "JGNB230" },
-                    new Product { Id = 15, ProductName = "VR Headset", Description = "Virtual reality headset for immersive experiences", SerialNumber = "VR-902384", img = "vrheadset.jpg", ProductBarkod = "JGNB245" },
-                    new Product { Id = 16, ProductName = "External Hard Drive", Description = "2TB external hard drive", SerialNumber = "EHDD-098723", img = "externalharddrive.jpg", ProductBarkod = "JGNB260" },
-                    new Product { Id = 17, ProductName = "Gaming Chair", Description = "Ergonomic gaming chair", SerialNumber = "GC-765493", img = "gamingchair.jpg", ProductBarkod = "JGNB275" },
-                    new Product { Id = 18, ProductName = "Electric Scooter", Description = "Foldable electric scooter", SerialNumber = "ES-129845", img = "electricscooter.jpg", ProductBarkod = "JGNB280" },
-                    new Product { Id = 19, ProductName = "Drone", Description = "4K camera drone with flight stabilization", SerialNumber = "DRN-589301", img = "drone.jpg", ProductBarkod = "JGNB295" },
-                    new Product { Id = 20, ProductName = "Projector", Description = "Portable mini projector", SerialNumber = "PRJ-765123", img = "projector.jpg", ProductBarkod = "JGNB310", }
+                    new Product { Id = 1, ProductName = "Laptop", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054",Status="Zimmetli" },
+                    new Product { Id = 2, ProductName = "Mouse", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", ProductBarkod = "JGNB060", Status = "Zimmetli" },
+                    new Product { Id = 3, ProductName = "Keyboard", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", ProductBarkod = "JGNB024", Status = "Zimmetli" },
+                    new Product { Id = 4, ProductName = "Monitor", Description = "27-inch 4K monitor", SerialNumber = "WLG-384029-2024", ProductBarkod = "JGNB095", Status = "Zimmetli" },
+                    new Product { Id = 5, ProductName = "Headphones", Description = "Noise-cancelling over-ear headphones", SerialNumber = "HDP-230904", ProductBarkod = "JGNB101", Status = "Zimmetli" },
+                    new Product { Id = 6, ProductName = "USB Drive", Description = "128GB USB 3.0 Flash Drive", SerialNumber = "USB-3847502", ProductBarkod = "JGNB112", Status = "Zimmetli" },
+                    new Product { Id = 7, ProductName = "Smartphone", Description = "Latest model smartphone with 5G", SerialNumber = "SMP-1234A678"    , ProductBarkod = "JGNB130", Status = "Zimmetli" },
+                    new Product { Id = 8, ProductName = "Tablet", Description = "10-inch tablet with stylus support", SerialNumber = "TAB-5467D2025"    , ProductBarkod = "JGNB145", Status = "Zimmetli" },
+                    new Product { Id = 9, ProductName = "Smartwatch", Description = "Fitness smartwatch with heart-rate monitor", SerialNumber = "SW-9476253", ProductBarkod = "JGNB162" },
+                    new Product { Id = 10, ProductName = "Gaming Mouse", Description = "High-DPI gaming mouse", SerialNumber = "GM-845320"  , ProductBarkod = "JGNB170" },
+                    new Product { Id = 11, ProductName = "Laptop Sleeve", Description = "Protective laptop sleeve", SerialNumber = "LS-210987"  , ProductBarkod = "JGNB183" },
+                    new Product { Id = 12, ProductName = "Camera", Description = "DSLR camera with 24MP sensor", SerialNumber = "CAM-584230", ProductBarkod = "JGNB195" },
+                    new Product { Id = 13, ProductName = "Bluetooth Speaker", Description = "Portable Bluetooth speaker with rich sound", SerialNumber = "BTS-789403", ProductBarkod = "JGNB210" },
+                    new Product { Id = 14, ProductName = "Power Bank", Description = "10,000mAh power bank", SerialNumber = "PB-543210", ProductBarkod = "JGNB230" },
+                    new Product { Id = 15, ProductName = "VR Headset", Description = "Virtual reality headset for immersive experiences", SerialNumber = "VR-902384", ProductBarkod = "JGNB245" },
+                    new Product { Id = 16, ProductName = "External Hard Drive", Description = "2TB external hard drive", SerialNumber = "EHDD-098723", ProductBarkod = "JGNB260" },
+                    new Product { Id = 17, ProductName = "Gaming Chair", Description = "Ergonomic gaming chair", SerialNumber = "GC-765493", ProductBarkod = "JGNB275" },
+                    new Product { Id = 18, ProductName = "Electric Scooter", Description = "Foldable electric scooter", SerialNumber = "ES-129845", ProductBarkod = "JGNB280" },
+                    new Product { Id = 19, ProductName = "Drone", Description = "4K camera drone with flight stabilization", SerialNumber = "DRN-589301", ProductBarkod = "JGNB295" },
+                    new Product { Id = 20, ProductName = "Projector", Description = "Portable mini projector", SerialNumber = "PRJ-765123", ProductBarkod = "JGNB310", }
 
 
 
@@ -120,7 +120,8 @@ namespace JoygameInventory.Data.Context
                     new InventoryAssigment { Id = 6, ProductId = 4, UserId = 4, AssignmentDate = DateTime.UtcNow},
 
                     new InventoryAssigment { Id = 7, ProductId = 7, UserId = 5, AssignmentDate = DateTime.UtcNow},
-                    new InventoryAssigment { Id = 8, ProductId = 8, UserId = 6, AssignmentDate = DateTime.UtcNow}
+                    new InventoryAssigment { Id = 8, ProductId = 8, UserId = 6, AssignmentDate = DateTime.UtcNow},
+                    new InventoryAssigment { Id = 9, ProductId = 9, UserId = 6, AssignmentDate = DateTime.UtcNow }
 
 
 

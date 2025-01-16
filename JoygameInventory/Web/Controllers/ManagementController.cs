@@ -70,6 +70,7 @@ namespace JoygameInventory.Web.Controllers
 
             return View("ProductManagement/ProductList", product);
         }
+        [HttpGet]
         public async Task<IActionResult> ProductDetails(int id)
         {
             var staff = await _productservice.GetIdProductAsync(id);
@@ -77,7 +78,7 @@ namespace JoygameInventory.Web.Controllers
             {
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
-
+                var joystaff = await _staffmanager.GetAllStaffsAsync();
                 var model = new ProductEditViewModel
                 {
                     Id = staff.Id,
@@ -86,9 +87,11 @@ namespace JoygameInventory.Web.Controllers
                     Description = staff.Description,
                     SerialNumber = staff.SerialNumber,
                     ProductAddDate = staff.ProductAddDate,
+                    Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
-                    PreviousAssignments = previousAssignments, // Önceki atamalar bilgisi
-
+                    PreviousAssignments = previousAssignments,
+                    JoyStaffs = joystaff// Önceki atamalar bilgisi
+                    
                 };
 
                 return View("ProductManagement/ProductDetails", model);
@@ -102,19 +105,30 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
+            var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(model.Id);
+
             var products = await _productservice.GetIdProductAsync(model.Id);
-            if (products != null)
-            {
+
                 products.ProductName = model.ProductName;
                 products.SerialNumber = model.SerialNumber;
                 products.ProductBarkod = model.ProductBarkod;
                 products.Description = model.Description;
-                products.Status = model.Status;
-                await _productservice.UpdateProductAsync(products);
-                return RedirectToAction("ProductDetails", new { id = model.Id });
-            }
+                products.ProductAddDate = DateTime.Now;
 
-            return View(model);
+                var newstaffıd = model.SelectedUserId;
+
+            var newstaff = new InventoryAssigment
+            {
+                ProductId = products.Id,
+                UserId = newstaffıd,
+                AssignmentDate = DateTime.Now,
+            };
+                await _assigmentservice.UpdateProductAsync(newstaff);
+                await _productservice.UpdateProductAsync(products);
+                return View("ProductManagement/ProductList");
+            
+
+
 
         }
         //Staff Yönetimi
