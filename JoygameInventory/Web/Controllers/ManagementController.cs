@@ -89,7 +89,6 @@ namespace JoygameInventory.Web.Controllers
                     ProductAddDate = staff.ProductAddDate,
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
-                    PreviousAssignments = previousAssignments,
                     JoyStaffs = joystaff// Önceki atamalar bilgisi
                     
                 };
@@ -119,13 +118,15 @@ namespace JoygameInventory.Web.Controllers
 
             var newstaff = new InventoryAssigment
             {
+
                 ProductId = products.Id,
                 UserId = newstaffıd,
                 AssignmentDate = DateTime.Now,
+                
             };
                 await _assigmentservice.UpdateProductAsync(newstaff);
                 await _productservice.UpdateProductAsync(products);
-                return View("ProductManagement/ProductList");
+                return RedirectToAction("ProductManagement/ProductList");
             
 
 

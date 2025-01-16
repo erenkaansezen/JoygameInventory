@@ -50,24 +50,25 @@
                         </div>
                     }
                 </div>
-                    <!-- Dropdown ile Personel Seçimi -->
-                    <div class="mb-3">
-                    <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
-                    <select name="SelectedUserId" class="form-control">
-                            <option value="">Seçin</option>
-                            @foreach (var assignment in Model.JoyStaffs)
-                            {
-                                <option value="@assignment.Id">
-                                    @assignment.Name @assignment.Surname
-                                </option>
-                            }
-                        </select>
-                    </div>
+
             }
             else
             {
                 <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
             }
+            <!-- Dropdown ile Personel Seçimi -->
+            <div class="mb-3">
+                <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
+                <select name="SelectedUserId" class="form-control">
+                    <option value="">Seçin</option>
+                    @foreach (var assignment in Model.JoyStaffs)
+                    {
+                        <option value="@assignment.Id">
+                            @assignment.Name @assignment.Surname
+                        </option>
+                    }
+                </select>
+            </div>
         </section>
 
         <!-- Önceki Sahipler -->
