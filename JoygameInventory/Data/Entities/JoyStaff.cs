@@ -4,7 +4,7 @@ namespace JoygameInventory.Data.Entities
 {
     public class JoyStaff 
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string UserName { get; set; }

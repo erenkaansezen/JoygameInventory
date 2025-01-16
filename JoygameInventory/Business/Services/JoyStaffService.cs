@@ -23,7 +23,7 @@ namespace JoygameInventory.Business.Services
             }
 
             // Tek bir staff'ı ID'ye göre getiren bir metod
-            public async Task<JoyStaff> GetStaffByIdAsync(string id)
+            public async Task<JoyStaff> GetStaffByIdAsync(int id)
             {
             // Veritabanından staff'ı ID ile arıyoruz
             return await _context.JoyStaffs.FirstOrDefaultAsync(s => s.Id == id);

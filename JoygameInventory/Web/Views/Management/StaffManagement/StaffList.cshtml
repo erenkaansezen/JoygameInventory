@@ -65,7 +65,6 @@
                     <tr>
                         <th>Ad</th>
                         <th>Email</th>
-                        <th>Phone Number</th>
                         <th>İşlemler</th>
                     </tr>
                 </thead>
@@ -75,11 +74,8 @@
                         <tr>
                             <td>@users.Name @users.Surname</td>
                             <td>@users.Email</td>
-                            <td>@users.PhoneNumber</td>
                             <td>
-                            <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">
-                                <i class="fas fa-eye"></i>Personel Detayı
-                            </a>
+                            <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
 
                                 <button class="btn btn-delete btn-custom ms-2">
                                     <i class="fas fa-trash-alt"></i> Sil

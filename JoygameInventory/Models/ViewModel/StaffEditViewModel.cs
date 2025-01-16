@@ -5,7 +5,7 @@ namespace JoygameInventory.Models.ViewModel
 {
     public class StaffEditViewModel
     {
-        public string? Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Kullanıcı Adı")]
         public string? Name { get; set; }

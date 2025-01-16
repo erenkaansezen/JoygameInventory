@@ -1,4 +1,5 @@
-﻿using JoygameInventory.Business.Services;
+﻿using Iyzipay.Model.V2.Subscription;
+using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
@@ -40,7 +41,6 @@ namespace JoygameInventory.Web.Controllers
             if (user != null)
             {
                 ViewBag.Roles = await _rolemanager.Roles.Select(x => x.Name).ToListAsync();
-                var inventoryAssignments = await _assigmentservice.GetInventoryAssignmentsAsync(user.Id);
 
                 var model = new UserEditViewModel
                 {
@@ -67,9 +67,56 @@ namespace JoygameInventory.Web.Controllers
         public async Task<IActionResult> ProductList()
         {
             var product = await _productservice.GetAllProductsAsync();
+
             return View("ProductManagement/ProductList", product);
         }
+        public async Task<IActionResult> ProductDetails(int id)
+        {
+            var staff = await _productservice.GetIdProductAsync(id);
+            if (staff != null)
+            {
+                var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
+                var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
 
+                var model = new ProductEditViewModel
+                {
+                    Id = staff.Id,
+                    ProductName = staff.ProductName,
+                    ProductBarkod = staff.ProductBarkod,
+                    Description = staff.Description,
+                    SerialNumber = staff.SerialNumber,
+                    ProductAddDate = staff.ProductAddDate,
+                    InventoryAssigments = inventoryAssignments,
+                    PreviousAssignments = previousAssignments, // Önceki atamalar bilgisi
+
+                };
+
+                return View("ProductManagement/ProductDetails", model);
+
+
+
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
+        {
+            var products = await _productservice.GetIdProductAsync(model.Id);
+            if (products != null)
+            {
+                products.ProductName = model.ProductName;
+                products.SerialNumber = model.SerialNumber;
+                products.ProductBarkod = model.ProductBarkod;
+                products.Description = model.Description;
+                products.Status = model.Status;
+                await _productservice.UpdateProductAsync(products);
+                return RedirectToAction("ProductDetails", new { id = model.Id });
+            }
+
+            return View(model);
+
+        }
         //Staff Yönetimi
         public async Task<IActionResult> ViewZimmetDocument(string documentName)
         {
@@ -114,12 +161,12 @@ namespace JoygameInventory.Web.Controllers
             return View("StaffManagement/StaffList", joyStaffs);
         }
 
-        public async Task<IActionResult> StaffDetails(string id)
+        public async Task<IActionResult> StaffDetails(int id)
         {
             var staff = await _staffmanager.GetStaffByIdAsync(id);
             if (staff != null)
             {
-                var inventoryAssignments = await _assigmentservice.GetInventoryAssignmentsAsync(staff.Id);
+                var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
 
                 var model = new StaffEditViewModel
                 {

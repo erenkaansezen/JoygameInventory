@@ -1,6 +1,9 @@
-﻿namespace JoygameInventory.Data.Entities
+﻿using JoygameInventory.Data.Entities;
+using System.ComponentModel.DataAnnotations;
+
+namespace JoygameInventory.Models.ViewModel
 {
-    public class Product
+    public class ProductEditViewModel
     {
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
@@ -10,13 +13,16 @@
         public string Description { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime ProductAddDate { get; set; }
-        public string img { get; set; } = string.Empty;
-
         public string Status { get; set; } = null!;
 
-
-        public ICollection<InventoryAssigment> InventoryAssigments { get; set; }
+        public int MyProperty { get; set; }
+        public List<InventoryAssigment> PreviousAssignments { get; set; } // Önceki atamalar
+        public IEnumerable<InventoryAssigment> InventoryAssigments { get; set; }
 
 
     }
+
+
+
+
 }
