@@ -129,7 +129,6 @@ namespace JoygameInventory.Web.Controllers
 
                         if (previousUser != null)
                         {
-                            currentAssignment.UserId = model.SelectedUserId;
                             model.PreviousUserName = previousUser.Name;
                             model.PreviousUserSurname = previousUser.Surname;
                         }
