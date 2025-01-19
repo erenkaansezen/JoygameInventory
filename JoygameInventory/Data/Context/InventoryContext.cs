@@ -33,12 +33,19 @@ namespace JoygameInventory.Data.Context
                 .HasOne(ia => ia.Product)  // InventoryAssigment bir Product ile ilişkili
                 .WithMany(p => p.InventoryAssigments)  // Bir Product birden fazla InventoryAssigment ile ilişkili
                 .HasForeignKey(ia => ia.ProductId);
-            
+
+
+
             modelBuilder.Entity<InventoryAssigment>()
                 .HasOne(ia => ia.User)  // InventoryAssigment bir User ile ilişkili
                 .WithMany(u => u.InventoryAssigments)  // Bir User birden fazla InventoryAssigment ile ilişkili
                 .HasForeignKey(ia => ia.UserId);
-                    modelBuilder.Entity<Product>()
+
+            modelBuilder.Entity<InventoryAssigment>()
+    .HasOne(ia => ia.PreviusAssigmentUserNavigation)  // InventoryAssigment bir User ile ilişkili
+    .WithMany()  // Bir User birden fazla InventoryAssigment ile ilişkili
+    .HasForeignKey(ia => ia.PreviusAssigmenId);
+            modelBuilder.Entity<Product>()
             .Property(p => p.Status)
             .HasDefaultValue("Depoda");
 
@@ -111,17 +118,17 @@ namespace JoygameInventory.Data.Context
 
             // Add InventoryAssigments (Zimmetler)
             modelBuilder.Entity<InventoryAssigment>().HasData(
-                    new InventoryAssigment { Id = 1, ProductId = 1, UserId = 1, AssignmentDate = DateTime.UtcNow},
-                    new InventoryAssigment { Id = 2, ProductId = 2, UserId = 2, AssignmentDate = DateTime.UtcNow },
-                    new InventoryAssigment { Id = 3, ProductId = 5, UserId = 1, AssignmentDate = DateTime.UtcNow },
-                    new InventoryAssigment { Id = 4, ProductId = 6, UserId = 2, AssignmentDate = DateTime.UtcNow },
+                    new InventoryAssigment { Id = 1, ProductId = 1, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3},
+                    new InventoryAssigment { Id = 2, ProductId = 2, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 3, ProductId = 5, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 4, ProductId = 6, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
 
-                    new InventoryAssigment { Id = 5, ProductId = 3, UserId = 3, AssignmentDate = DateTime.UtcNow },
-                    new InventoryAssigment { Id = 6, ProductId = 4, UserId = 4, AssignmentDate = DateTime.UtcNow},
+                    new InventoryAssigment { Id = 5, ProductId = 3, UserId = 3, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 6, ProductId = 4, UserId = 4, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
 
-                    new InventoryAssigment { Id = 7, ProductId = 7, UserId = 5, AssignmentDate = DateTime.UtcNow},
-                    new InventoryAssigment { Id = 8, ProductId = 8, UserId = 6, AssignmentDate = DateTime.UtcNow},
-                    new InventoryAssigment { Id = 9, ProductId = 9, UserId = 6, AssignmentDate = DateTime.UtcNow }
+                    new InventoryAssigment { Id = 7, ProductId = 7, UserId = 5, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 8, ProductId = 8, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 9, ProductId = 9, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 }
 
 
 

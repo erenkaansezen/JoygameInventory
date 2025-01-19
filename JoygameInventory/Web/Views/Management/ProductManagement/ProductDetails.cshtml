@@ -8,6 +8,9 @@
 
     <form asp-action="ProductDetails" method="post">
         <input name="Id" type="hidden" value="@Model.Id" />
+        <a asp-controller="Management" asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
+        <br />
+        <br />
 
         <!-- Ürün Bilgileri -->
         <section class="mb-5">
@@ -60,11 +63,15 @@
             <div class="mb-3">
                 <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
                 <select name="SelectedUserId" class="form-control">
-                    <option value="">Seçin</option>
+                    @foreach (var item in Model.InventoryAssigments)
+                    {
+                        <option value="@item.UserId">Yeni Atama Seçiniz ↓ </option>
+                    }
+
                     @foreach (var assignment in Model.JoyStaffs)
                     {
-                        <option value="@assignment.Id">
-                            @assignment.Name @assignment.Surname
+                        <option value="@assignment?.Id">
+                            @assignment?.Name @assignment?.Surname
                         </option>
                     }
                 </select>
@@ -74,32 +81,38 @@
         <!-- Önceki Sahipler -->
         <section class="mb-5">
             <h4 class="section-title">Önceki Atama</h4>
-            @if (Model.PreviousAssignments != null && Model.PreviousAssignments.Any())
+            @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
             {
-                <ul class="list-group">
-                    @foreach (var previousAssignment in Model.PreviousAssignments)
+                <div class="list-group">
+                    @foreach (var item in Model.InventoryAssigments)
                     {
-                        <li class="list-group-item">
-                            <strong>@previousAssignment.User.Name @previousAssignment.User?.Surname</strong><br />
-                            <span class="text-muted">@previousAssignment.AssignmentDate.ToString("yyyy-MM-dd")</span>
-                        </li>
+                        <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <strong>@item.PreviusAssigmentUserNavigation.Name @item.PreviusAssigmentUserNavigation.Surname</strong><br />
+                                <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
+                            </div>
+                        </div>
                     }
-                </ul>
+                </div>
+
             }
             else
             {
-                <p>Geçmiş sahibi bulunamadı.</p>
+                <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
             }
         </section>
+
 
         <!-- Kaydet Butonu -->
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-dark">Bilgileri Güncelle</button>
+                <button class="btn btn-outline-danger">Bilgileri Güncelle</button>
             </div>
+
         </div>
     </form>
 </div>
+
 
 <!-- Özelleştirilmiş Stil -->
 <style>

@@ -75,11 +75,13 @@
                             </td>
 
                             <td>
-                                <a asp-controller="Management" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
+                                <a asp-controller="Management" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
 
-                                <button class="btn btn-delete btn-custom ms-2">
-                                    <i class="fas fa-trash-alt"></i> Sil
-                                </button>
+                                <form asp-controller="Management" asp-action="ProductDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                    <input type="hidden" value="@product.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+
                             </td>
                         </tr>
                     }

@@ -43,6 +43,16 @@ namespace JoygameInventory.Business.Services
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
-    }
 
+        public async Task DeleteProductAsync(int id)
+        {
+            var deleteProduct = await _context.Products.FindAsync(id);
+            if (deleteProduct != null)
+            {
+                _context.Products.Remove(deleteProduct);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+    }
 }

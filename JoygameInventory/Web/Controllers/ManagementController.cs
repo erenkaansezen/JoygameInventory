@@ -89,7 +89,8 @@ namespace JoygameInventory.Web.Controllers
                     ProductAddDate = staff.ProductAddDate,
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
-                    JoyStaffs = joystaff// Önceki atamalar bilgisi
+                    JoyStaffs = joystaff
+                    
                     
                 };
 
@@ -104,34 +105,82 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
-            var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(model.Id);
-
             var products = await _productservice.GetIdProductAsync(model.Id);
-
+            if (products != null)
+            {
+                // Ürün bilgilerini güncelliyoruz
                 products.ProductName = model.ProductName;
                 products.SerialNumber = model.SerialNumber;
                 products.ProductBarkod = model.ProductBarkod;
                 products.Description = model.Description;
                 products.ProductAddDate = DateTime.Now;
 
-                var newstaffıd = model.SelectedUserId;
+                // Mevcut atama kaydını alıyoruz
+                var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(products.Id);
 
-            var newstaff = new InventoryAssigment
-            {
+                if (currentAssignments != null && currentAssignments.Any())
+                {
+                    var currentAssignment = currentAssignments?.FirstOrDefault();
 
-                ProductId = products.Id,
-                UserId = newstaffıd,
-                AssignmentDate = DateTime.Now,
-                
-            };
-                await _assigmentservice.UpdateProductAsync(newstaff);
+                    if (currentAssignment != null)
+                    {
+                        // Eski kullanıcıyı alıyoruz (PreviusAssigmentUser ID'si ile)
+                        var previousUser = await _staffmanager.GetStaffByIdAsync(currentAssignment.PreviusAssigmenId);
+
+                        if (previousUser != null)
+                        {
+                            currentAssignment.UserId = model.SelectedUserId;
+                            model.PreviousUserName = previousUser.Name;
+                            model.PreviousUserSurname = previousUser.Surname;
+                        }
+
+                        // Eğer mevcut atama varsa ve kullanıcı değişmişse
+                        if (currentAssignment.UserId != model.SelectedUserId)
+                        {
+                            // Eski kullanıcının ID'sini PreviusAssigmentUser'a kaydediyoruz
+                            currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
+
+                            // Yeni kullanıcıyı atıyoruz
+                            currentAssignment.UserId = model.SelectedUserId;
+
+                            // Atama tarihini güncelliyoruz
+                            currentAssignment.AssignmentDate = DateTime.Now;
+
+                            // Eski atama kaydını güncelliyoruz
+                            await _assigmentservice.UpdateProductAsync(currentAssignment);  // Var olan atama kaydını güncelliyoruz
+                        }
+                        else
+                        {
+                            await _productservice.UpdateProductAsync(products);
+
+                            return RedirectToAction("ProductDetails", new { id = model.Id });
+                        }
+                    }
+                }
+
+                // Ürün bilgilerini güncelliyoruz
                 await _productservice.UpdateProductAsync(products);
-                return RedirectToAction("ProductManagement/ProductList");
-            
 
+                return RedirectToAction("ProductDetails", new { id = model.Id });
+            }
 
-
+            return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductDelete(int id)
+        {
+            await _productservice.DeleteProductAsync(id);
+            return RedirectToAction("ProductList", "Management");
+        }
+
+
+
+
+
+
+
+
         //Staff Yönetimi
         public async Task<IActionResult> ViewZimmetDocument(string documentName)
         {
