@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
@@ -59,27 +60,73 @@ namespace JoygameInventory.Business.Services
             return previousUser;
         }
 
-        // Ürün atamasını güncellemek veya yeni atama eklemek
-        public async Task UpdateProductAsync(InventoryAssigment newAssignment)
+
+        // InventoryAssigment güncellenmesi için metod
+        public async Task UpdateAssigmentAsync(InventoryAssigment assignment)
         {
-            // Mevcut atama kaydını buluyoruz
-            var currentAssignment = await _context.InventoryAssigments
-                .Where(ia => ia.ProductId == newAssignment.ProductId && ia.UserId == newAssignment.UserId)
-                .FirstOrDefaultAsync();
-
-            if (currentAssignment != null)
+            if (assignment == null)
             {
-                // Eğer eski atama varsa, PreviusAssigmentUser'ı güncelliyoruz
-                currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
-
-                // Yeni kullanıcıyı güncelliyoruz
-                currentAssignment.UserId = newAssignment.UserId; // Yeni kullanıcı id'sini atıyoruz
-                currentAssignment.AssignmentDate = DateTime.Now; // Yeni atama tarihini güncelliyoruz
-
-                // Eski atama kaydını güncelliyoruz
-                _context.InventoryAssigments.Update(currentAssignment);
-                await _context.SaveChangesAsync();
+                throw new ArgumentNullException(nameof(assignment), "Atama verisi boş olamaz.");
             }
+
+            // Veritabanındaki mevcut atamayı alıyoruz
+            var existingAssignment = await _context.InventoryAssigments
+                .FirstOrDefaultAsync(a => a.Id == assignment.Id);
+
+
+
+            // Mevcut atamayı güncelliyoruz
+            existingAssignment.UserId = assignment.UserId;
+            existingAssignment.AssignmentDate = assignment.AssignmentDate;
+
+            // Güncellenen atamayı kaydediyoruz
+            _context.InventoryAssigments.Update(existingAssignment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddAssignmentAsync(InventoryAssigment newAssignment)
+        {
+
+                // Veritabanına ekliyoruz
+                _context.InventoryAssigments.Add(newAssignment);
+
+                // Veritabanındaki değişiklikleri kaydediyoruz
+                await _context.SaveChangesAsync();
+            
+
+        }
+
+
+        //History Service 
+
+        public async Task AddAssignmentHistoryAsync(AssigmentHistory assignmentHistory)
+        {
+            // İlgili ürünün atama geçmişini alıyoruz
+            var assignmentHistories = await _context.AssigmentHistorys
+                                                      .Where(a => a.ProductId == assignmentHistory.ProductId)
+                                                      .OrderByDescending(a => a.AssignmentDate) // Tarihe göre sıralama
+                                                      .ToListAsync();
+
+            // Eğer 5'ten fazla kayıttan fazla varsa, en eski kaydı siliyoruz
+            if (assignmentHistories.Count >= 5)
+            {
+                // En eski kaydı sil
+                var oldestHistory = assignmentHistories.Last();
+                _context.AssigmentHistorys.Remove(oldestHistory);
+            }
+
+            // Yeni atama geçmişini ekliyoruz
+            _context.AssigmentHistorys.Add(assignmentHistory);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<AssigmentHistory>> GetAssignmentHistoryAsync(int productId)
+        {
+            // Ürüne ait atama geçmişlerini getiriyoruz
+            return await _context.AssigmentHistorys
+                                 .Where(a => a.ProductId == productId)
+                                 .OrderByDescending(a => a.AssignmentDate)  // Son yapılan atamayı en önce göstermek için
+                                 .ToListAsync();
         }
     }
 }

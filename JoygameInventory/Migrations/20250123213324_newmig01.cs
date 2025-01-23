@@ -215,15 +215,48 @@ namespace JoygameInventory.Migrations
                         column: x => x.PreviusAssigmenId,
                         principalTable: "JoyStaffs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_InventoryAssigments_JoyStaffs_UserId",
                         column: x => x.UserId,
                         principalTable: "JoyStaffs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_InventoryAssigments_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssigmentHistorys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AssignmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    InventoryAssigmentId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssigmentHistorys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssigmentHistorys_InventoryAssigments_InventoryAssigmentId",
+                        column: x => x.InventoryAssigmentId,
+                        principalTable: "InventoryAssigments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AssigmentHistorys_JoyStaffs_UserId",
+                        column: x => x.UserId,
+                        principalTable: "JoyStaffs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_AssigmentHistorys_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -244,9 +277,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "e7c13a5a-de36-4acd-a587-1ad0325538f5", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "07d63e07-2ddd-4970-ab2f-d3adb88b3439", false, "eren_sezen" },
-                    { "2", 0, "96e9ab3d-55b6-47a4-b42b-4a09e67b39ce", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "f54cfdca-00ca-4872-8e75-d765a84dd26c", false, "osman_benlice" },
-                    { "3", 0, "62d8fe72-4ae3-49cf-8583-55d868462fd2", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "a5f87aa5-2573-4d4d-8d02-555314e18381", false, "onur.unlu" }
+                    { "1", 0, "9be88082-3678-4e7b-ba94-3460ba13e514", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "f30cd6d0-0e15-4e59-a590-702d5d456402", false, "eren_sezen" },
+                    { "2", 0, "84b07e39-3aa5-434d-aceb-b3bf8e03ef47", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "a3e85005-adf3-452c-938e-9cd32210fd70", false, "osman_benlice" },
+                    { "3", 0, "36910cfd-048c-401f-9127-49453d530b8e", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "8ebd3443-71c1-415e-90ba-d5c5224f45b6", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -314,15 +347,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(617), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(620), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(621), 3, 5, 1 },
-                    { 4, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(622), 3, 6, 2 },
-                    { 5, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(624), 3, 3, 3 },
-                    { 6, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(625), 3, 4, 4 },
-                    { 7, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(626), 3, 7, 5 },
-                    { 8, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(628), 3, 8, 6 },
-                    { 9, new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(629), 3, 9, 6 }
+                    { 1, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4565), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4569), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4570), 3, 5, 1 },
+                    { 4, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4571), 3, 6, 2 },
+                    { 5, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4572), 3, 3, 3 },
+                    { 6, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4574), 3, 4, 4 },
+                    { 7, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4575), 3, 7, 5 },
+                    { 8, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4576), 3, 8, 6 },
+                    { 9, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4577), 3, 9, 6 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -363,6 +396,21 @@ namespace JoygameInventory.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssigmentHistorys_InventoryAssigmentId",
+                table: "AssigmentHistorys",
+                column: "InventoryAssigmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssigmentHistorys_ProductId",
+                table: "AssigmentHistorys",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssigmentHistorys_UserId",
+                table: "AssigmentHistorys",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InventoryAssigments_PreviusAssigmenId",
                 table: "InventoryAssigments",
                 column: "PreviusAssigmenId");
@@ -397,13 +445,16 @@ namespace JoygameInventory.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "InventoryAssigments");
+                name: "AssigmentHistorys");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "InventoryAssigments");
 
             migrationBuilder.DropTable(
                 name: "JoyStaffs");

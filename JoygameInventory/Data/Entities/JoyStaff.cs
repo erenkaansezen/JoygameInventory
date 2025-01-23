@@ -14,5 +14,7 @@ namespace JoygameInventory.Data.Entities
         public string? Document { get; set; }
 
         public ICollection<InventoryAssigment> InventoryAssigments { get; set; }
+        public ICollection<AssigmentHistory> AssigmentHistorys { get; set; }
+
     }
 }

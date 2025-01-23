@@ -15,6 +15,7 @@
 
 
         public ICollection<InventoryAssigment> InventoryAssigments { get; set; }
+        public ICollection<AssigmentHistory> AssigmentHistorys { get; set; }
 
 
     }

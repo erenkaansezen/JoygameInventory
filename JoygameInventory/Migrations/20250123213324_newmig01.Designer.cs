@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JoygameInventory.Migrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20250119191434_newmig01")]
+    [Migration("20250123213324_newmig01")]
     partial class newmig01
     {
         /// <inheritdoc />
@@ -19,6 +19,35 @@ namespace JoygameInventory.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+
+            modelBuilder.Entity("JoygameInventory.Data.Entities.AssigmentHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AssignmentDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("InventoryAssigmentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryAssigmentId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AssigmentHistorys");
+                });
 
             modelBuilder.Entity("JoygameInventory.Data.Entities.InventoryAssigment", b =>
                 {
@@ -52,7 +81,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(617),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4565),
                             PreviusAssigmenId = 3,
                             ProductId = 1,
                             UserId = 1
@@ -60,7 +89,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(620),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4569),
                             PreviusAssigmenId = 3,
                             ProductId = 2,
                             UserId = 2
@@ -68,7 +97,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(621),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4570),
                             PreviusAssigmenId = 3,
                             ProductId = 5,
                             UserId = 1
@@ -76,7 +105,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(622),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4571),
                             PreviusAssigmenId = 3,
                             ProductId = 6,
                             UserId = 2
@@ -84,7 +113,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 5,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(624),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4572),
                             PreviusAssigmenId = 3,
                             ProductId = 3,
                             UserId = 3
@@ -92,7 +121,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 6,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(625),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4574),
                             PreviusAssigmenId = 3,
                             ProductId = 4,
                             UserId = 4
@@ -100,7 +129,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 7,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(626),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4575),
                             PreviusAssigmenId = 3,
                             ProductId = 7,
                             UserId = 5
@@ -108,7 +137,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 8,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(628),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4576),
                             PreviusAssigmenId = 3,
                             ProductId = 8,
                             UserId = 6
@@ -116,7 +145,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 9,
-                            AssignmentDate = new DateTime(2025, 1, 19, 19, 14, 34, 466, DateTimeKind.Utc).AddTicks(629),
+                            AssignmentDate = new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4577),
                             PreviusAssigmenId = 3,
                             ProductId = 9,
                             UserId = 6
@@ -363,14 +392,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7c13a5a-de36-4acd-a587-1ad0325538f5",
+                            ConcurrencyStamp = "9be88082-3678-4e7b-ba94-3460ba13e514",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "07d63e07-2ddd-4970-ab2f-d3adb88b3439",
+                            SecurityStamp = "f30cd6d0-0e15-4e59-a590-702d5d456402",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -378,14 +407,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "96e9ab3d-55b6-47a4-b42b-4a09e67b39ce",
+                            ConcurrencyStamp = "84b07e39-3aa5-434d-aceb-b3bf8e03ef47",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f54cfdca-00ca-4872-8e75-d765a84dd26c",
+                            SecurityStamp = "a3e85005-adf3-452c-938e-9cd32210fd70",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -393,14 +422,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "62d8fe72-4ae3-49cf-8583-55d868462fd2",
+                            ConcurrencyStamp = "36910cfd-048c-401f-9127-49453d530b8e",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a5f87aa5-2573-4d4d-8d02-555314e18381",
+                            SecurityStamp = "8ebd3443-71c1-415e-90ba-d5c5224f45b6",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });
@@ -746,12 +775,35 @@ namespace JoygameInventory.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("JoygameInventory.Data.Entities.AssigmentHistory", b =>
+                {
+                    b.HasOne("JoygameInventory.Data.Entities.InventoryAssigment", null)
+                        .WithMany("AssigmentHistorys")
+                        .HasForeignKey("InventoryAssigmentId");
+
+                    b.HasOne("JoygameInventory.Data.Entities.Product", "Product")
+                        .WithMany("AssigmentHistorys")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JoygameInventory.Data.Entities.JoyStaff", "User")
+                        .WithMany("AssigmentHistorys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("JoygameInventory.Data.Entities.InventoryAssigment", b =>
                 {
                     b.HasOne("JoygameInventory.Data.Entities.JoyStaff", "PreviusAssigmentUserNavigation")
                         .WithMany()
                         .HasForeignKey("PreviusAssigmenId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("JoygameInventory.Data.Entities.Product", "Product")
@@ -763,7 +815,7 @@ namespace JoygameInventory.Migrations
                     b.HasOne("JoygameInventory.Data.Entities.JoyStaff", "User")
                         .WithMany("InventoryAssigments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("PreviusAssigmentUserNavigation");
@@ -824,13 +876,22 @@ namespace JoygameInventory.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("JoygameInventory.Data.Entities.InventoryAssigment", b =>
+                {
+                    b.Navigation("AssigmentHistorys");
+                });
+
             modelBuilder.Entity("JoygameInventory.Data.Entities.JoyStaff", b =>
                 {
+                    b.Navigation("AssigmentHistorys");
+
                     b.Navigation("InventoryAssigments");
                 });
 
             modelBuilder.Entity("JoygameInventory.Data.Entities.Product", b =>
                 {
+                    b.Navigation("AssigmentHistorys");
+
                     b.Navigation("InventoryAssigments");
                 });
 #pragma warning restore 612, 618

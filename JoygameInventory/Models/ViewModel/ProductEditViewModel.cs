@@ -16,11 +16,12 @@ namespace JoygameInventory.Models.ViewModel
         public string Status { get; set; } = null!;
 
         public int UserId { get; set; }
-        public int SelectedUserId { get; set; }
+        public int? SelectedUserId { get; set; }
         public string PreviousUserName { get; set; }
         public string PreviousUserSurname { get; set; }
         public List<JoyStaff> JoyStaffs { get; set; } 
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
+        public IEnumerable<AssigmentHistory>? AssigmentHistorys { get; set; }
 
 
     }

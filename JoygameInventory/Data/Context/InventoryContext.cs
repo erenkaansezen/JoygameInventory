@@ -14,7 +14,7 @@ namespace JoygameInventory.Data.Context
         // DbSet tanımlamaları
         public DbSet<Product> Products => Set<Product>();
         public DbSet<InventoryAssigment> InventoryAssigments => Set<InventoryAssigment>();
-        //public DbSet<ZimmetDocument> ZimmetDocuments => Set<ZimmetDocument>();
+        public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();
 
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
         public DbSet<JoyUser> JoyUsers => Set<JoyUser>();
@@ -25,29 +25,50 @@ namespace JoygameInventory.Data.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // InventoryAssigment için Fluent API ayarları
-            modelBuilder.Entity<InventoryAssigment>()
-                .HasKey(ia => ia.Id);
+            modelBuilder.Entity<InventoryAssigment>(entity =>
+            {
+                // Primary Key
+                entity.HasKey(ia => ia.Id);
 
-            modelBuilder.Entity<InventoryAssigment>()
-                .HasOne(ia => ia.Product)  // InventoryAssigment bir Product ile ilişkili
-                .WithMany(p => p.InventoryAssigments)  // Bir Product birden fazla InventoryAssigment ile ilişkili
-                .HasForeignKey(ia => ia.ProductId);
+                entity.HasOne(ia => ia.Product)  
+                      .WithMany(p => p.InventoryAssigments) 
+                      .HasForeignKey(ia => ia.ProductId)
+                      .OnDelete(DeleteBehavior.Cascade); 
 
 
+                entity.HasOne(ia => ia.User)
+                      .WithMany(u => u.InventoryAssigments) 
+                      .HasForeignKey(ia => ia.UserId)
+                      .OnDelete(DeleteBehavior.SetNull); 
 
-            modelBuilder.Entity<InventoryAssigment>()
-                .HasOne(ia => ia.User)  // InventoryAssigment bir User ile ilişkili
-                .WithMany(u => u.InventoryAssigments)  // Bir User birden fazla InventoryAssigment ile ilişkili
-                .HasForeignKey(ia => ia.UserId);
+     
+                entity.HasOne(ia => ia.PreviusAssigmentUserNavigation)  
+                      .WithMany() 
+                      .HasForeignKey(ia => ia.PreviusAssigmenId)
+                      .OnDelete(DeleteBehavior.SetNull); 
+            });
+            modelBuilder.Entity<AssigmentHistory>(entity =>
+            {
+                // Primary Key
+                entity.HasKey(ia => ia.Id);
 
-            modelBuilder.Entity<InventoryAssigment>()
-    .HasOne(ia => ia.PreviusAssigmentUserNavigation)  // InventoryAssigment bir User ile ilişkili
-    .WithMany()  // Bir User birden fazla InventoryAssigment ile ilişkili
-    .HasForeignKey(ia => ia.PreviusAssigmenId);
-            modelBuilder.Entity<Product>()
-            .Property(p => p.Status)
-            .HasDefaultValue("Depoda");
+                entity.HasOne(ia => ia.Product)
+                      .WithMany(p => p.AssigmentHistorys)
+                      .HasForeignKey(ia => ia.ProductId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+
+                entity.HasOne(ia => ia.User)
+                      .WithMany(u => u.AssigmentHistorys)
+                      .HasForeignKey(ia => ia.UserId)
+                      .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.Property(p => p.Status)
+                      .HasDefaultValue("Depoda"); 
+            });
 
             // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(

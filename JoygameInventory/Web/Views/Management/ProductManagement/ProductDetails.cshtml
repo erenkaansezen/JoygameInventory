@@ -104,9 +104,35 @@
             {
                 <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
             }
-        </section>
+        </section>        
+        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModal">
+            Geçmiş Atamaların Tamamını Görüntüle
+        </button>
+        
 
+        <!-- Modal (Önceki Atamalar) -->
+        <div class="modal fade" id="previousAssignmentsModal" tabindex="-1" aria-labelledby="previousAssignmentsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previousAssignmentsModalLabel">Atama Geçmişi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
 
+                            <ul class="list-group">
+                                @foreach (var item in Model.AssigmentHistorys)
+                                {
+                                    <li class="list-group-item">
+                                        <strong>@item.User.Name @item.User.Surname</strong><br />
+                                        <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
+                                    </li>
+                                }
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Kaydet Butonu -->
         <div class="row">
             <div class="col-md-12">

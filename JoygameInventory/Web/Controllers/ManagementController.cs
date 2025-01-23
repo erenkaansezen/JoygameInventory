@@ -78,6 +78,7 @@ namespace JoygameInventory.Web.Controllers
             {
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
+                var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
                 var joystaff = await _staffmanager.GetAllStaffsAsync();
                 var model = new ProductEditViewModel
                 {
@@ -89,9 +90,11 @@ namespace JoygameInventory.Web.Controllers
                     ProductAddDate = staff.ProductAddDate,
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
-                    JoyStaffs = joystaff
-                    
-                    
+                    JoyStaffs = joystaff,
+                    AssigmentHistorys = assignmentHistorys
+
+
+
                 };
 
                 return View("ProductManagement/ProductDetails", model);
@@ -133,28 +136,53 @@ namespace JoygameInventory.Web.Controllers
                             model.PreviousUserSurname = previousUser.Surname;
                         }
 
-                        // Eğer mevcut atama varsa ve kullanıcı değişmişse
+                        // Mevcut atama varsa ve kullanıcı değişmişse
                         if (currentAssignment.UserId != model.SelectedUserId)
                         {
-                            // Eski kullanıcının ID'sini PreviusAssigmentUser'a kaydediyoruz
-                            currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
+                            // Önceki kullanıcıyı AssignmentHistory tablosuna kaydediyoruz
+                            var assignmentHistory = new AssigmentHistory
+                            {
+                                ProductId = currentAssignment.ProductId,
+                                UserId = currentAssignment.UserId,  // Eski kullanıcı ID'si
+                                AssignmentDate = DateTime.Now
+                            };
+                            await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  // AssignmentHistory kaydını ekliyoruz
+
+                            currentAssignment.PreviusAssigmenId = currentAssignment.UserId;  // Yeni kullanıcıyı PreviusAssigmenId'ye kaydediyoruz
 
                             // Yeni kullanıcıyı atıyoruz
-                            currentAssignment.UserId = model.SelectedUserId;
+                            currentAssignment.UserId = model.SelectedUserId.Value;
 
                             // Atama tarihini güncelliyoruz
                             currentAssignment.AssignmentDate = DateTime.Now;
 
-                            // Eski atama kaydını güncelliyoruz
-                            await _assigmentservice.UpdateProductAsync(currentAssignment);  // Var olan atama kaydını güncelliyoruz
+                            // Atama kaydını güncelliyoruz
+                            await _assigmentservice.UpdateAssigmentAsync(currentAssignment);  // Atamayı güncelliyoruz
                         }
                         else
                         {
+                            // Kullanıcı değişmemişse, sadece ürünü güncelliyoruz
                             await _productservice.UpdateProductAsync(products);
-
-                            return RedirectToAction("ProductDetails", new { id = model.Id });
                         }
+
+                        return RedirectToAction("ProductDetails", new { id = model.Id });
                     }
+                }
+                else if (model.SelectedUserId != 0) // Atama kaydı yok ve kullanıcı seçildiyse
+                {
+                    // Yeni bir atama kaydı oluşturuyoruz
+                    var newAssignment = new InventoryAssigment
+                    {
+                        ProductId = products.Id,
+                        UserId = model.SelectedUserId.HasValue ? model.SelectedUserId.Value : throw new ArgumentException("Kullanıcı seçilmelidir."),  // Seçilen kullanıcı
+                        AssignmentDate = DateTime.Now,
+                        PreviusAssigmenId = 0
+                    };
+
+                    // Yeni atamayı kaydediyoruz
+                    await _assigmentservice.AddAssignmentAsync(newAssignment);
+
+                    return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
 
                 // Ürün bilgilerini güncelliyoruz
@@ -165,6 +193,7 @@ namespace JoygameInventory.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ProductDelete(int id)
