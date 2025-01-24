@@ -83,7 +83,7 @@ namespace JoygameInventory.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     SerialNumber = table.Column<string>(type: "TEXT", nullable: false),
                     ProductAddDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false, defaultValue: "Depoda")
+                    Status = table.Column<string>(type: "TEXT", nullable: true, defaultValue: "Depoda")
                 },
                 constraints: table =>
                 {
@@ -204,7 +204,7 @@ namespace JoygameInventory.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PreviusAssigmenId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PreviusAssigmenId = table.Column<int>(type: "INTEGER", nullable: true),
                     AssignmentDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -215,13 +215,13 @@ namespace JoygameInventory.Migrations
                         column: x => x.PreviusAssigmenId,
                         principalTable: "JoyStaffs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InventoryAssigments_JoyStaffs_UserId",
                         column: x => x.UserId,
                         principalTable: "JoyStaffs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InventoryAssigments_Products_ProductId",
                         column: x => x.ProductId,
@@ -277,9 +277,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "9be88082-3678-4e7b-ba94-3460ba13e514", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "f30cd6d0-0e15-4e59-a590-702d5d456402", false, "eren_sezen" },
-                    { "2", 0, "84b07e39-3aa5-434d-aceb-b3bf8e03ef47", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "a3e85005-adf3-452c-938e-9cd32210fd70", false, "osman_benlice" },
-                    { "3", 0, "36910cfd-048c-401f-9127-49453d530b8e", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "8ebd3443-71c1-415e-90ba-d5c5224f45b6", false, "onur.unlu" }
+                    { "1", 0, "573d39f0-7a2c-4f9e-ab68-f112744761f8", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "6b881d67-b790-45b0-8c7b-348f4b5ae815", false, "eren_sezen" },
+                    { "2", 0, "dfc92515-5f46-4e4d-bd47-fc4940876323", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "457ff0eb-05f5-4c18-a5ea-94c1d5de8f4d", false, "osman_benlice" },
+                    { "3", 0, "2e6a89a9-0521-4d2f-9e89-924ae9fec626", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "37666f93-5071-4008-9a4b-4a0b64aab02a", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -347,15 +347,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4565), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4569), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4570), 3, 5, 1 },
-                    { 4, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4571), 3, 6, 2 },
-                    { 5, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4572), 3, 3, 3 },
-                    { 6, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4574), 3, 4, 4 },
-                    { 7, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4575), 3, 7, 5 },
-                    { 8, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4576), 3, 8, 6 },
-                    { 9, new DateTime(2025, 1, 23, 21, 33, 24, 119, DateTimeKind.Utc).AddTicks(4577), 3, 9, 6 }
+                    { 1, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4577), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4582), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4583), 3, 5, 1 },
+                    { 4, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4584), 3, 6, 2 },
+                    { 5, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4585), 3, 3, 3 },
+                    { 6, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4586), 3, 4, 4 },
+                    { 7, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4587), 3, 7, 5 },
+                    { 8, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4588), 3, 8, 6 },
+                    { 9, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4590), 3, 9, 6 }
                 });
 
             migrationBuilder.CreateIndex(

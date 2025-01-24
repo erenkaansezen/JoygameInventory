@@ -39,13 +39,13 @@ namespace JoygameInventory.Data.Context
                 entity.HasOne(ia => ia.User)
                       .WithMany(u => u.InventoryAssigments) 
                       .HasForeignKey(ia => ia.UserId)
-                      .OnDelete(DeleteBehavior.SetNull); 
+                      .OnDelete(DeleteBehavior.Cascade); 
 
      
                 entity.HasOne(ia => ia.PreviusAssigmentUserNavigation)  
                       .WithMany() 
                       .HasForeignKey(ia => ia.PreviusAssigmenId)
-                      .OnDelete(DeleteBehavior.SetNull); 
+                      .OnDelete(DeleteBehavior.Cascade); 
             });
             modelBuilder.Entity<AssigmentHistory>(entity =>
             {

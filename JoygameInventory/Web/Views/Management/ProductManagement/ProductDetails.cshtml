@@ -52,7 +52,7 @@
                         <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <strong>@item.User.Name @item.User?.Surname</strong><br />
-                                <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
+                                <span class="text-muted">@item.AssignmentDate.ToString("dd-MM-yyyy")</span>
                             </div>
                         </div>
                     }
@@ -92,22 +92,32 @@
                     {
                         <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
                             <div>
-                                <strong>@item.PreviusAssigmentUserNavigation.Name @item.PreviusAssigmentUserNavigation.Surname</strong><br />
-                                <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
+                                @if (item.PreviusAssigmentUserNavigation != null)
+                                {
+                                    <strong>@item.PreviusAssigmentUserNavigation.Name @item.PreviusAssigmentUserNavigation.Surname</strong>
+
+                                    <br />
+                                    <span class="text-muted">@item.AssignmentDate.ToString("dd-MM-yyyy")</span>
+
+                                    <br />
+                                }
+                                else
+                                {
+                                    <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
+                                }
+
                             </div>
                         </div>
                     }
                 </div>
+            }
 
-            }
-            else
-            {
-                <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
-            }
+
         </section>        
         <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModal">
             Geçmiş Atamaların Tamamını Görüntüle
         </button>
+        <br />
         
 
         <!-- Modal (Önceki Atamalar) -->
@@ -115,7 +125,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="previousAssignmentsModalLabel">Atama Geçmişi</h5>
+                        <h5 class="modal-title" id="previousAssignmentsModalLabel">@Model.ProductBarkod Atama Geçmişi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -133,6 +143,7 @@
                 </div>
             </div>
         </div>
+        <br />
         <!-- Kaydet Butonu -->
         <div class="row">
             <div class="col-md-12">

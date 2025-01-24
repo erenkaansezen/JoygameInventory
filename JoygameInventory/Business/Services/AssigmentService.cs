@@ -95,7 +95,15 @@ namespace JoygameInventory.Business.Services
             
 
         }
-
+        public async Task DeleteAssignmentAsync(int id)
+        {
+            var deleteAssigment = await _context.InventoryAssigments.FindAsync(id);
+            if (deleteAssigment != null)
+            {
+                _context.InventoryAssigments.Remove(deleteAssigment);
+                await _context.SaveChangesAsync();
+            }
+        }
 
         //History Service 
 
