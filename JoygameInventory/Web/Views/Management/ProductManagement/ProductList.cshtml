@@ -60,7 +60,6 @@
                         <th>Açıklama</th>
                         <th>Seri Numarası</th>
                         <th>Teslim Durumu</th>
-                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,13 +75,13 @@
 
                             <td>
                                 <a asp-controller="Management" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
-
+                           </td>
+                           <td>
                                 <form asp-controller="Management" asp-action="ProductDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@product.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Envanteri Sil</button>
                                 </form>
-
-                            </td>
+                           </td>
                         </tr>
                     }
                 </tbody>
