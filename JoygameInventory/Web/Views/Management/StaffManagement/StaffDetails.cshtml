@@ -30,7 +30,9 @@
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
     </div>
-
+    <button class="btn btn-dark">Kaydet</button>
+</form>
+<br />
     <!-- Zimmetli Envanterler -->
     <div class="card">
         <div class="card-header">
@@ -86,10 +88,11 @@
                                 </td>
                                 <td>
                                     <form asp-controller="Management" asp-action="AssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
-                                        <input type="hidden" name="userId" value="@item.UserId" /> <!-- Kullanıcı ID'si -->
-                                        <input type="hidden" name="inventoryAssigmentId" value="@item.Id" /> <!-- Zimmetli Envanter ID'si -->
-                                        <button type="submit" class="btn btn-danger btn-sm">Sil</button> <!-- Silme Butonu -->
+                                        <input type="hidden" name="userId" value="@item.UserId" />
+                                        <input type="hidden" name="inventoryAssigmentId" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                                     </form>
+
 
 
                                 </td>
@@ -108,5 +111,4 @@
         </div>
     </div>
     <br />
-    <button class="btn btn-dark">Kaydet</button>
-</form>
+

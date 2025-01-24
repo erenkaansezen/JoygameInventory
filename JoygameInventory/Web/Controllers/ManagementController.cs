@@ -1,5 +1,4 @@
-﻿using Iyzipay.Model.V2.Subscription;
-using JoygameInventory.Business.Services;
+﻿using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
