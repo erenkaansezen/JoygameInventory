@@ -5,10 +5,16 @@ using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace JoygameInventory.Web.Controllers
 {
+    //User Yönetimi olarak aratınca panel kullanıcılarının controller'ı
+    //Envanter Yönetimi olarak aratınca Envanter Controller'ı
+    //Staff Yönetimi olarak aratınca Şirket Personellerinin Controller'ı
+
+
+
+
     public class ManagementController : Controller
     {
         public InventoryContext _context;
@@ -29,14 +35,24 @@ namespace JoygameInventory.Web.Controllers
 
 
         //User Yönetimi
-        public async Task<IActionResult> UserList()
+        [HttpGet]
+        public async Task<IActionResult> UserList(string searchTerm)
         {
-            var user = _usermanager.Users.ToList(); // kullanıcıların listesini UserManager üzerinden çekiyoruz.
-            return View("UserManagement/UserList", user);
+            var joypanelStaffs = await _staffmanager.SearchPanelStaff(searchTerm);
+
+            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                joypanelStaffs = _usermanager.Users.ToList();
+            }
+
+            // Arama terimi ViewBag içinde gönderiliyor
+            ViewBag.SearchTerm = searchTerm;
+            return View("UserManagement/UserList", joypanelStaffs);
         }
         public async Task<IActionResult> UserDetails(string id)
         {
-            var user = await _usermanager.FindByIdAsync(id);  
+            var user = await _usermanager.FindByIdAsync(id);
             if (user != null)
             {
                 ViewBag.Roles = await _rolemanager.Roles.Select(x => x.Name).ToListAsync();
@@ -44,9 +60,9 @@ namespace JoygameInventory.Web.Controllers
                 var model = new UserEditViewModel
                 {
                     Id = user.Id,
-                    FullName = user.FirstName,
+                    UserName = user.UserName,
                     Email = user.Email,
-                    SelectedRoles = await _usermanager.GetRolesAsync(user), 
+                    PhoneNumber = user.PhoneNumber
 
                 };
 
@@ -58,6 +74,129 @@ namespace JoygameInventory.Web.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+        [HttpPost]
+        public async Task<IActionResult> UserDetails(UserEditViewModel model)
+        {
+
+
+            var user = await _usermanager.FindByIdAsync(model.Id);
+            if (user != null)
+            {
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+
+                // Şifreyi yalnızca boş değilse değiştirelim
+                if (!string.IsNullOrEmpty(model.Password))
+                {
+                    // Şifre ve şifre onayı eşleşiyor mu kontrol et
+                    if (model.Password != model.ConfirmPassword)
+                    {
+                        ModelState.AddModelError("ConfirmPassword", "Parolalar eşleşmiyor.");
+                        return View("UserManagement/UserDetails", model); // Eşleşmiyorsa hatayı döndürüyoruz
+                    }
+
+                    // Şifreyi değiştirme
+                    await _usermanager.RemovePasswordAsync(user);
+                    var addPasswordResult = await _usermanager.AddPasswordAsync(user, model.Password);
+
+                    // Şifre eklerken bir hata olursa
+                    if (!addPasswordResult.Succeeded)
+                    {
+                        foreach (var error in addPasswordResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View("UserManagement/UserDetails", model);
+                    }
+                }
+
+                var result = await _usermanager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
+                    return RedirectToAction("UserDetails", new { id = user.Id });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                        if (!ModelState.IsValid)
+                        {
+                            return View("UserManagement/UserDetails", model); // Hatalı form gönderildiğinde formu tekrar göster
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> UserRegister()
+        {
+            return View("UserManagement/UserRegister");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserRegister(UserEditViewModel model)
+        {
+
+
+            var user = new JoyUser
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            // Kullanıcıyı oluşturuyoruz
+            // Şifreyi yalnızca boş değilse ekleyelim
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                var result = await _usermanager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
+                    return RedirectToAction("UserDetails", new { id = user.Id });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    // Eğer model geçerli değilse, hata mesajları görünür olacak şekilde formu tekrar göster.
+                    return View("UserManagement/UserRegister", model);
+                }
+                // Şifre boşsa bir hata mesajı ekleyebiliriz
+                ModelState.AddModelError("Password", "Parola gereklidir.");
+            }
+
+            return View("UserRegister", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserDelete(string id)
+        {
+            var user = await _usermanager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await _usermanager.DeleteAsync(user);
+            }
+            return RedirectToAction("UserList", "Management");
+        }
+
+
+
 
 
 
@@ -202,23 +341,37 @@ namespace JoygameInventory.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-       
+
         [HttpPost]
         public async Task<IActionResult> AssigmentDelete(int userId, int inventoryAssigmentId)
         {
             // Kullanıcıyı veritabanından alıyoruz
             var staff = await _staffmanager.GetStaffByIdAsync(userId);
+            var assigment = await _assigmentservice.GetAssignmentByIdAsync(inventoryAssigmentId);
+
+            if (assigment != null)
+            {
+
+                // AssigmentHistory kaydını oluşturuyoruz
+                var assignmentHistory = new AssigmentHistory
+                {
+
+                    ProductId = assigment.ProductId,
+                    UserId = userId,
+                    AssignmentDate = DateTime.Now,
 
 
+                };
+                await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  // AssignmentHistory kaydını ekliyoruz
+            }
 
-            // Zimmet kaydını siliyoruz
             await _assigmentservice.DeleteAssignmentAsync(inventoryAssigmentId);
 
             // Silme işlemi başarılı, kullanıcı detaylarına yönlendirelim
             return RedirectToAction("StaffDetails", new { id = userId });
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> ProductDelete(int id)
         {
             await _productservice.DeleteProductAsync(id);
@@ -301,6 +454,43 @@ namespace JoygameInventory.Web.Controllers
 
             }
             return RedirectToAction("Index", "Home");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> StaffDetails(StaffEditViewModel model)
+        {
+            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id);
+
+            if (staffs != null)
+            {
+                var staff = new StaffEditViewModel
+                {
+                    Name = staffs.Name,
+                    Surname = staffs.Surname,
+                    Email = staffs.Email,
+                    PhoneNumber = staffs.PhoneNumber,
+                };
+
+
+                try
+                {
+                    await _staffmanager.UpdateStaffAsync(staffs); // Eğer update başarılıysa buraya gelir
+
+                    TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
+                    return RedirectToAction("StaffList", new { id = model.Id });
+                }
+                catch (Exception ex) // Eğer hata fırlatılırsa buraya gelir
+                {
+                    ModelState.AddModelError(string.Empty, $"Hata oluştu: {ex.Message}");
+                    return View("UserManagement/StaffCreate", model); // Hata mesajıyla formu yeniden gösterir
+                }
+
+
+            }
+            return View("StaffManagement/StaffCreate");
+
+
+
 
         }
 

@@ -4,11 +4,11 @@
 }
 
 <div class="container my-5">
-       <h2 class="my-4 text-center">
-            <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
-            | Envanter Detayı
-        </h2>        
-        <hr />
+    <h2 class="my-4 text-center">
+        <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
+        | Envanter Detayı
+    </h2>        
+    <hr />
 
     <form asp-action="ProductDetails" method="post">
         <input name="Id" type="hidden" value="@Model.Id" />
@@ -44,41 +44,57 @@
         <!-- Mevcut Atamalar -->
         <section class="mb-5">
             <h4 class="section-title">Mevcut Atama</h4>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+            <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
 
-            @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
-            {
-                <div class="list-group">
-                    @foreach (var item in Model.InventoryAssigments)
-                    {
+                @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var item in Model.InventoryAssigments)
+                        {
                             <div>
                                 <strong>@item.User.Name @item.User?.Surname</strong><br />
                                 <span class="text-muted">@item.AssignmentDate.ToString("dd-MM-yyyy")</span>
                             </div>
-                    }
-                </div>
+                        }
+                    </div>
 
-            }
-            else
-            {
-                <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
-            }
+                }
+                else
+                {
+                    <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
+                }
             </div>
             <!-- Dropdown ile Personel Seçimi -->
             <div class="mb-3">
                 <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
                 <select name="SelectedUserId" class="form-control">
-                    @foreach (var item in Model.InventoryAssigments)
+
+                    @if(Model.InventoryAssigments != null) 
                     {
-                        <option value="@item.UserId">Yeni Atama Seçiniz ↓ </option>
+                        <option value="">Yeni Atama Seçiniz ↓ </option>
+                        @foreach (var assignment in Model.JoyStaffs)
+                        {
+                            <option value="@assignment?.Id">
+                                @assignment?.Name @assignment?.Surname
+                            </option>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.InventoryAssigments)
+                        {
+                            <option value="@item.UserId">Yeni Atama Seçiniz ↓ </option>
+                            @foreach (var assignment in Model.JoyStaffs)
+                            {
+                                <option value="@assignment?.Id">
+                                    @assignment?.Name @assignment?.Surname
+                                </option>
+                            }
+                        }
                     }
 
-                    @foreach (var assignment in Model.JoyStaffs)
-                    {
-                        <option value="@assignment?.Id">
-                            @assignment?.Name @assignment?.Surname
-                        </option>
-                    }
+
+
                 </select>
             </div>
         </section>
@@ -86,40 +102,35 @@
         <!-- Önceki Sahipler -->
         <section class="mb-5">
             <h4 class="section-title">Önceki Atama</h4>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+            <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                @if (Model.AssigmentHistorys != null && Model.AssigmentHistorys.Any())
+                {
+                    // En güncel atama kaydını alıyoruz
+                    var LastPreviousAssigned = Model.AssigmentHistorys.OrderByDescending(item => item.AssignmentDate).FirstOrDefault();
 
-            @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
-            {
-                <div class="list-group">
-                    @foreach (var item in Model.InventoryAssigments)
-                    {
-                            <div>
-                                @if (item.PreviusAssigmentUserNavigation != null)
-                                {
-                                    <strong>@item.PreviusAssigmentUserNavigation.Name @item.PreviusAssigmentUserNavigation.Surname</strong>
+                    <div class="list-group">
+                        <div>
+                            @if (LastPreviousAssigned?.UserId != null)
+                            {
+                                <strong>@LastPreviousAssigned.User.Name @LastPreviousAssigned.User.Surname</strong>
+                                <br />
+                                <span class="text-muted">@LastPreviousAssigned.AssignmentDate.ToString("dd-MM-yyyy")</span>
+                            }
+                            else
+                            {
+                                <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
+                }
+            </div>
+        </section>
 
-                                    <br />
-                                    <span class="text-muted">@item.AssignmentDate.ToString("dd-MM-yyyy")</span>
 
-                                    <br />
-                                }
-                                else
-                                {
-                                    <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
-                                }
-
-                            </div>
-                        
-                    }
-                </div>
-            }
-                                            else
-                                {
-                                    <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
-                                }
-</div>
-
-        </section>        
         <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModal">
             Geçmiş Atamaların Tamamını Görüntüle
         </button>

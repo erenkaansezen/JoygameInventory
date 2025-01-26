@@ -38,6 +38,15 @@ namespace JoygameInventory.Business.Services
             return inventoryAssignments;
         }
 
+        public async Task<InventoryAssigment> GetAssignmentByIdAsync(int inventoryAssigmentId)
+        {
+            var inventoryAssignments = await _context.InventoryAssigments
+                .Where(a => a.Id == inventoryAssigmentId)
+                .FirstOrDefaultAsync();
+            return inventoryAssignments;
+        }
+
+
         // Ürüne ait geçmişteki tüm atamaları alıyoruz
         public async Task<List<InventoryAssigment>> GetPreviousAssignmentsAsync(int productId)
         {

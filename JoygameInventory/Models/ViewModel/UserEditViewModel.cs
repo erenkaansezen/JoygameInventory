@@ -5,25 +5,34 @@ namespace JoygameInventory.Models.ViewModel
 {
     public class UserEditViewModel
     {
-        public string? Id { get; set; }
 
-        [Display(Name = "Kullanıcı Adı")]
-        public string? FullName { get; set; }
+            public string Id { get; set; }
 
-        [EmailAddress]
-        [Display(Name = "Email Adresi")]
-        public string? Email { get; set; } = string.Empty;
+            [Display(Name = "Kullanıcı adı")]
+            [Required(ErrorMessage = "Kullanıcı adı gereklidir.")]
+            public string UserName { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Kullanıcı Şifresi")]
-        public string? Password { get; set; } = string.Empty;
+            [Display(Name = "Kullanıcı Email")]
+            [Required(ErrorMessage = "Email gereklidir.")]
+            [EmailAddress(ErrorMessage = "Geçersiz email adresi.")]
+            public string Email { get; set; }
 
-        [DataType(DataType.Password)] // Data tipi belirtilir
-        [Compare(nameof(Password), ErrorMessage = "Parola Eşleşmiyor")] // Hata mesajı çıkarır
-        [Display(Name = "Şifrenizi Doğrulayınız")]
-        public string? ConfirmPassword { get; set; } = string.Empty;
+            [Display(Name = "Kullanıcı Telefon Numarası")]
+            [Compare("Password", ErrorMessage = "Telefon Numarası giriniz.")]
+            public string PhoneNumber { get; set; }
 
-        public IList<string>? SelectedRoles { get; set; }
+
+            [Display(Name = "Kullanıcı Şifresi")]
+            [DataType(DataType.Password)]
+            [Compare("Password", ErrorMessage = "Parola giriniz.")]
+
+            public string Password { get; set; }
+
+            [Display(Name = "Şifreyi Doğrulayın")]
+            [DataType(DataType.Password)]
+            [Compare("Password", ErrorMessage = "Parolalar eşleşmiyor.")]
+            public string ConfirmPassword { get; set; }
+        
 
 
     }

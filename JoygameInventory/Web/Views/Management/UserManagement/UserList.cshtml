@@ -46,12 +46,10 @@
     <hr />
     <div class="row">
         <div class="col-md-6">
-            <button class="btn btn-outline-success btn-custom ms-2 w-100">
-                <i class="fas fa-edit"></i> Kullanıcı Ekle
-            </button>
+            <a asp-controller="Management" asp-action="UserRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
         </div>
         <div class="col-md-6">
-            <form asp-action="StorePage">
+            <form asp-action="UserList" method="get">
                 <div class="input-group mb-3">
                     <input type="text" name="searchTerm" class="form-control" placeholder="Kullanıcı ismi ile ara" />
                     <button class="btn btn-outline-secondary" type="submit">Ara</button>
@@ -64,24 +62,20 @@
                     <tr>
                         <th>Ad</th>
                         <th>Email</th>
-                        <th>Rol</th>
-                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var users in Model)
                     {
                         <tr>
-                            <td>@users.FirstName @users.LastName</td>
+                            <td>@users.UserName</td>
                             <td>@users.Email</td>
-                            <td>Admin</td>
                             <td>
-                                <a asp-controller="Management" asp-action="UserDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">
-                                    <i class="fas fa-eye"></i> Görüntüle
-                                </a>
-                                <button class="btn btn-delete btn-custom ms-2">
-                                    <i class="fas fa-trash-alt"></i> Sil
-                                </button>
+                                <a asp-controller="Management" asp-action="UserDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Görüntüle & Düzenle</a>
+                                <form asp-controller="Management" asp-action="UserDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                    <input type="hidden" value="@users.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
+                                </form>
                             </td>
                         </tr>
                     }
