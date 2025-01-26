@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
@@ -29,10 +30,12 @@ namespace JoygameInventory.Business.Services
             return await _context.JoyStaffs.FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task UpdateStaffAsync(JoyStaff staff)
+        public async Task<bool> UpdateStaffAsync(JoyStaff staff)
         {
             _context.JoyStaffs.Update(staff);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return result > 0; // Eğer etkilenen satır sayısı 0'dan büyükse işlem başarılı
+
         }
         public async Task<IEnumerable<JoyStaff>> SearchStaff(string searchTerm)
         {

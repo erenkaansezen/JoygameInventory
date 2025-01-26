@@ -470,12 +470,23 @@ namespace JoygameInventory.Web.Controllers
                 staffs.Email = model.Email;
                 staffs.PhoneNumber = model.PhoneNumber;
 
-                await _staffmanager.UpdateStaffAsync(staffs); // Eğer update başarılıysa buraya gelir
-                return RedirectToAction("StaffList");
+                bool updateSuccess = await _staffmanager.UpdateStaffAsync(staffs);
 
-
+                if (updateSuccess)
+                {
+                    TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
+                    return RedirectToAction("StaffList");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Güncelleme işlemi başarısız.");
+                    return View("StaffManagement/StaffDetails", model);
+                }
             }
             return View("StaffManagement/StaffCreate");
+
+        }
+
 
 
 
@@ -486,4 +497,4 @@ namespace JoygameInventory.Web.Controllers
 
 
     }
-}
+
