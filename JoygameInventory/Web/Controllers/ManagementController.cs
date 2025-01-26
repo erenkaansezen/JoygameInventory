@@ -429,6 +429,7 @@ namespace JoygameInventory.Web.Controllers
             return View("StaffManagement/StaffList", joyStaffs);
         }
 
+        [HttpGet]   
         public async Task<IActionResult> StaffDetails(int id)
         {
             var staff = await _staffmanager.GetStaffByIdAsync(id);
@@ -463,27 +464,14 @@ namespace JoygameInventory.Web.Controllers
 
             if (staffs != null)
             {
-                var staff = new StaffEditViewModel
-                {
-                    Name = staffs.Name,
-                    Surname = staffs.Surname,
-                    Email = staffs.Email,
-                    PhoneNumber = staffs.PhoneNumber,
-                };
 
+                staffs.Name = model.Name;
+                staffs.Surname = model.Surname;
+                staffs.Email = model.Email;
+                staffs.PhoneNumber = model.PhoneNumber;
 
-                try
-                {
-                    await _staffmanager.UpdateStaffAsync(staffs); // Eğer update başarılıysa buraya gelir
-
-                    TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
-                    return RedirectToAction("StaffList", new { id = model.Id });
-                }
-                catch (Exception ex) // Eğer hata fırlatılırsa buraya gelir
-                {
-                    ModelState.AddModelError(string.Empty, $"Hata oluştu: {ex.Message}");
-                    return View("UserManagement/StaffCreate", model); // Hata mesajıyla formu yeniden gösterir
-                }
+                await _staffmanager.UpdateStaffAsync(staffs); // Eğer update başarılıysa buraya gelir
+                return RedirectToAction("StaffList");
 
 
             }
