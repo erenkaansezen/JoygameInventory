@@ -44,17 +44,17 @@
         <!-- Mevcut Atamalar -->
         <section class="mb-5">
             <h4 class="section-title">Mevcut Atama</h4>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+
             @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
             {
                 <div class="list-group">
                     @foreach (var item in Model.InventoryAssigments)
                     {
-                        <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <strong>@item.User.Name @item.User?.Surname</strong><br />
                                 <span class="text-muted">@item.AssignmentDate.ToString("dd-MM-yyyy")</span>
                             </div>
-                        </div>
                     }
                 </div>
 
@@ -63,6 +63,7 @@
             {
                 <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
             }
+            </div>
             <!-- Dropdown ile Personel Seçimi -->
             <div class="mb-3">
                 <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
@@ -85,12 +86,13 @@
         <!-- Önceki Sahipler -->
         <section class="mb-5">
             <h4 class="section-title">Önceki Atama</h4>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
+
             @if (Model.InventoryAssigments != null && Model.InventoryAssigments.Any())
             {
                 <div class="list-group">
                     @foreach (var item in Model.InventoryAssigments)
                     {
-                        <div class="list-group-item d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 @if (item.PreviusAssigmentUserNavigation != null)
                                 {
@@ -103,15 +105,19 @@
                                 }
                                 else
                                 {
-                                    <p>Bu ürün için zimmetli personel bulunmamaktadır.</p>
+                                    <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
                                 }
 
                             </div>
-                        </div>
+                        
                     }
                 </div>
             }
-
+                                            else
+                                {
+                                    <p>Bu ürün için önceden atanan personel bulunmamaktadır.</p>
+                                }
+</div>
 
         </section>        
         <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModal">
@@ -169,7 +175,7 @@
     }
 
     .list-group-item {
-        background-color: #f9f9f9;
+        background-color: whitesmoke;
         border: 1px solid #ddd;
         padding: 15px;
     }
