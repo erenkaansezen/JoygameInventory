@@ -8,7 +8,19 @@
 <br />
 <p> "@Model.Name @Model.Surname"  Personelinin Detayları </p>
 <hr />
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <form asp-action="StaffDetails" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <input name="Id" type="hidden" value="@Model.Id" />

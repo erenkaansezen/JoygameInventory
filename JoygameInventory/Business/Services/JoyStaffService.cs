@@ -32,7 +32,7 @@ namespace JoygameInventory.Business.Services
 
         public async Task<bool> CreateStaff(JoyStaff staff)
         {
-            await _context.JoyStaffs.Add(staff);
+             _context.JoyStaffs.Add(staff);
             var result = await _context.SaveChangesAsync();
 
             return result > 0;
@@ -42,8 +42,12 @@ namespace JoygameInventory.Business.Services
         {
             _context.JoyStaffs.Update(staff);
             var result = await _context.SaveChangesAsync();
-            return result > 0; // Eğer etkilenen satır sayısı 0'dan büyükse işlem başarılı
+            return result > 0; 
 
+        }
+        public async Task<bool> IsEmailUnique(string email)
+        {
+            return !await _context.JoyStaffs.AnyAsync(s => s.Email == email);
         }
         public async Task<IEnumerable<JoyStaff>> SearchStaff(string searchTerm)
         {

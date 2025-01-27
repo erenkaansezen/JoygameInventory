@@ -69,6 +69,13 @@ namespace JoygameInventory.Data.Context
                 entity.Property(p => p.Status)
                       .HasDefaultValue("Depoda"); 
             });
+            modelBuilder.Entity<JoyStaff>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+                entity.HasIndex(s => s.Email)
+                      .IsUnique()
+                      .HasDatabaseName("IX_Staff_Email");
+            });
 
             // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(
@@ -107,16 +114,16 @@ namespace JoygameInventory.Data.Context
             );
             // Add Users (Kullanıcılar) - IdentityUser örneği olarak string Id kullanıyoruz.
             modelBuilder.Entity<JoyStaff>().HasData(
-        new JoyStaff { Id = 1, UserName = "eren_sezen", Email = "eren.sezen@joygame.com", Name = "Eren", Surname = "Sezen", PhoneNumber = "555-0101" },
-        new JoyStaff { Id = 2, UserName = "osman_benlice", Email = "osman.benlice@joygame.com", Name = "Osman", Surname = "Benlice", PhoneNumber = "555-0102" },
-        new JoyStaff { Id = 3, UserName = "onur_unlu", Email = "onur.unlu@joygame.com", Name = "Onur", Surname = "Ünlü", PhoneNumber = "555-0103" },
-        new JoyStaff { Id = 4, UserName = "ali_karatas", Email = "ali.karatas@joygame.com", Name = "Ali", Surname = "Karataş", PhoneNumber = "555-0104" },
-        new JoyStaff { Id = 5, UserName = "ayse_duran", Email = "ayse.duran@joygame.com", Name = "Ayşe", Surname = "Duran", PhoneNumber = "555-0105" },
-        new JoyStaff { Id = 6, UserName = "fatma_ozdemir", Email = "fatma.ozdemir@joygame.com", Name = "Fatma", Surname = "Özdemir", PhoneNumber = "555-0106" },
-        new JoyStaff { Id = 7, UserName = "mehmet_bayar", Email = "mehmet.bayar@joygame.com", Name = "Mehmet", Surname = "Bayar", PhoneNumber = "555-0107" },
-        new JoyStaff { Id = 8, UserName = "hasan_sahin", Email = "hasan.sahin@joygame.com", Name = "Hasan", Surname = "Şahin", PhoneNumber = "555-0108" },
-        new JoyStaff { Id = 9, UserName = "zeynep_kucuk", Email = "zeynep.kucuk@joygame.com", Name = "Zeynep", Surname = "Küçük", PhoneNumber = "555-0109" },
-        new JoyStaff { Id = 10, UserName = "yusuf_bozkurt", Email = "yusuf.bozkurt@joygame.com", Name = "Yusuf", Surname = "Bozkurt", PhoneNumber = "555-0110" }
+            new JoyStaff { Id = 1, Email = "eren.sezen@joygame.com", Name = "Eren", Surname = "Sezen", PhoneNumber = "555-0101" },
+            new JoyStaff { Id = 2, Email = "osman.benlice@joygame.com", Name = "Osman", Surname = "Benlice", PhoneNumber = "555-0102" },
+            new JoyStaff { Id = 3, Email = "onur.unlu@joygame.com", Name = "Onur", Surname = "Ünlü", PhoneNumber = "555-0103" },
+            new JoyStaff { Id = 4, Email = "ali.karatas@joygame.com", Name = "Ali", Surname = "Karataş", PhoneNumber = "555-0104" },
+            new JoyStaff { Id = 5, Email = "ayse.duran@joygame.com", Name = "Ayşe", Surname = "Duran", PhoneNumber = "555-0105" },
+            new JoyStaff { Id = 6, Email = "fatma.ozdemir@joygame.com", Name = "Fatma", Surname = "Özdemir", PhoneNumber = "555-0106" },
+            new JoyStaff { Id = 7, Email = "mehmet.bayar@joygame.com", Name = "Mehmet", Surname = "Bayar", PhoneNumber = "555-0107" },
+            new JoyStaff { Id = 8, Email = "hasan.sahin@joygame.com", Name = "Hasan", Surname = "Şahin", PhoneNumber = "555-0108" },
+            new JoyStaff { Id = 9, Email = "zeynep.kucuk@joygame.com", Name = "Zeynep", Surname = "Küçük", PhoneNumber = "555-0109" },
+            new JoyStaff { Id = 10, Email = "yusuf.bozkurt@joygame.com", Name = "Yusuf", Surname = "Bozkurt", PhoneNumber = "555-0110" }
 
 
 

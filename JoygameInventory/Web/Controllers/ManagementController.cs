@@ -494,6 +494,17 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> StaffRegister(StaffEditViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("StaffManagement/StaffRegister", model);
+
+            }
+            if (!await _staffmanager.IsEmailUnique(model.Email))
+            {
+                ModelState.AddModelError("Email", "Bu Kullanıcı Kayıtlı.");
+                return View("StaffManagement/StaffRegister", model);
+            }
+
             var staff = new JoyStaff
             {
                 Name = model.Name,
@@ -503,18 +514,19 @@ namespace JoygameInventory.Web.Controllers
             };
             var result = await _staffmanager.CreateStaff(staff);
 
-            if (result.Succeeded)
+            if (result)
             {
                 TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
-                return RedirectToAction("UserDetails", new { id = model.Id });
+                return RedirectToAction("StaffDetails", new { id = staff.Id });
             }
             else
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulurken bir hata oluştu.");
+                return View("StaffManagement/StaffRegister", model);
+
+
             }
+
         }
 
 

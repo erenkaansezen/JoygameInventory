@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JoygameInventory.Migrations
 {
     /// <inheritdoc />
-    public partial class newmig01 : Migration
+    public partial class Newmig01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,9 +62,8 @@ namespace JoygameInventory.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                     Document = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -277,26 +276,26 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "573d39f0-7a2c-4f9e-ab68-f112744761f8", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "6b881d67-b790-45b0-8c7b-348f4b5ae815", false, "eren_sezen" },
-                    { "2", 0, "dfc92515-5f46-4e4d-bd47-fc4940876323", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "457ff0eb-05f5-4c18-a5ea-94c1d5de8f4d", false, "osman_benlice" },
-                    { "3", 0, "2e6a89a9-0521-4d2f-9e89-924ae9fec626", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "37666f93-5071-4008-9a4b-4a0b64aab02a", false, "onur.unlu" }
+                    { "1", 0, "6be09e2d-ce2c-4b80-9871-93cc03a83d56", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "e7efe5d3-aed6-4c34-8913-fc45fa206584", false, "eren_sezen" },
+                    { "2", 0, "985b6637-e797-4f67-8a80-73822cf653ed", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "0f961c54-d550-4047-93a3-9785f9552593", false, "osman_benlice" },
+                    { "3", 0, "b620f990-adc5-4cf6-b366-66e5b464c1b0", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "16c035eb-83b9-480c-829c-fea0fe9caa7b", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
                 table: "JoyStaffs",
-                columns: new[] { "Id", "Document", "Email", "Name", "PhoneNumber", "Surname", "UserName" },
+                columns: new[] { "Id", "Document", "Email", "Name", "PhoneNumber", "Surname" },
                 values: new object[,]
                 {
-                    { 1, null, "eren.sezen@joygame.com", "Eren", "555-0101", "Sezen", "eren_sezen" },
-                    { 2, null, "osman.benlice@joygame.com", "Osman", "555-0102", "Benlice", "osman_benlice" },
-                    { 3, null, "onur.unlu@joygame.com", "Onur", "555-0103", "Ünlü", "onur_unlu" },
-                    { 4, null, "ali.karatas@joygame.com", "Ali", "555-0104", "Karataş", "ali_karatas" },
-                    { 5, null, "ayse.duran@joygame.com", "Ayşe", "555-0105", "Duran", "ayse_duran" },
-                    { 6, null, "fatma.ozdemir@joygame.com", "Fatma", "555-0106", "Özdemir", "fatma_ozdemir" },
-                    { 7, null, "mehmet.bayar@joygame.com", "Mehmet", "555-0107", "Bayar", "mehmet_bayar" },
-                    { 8, null, "hasan.sahin@joygame.com", "Hasan", "555-0108", "Şahin", "hasan_sahin" },
-                    { 9, null, "zeynep.kucuk@joygame.com", "Zeynep", "555-0109", "Küçük", "zeynep_kucuk" },
-                    { 10, null, "yusuf.bozkurt@joygame.com", "Yusuf", "555-0110", "Bozkurt", "yusuf_bozkurt" }
+                    { 1, null, "eren.sezen@joygame.com", "Eren", "555-0101", "Sezen" },
+                    { 2, null, "osman.benlice@joygame.com", "Osman", "555-0102", "Benlice" },
+                    { 3, null, "onur.unlu@joygame.com", "Onur", "555-0103", "Ünlü" },
+                    { 4, null, "ali.karatas@joygame.com", "Ali", "555-0104", "Karataş" },
+                    { 5, null, "ayse.duran@joygame.com", "Ayşe", "555-0105", "Duran" },
+                    { 6, null, "fatma.ozdemir@joygame.com", "Fatma", "555-0106", "Özdemir" },
+                    { 7, null, "mehmet.bayar@joygame.com", "Mehmet", "555-0107", "Bayar" },
+                    { 8, null, "hasan.sahin@joygame.com", "Hasan", "555-0108", "Şahin" },
+                    { 9, null, "zeynep.kucuk@joygame.com", "Zeynep", "555-0109", "Küçük" },
+                    { 10, null, "yusuf.bozkurt@joygame.com", "Yusuf", "555-0110", "Bozkurt" }
                 });
 
             migrationBuilder.InsertData(
@@ -347,15 +346,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4577), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4582), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4583), 3, 5, 1 },
-                    { 4, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4584), 3, 6, 2 },
-                    { 5, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4585), 3, 3, 3 },
-                    { 6, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4586), 3, 4, 4 },
-                    { 7, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4587), 3, 7, 5 },
-                    { 8, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4588), 3, 8, 6 },
-                    { 9, new DateTime(2025, 1, 23, 23, 14, 14, 11, DateTimeKind.Utc).AddTicks(4590), 3, 9, 6 }
+                    { 1, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9115), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9119), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9120), 3, 5, 1 },
+                    { 4, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9122), 3, 6, 2 },
+                    { 5, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9123), 3, 3, 3 },
+                    { 6, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9124), 3, 4, 4 },
+                    { 7, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9125), 3, 7, 5 },
+                    { 8, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9126), 3, 8, 6 },
+                    { 9, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9127), 3, 9, 6 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -424,6 +423,12 @@ namespace JoygameInventory.Migrations
                 name: "IX_InventoryAssigments_UserId",
                 table: "InventoryAssigments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Staff_Email",
+                table: "JoyStaffs",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
