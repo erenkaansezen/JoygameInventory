@@ -528,7 +528,12 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
-
+        [HttpPost]
+        public async Task<IActionResult> StaffDelete(int id)
+        {
+            _staffmanager.DeleteStaffAsync(id);
+            return RedirectToAction("StaffList", "Management");
+        }
 
 
 

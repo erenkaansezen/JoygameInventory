@@ -45,6 +45,15 @@ namespace JoygameInventory.Business.Services
             return result > 0; 
 
         }
+        public async Task DeleteStaffAsync(int id)
+        {
+            var deleteStaff = await _context.JoyStaffs.FindAsync(id);
+            if (deleteStaff != null)
+            {
+                _context.JoyStaffs.Remove(deleteStaff);
+                await _context.SaveChangesAsync();
+            }
+        }
         public async Task<bool> IsEmailUnique(string email)
         {
             return !await _context.JoyStaffs.AnyAsync(s => s.Email == email);

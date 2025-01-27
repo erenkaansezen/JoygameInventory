@@ -76,9 +76,10 @@
                             <td>
                             <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
 
-                                <button class="btn btn-delete btn-custom ms-2">
-                                    <i class="fas fa-trash-alt"></i> Sil
-                                </button>
+                                <form asp-controller="Management" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                    <input type="hidden" value="@users.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
+                                </form>
                             </td>
                         </tr>
                     }
