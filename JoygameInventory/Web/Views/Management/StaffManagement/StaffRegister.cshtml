@@ -1,0 +1,37 @@
+﻿@model StaffEditViewModel
+@{
+    Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
+}
+
+<br />
+<h3> | Yeni Panel Kullanıcısı Ekle </h3>
+<hr />
+
+<form asp-action="StaffRegister" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <!-- Kullanıcı Adı ve Email -->
+    <div class="mb-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+
+
+
+
+
+    <br />
+    <button class="btn btn-dark">Kaydet</button>
+</form>

@@ -487,14 +487,43 @@ namespace JoygameInventory.Web.Controllers
 
         }
 
+        public async Task<IActionResult>StaffRegister()
+        {
+            return View("StaffManagement/StaffRegister");
+        }
+        [HttpPost]
+        public async Task<IActionResult> StaffRegister(StaffEditViewModel model)
+        {
+            var staff = new JoyStaff
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+            var result = await _staffmanager.CreateStaff(staff);
 
-
-
-
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
+                return RedirectToAction("UserDetails", new { id = model.Id });
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
         }
 
 
 
 
     }
+
+
+
+
+}
 

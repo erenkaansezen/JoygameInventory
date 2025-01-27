@@ -16,8 +16,8 @@ namespace JoygameInventory.Business.Services
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             var products = _context.Products
-                .Include(p => p.InventoryAssigments)  // InventoryAssigments ile birlikte yükle
-                .ThenInclude(ia => ia.User)  // InventoryAssigments'teki AssignedUser bilgisini de yükle
+                .Include(p => p.InventoryAssigments)  
+                .ThenInclude(ia => ia.User)  
                 .ToList();
             foreach (var product in products)
             {
@@ -27,7 +27,7 @@ namespace JoygameInventory.Business.Services
                 }
                 else
                 {
-                    product.Status = "Zimmetli";  // Eğer InventoryAssigments varsa, ürün zimmetli kabul edilir
+                    product.Status = "Zimmetli";  
                 }
             }
 

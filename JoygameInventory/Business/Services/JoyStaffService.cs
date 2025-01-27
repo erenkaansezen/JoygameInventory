@@ -30,6 +30,14 @@ namespace JoygameInventory.Business.Services
             return await _context.JoyStaffs.FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public async Task<bool> CreateStaff(JoyStaff staff)
+        {
+            await _context.JoyStaffs.Add(staff);
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
+        }
+
         public async Task<bool> UpdateStaffAsync(JoyStaff staff)
         {
             _context.JoyStaffs.Update(staff);
