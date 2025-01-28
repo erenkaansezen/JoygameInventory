@@ -55,6 +55,20 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JoyStaffs",
                 columns: table => new
                 {
@@ -230,6 +244,30 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.CategoryId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssigmentHistorys",
                 columns: table => new
                 {
@@ -276,9 +314,20 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "6be09e2d-ce2c-4b80-9871-93cc03a83d56", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "e7efe5d3-aed6-4c34-8913-fc45fa206584", false, "eren_sezen" },
-                    { "2", 0, "985b6637-e797-4f67-8a80-73822cf653ed", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "0f961c54-d550-4047-93a3-9785f9552593", false, "osman_benlice" },
-                    { "3", 0, "b620f990-adc5-4cf6-b366-66e5b464c1b0", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "16c035eb-83b9-480c-829c-fea0fe9caa7b", false, "onur.unlu" }
+                    { "1", 0, "1e92a068-3b5a-4ae9-badf-c2085e1a84b2", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "831e7421-2427-4823-83a6-bff69dee1b8c", false, "eren_sezen" },
+                    { "2", 0, "4fe95ddb-7f2b-4361-a396-6c1f2fa00b9b", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "3914e630-6cd3-4595-818f-4717c0825964", false, "osman_benlice" },
+                    { "3", 0, "56cc80ea-d875-4691-a082-dd9996efb054", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "e03a0bcc-156d-4d7e-98d2-f69fd7d6b3a2", false, "onur.unlu" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name", "Url" },
+                values: new object[,]
+                {
+                    { 1, "Masaüstü", "Masaüstü" },
+                    { 2, "Notebook", "Notebook" },
+                    { 3, "Ekipman", "Ekipman" },
+                    { 4, "Donanım", "Donanım" }
                 });
 
             migrationBuilder.InsertData(
@@ -300,36 +349,18 @@ namespace JoygameInventory.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "Description", "ProductAddDate", "ProductBarkod", "ProductName", "SerialNumber", "Status" },
-                values: new object[,]
-                {
-                    { 1, "High-performance laptop", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB054", "Laptop", "3872-5930-4832", "Zimmetli" },
-                    { 2, "Wireless mouse", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB060", "Mouse", "3840294-9F5A3C2D", "Zimmetli" },
-                    { 3, "Mechanical keyboard", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB024", "Keyboard", "A2B3-5829-20250111", "Zimmetli" },
-                    { 4, "27-inch 4K monitor", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB095", "Monitor", "WLG-384029-2024", "Zimmetli" },
-                    { 5, "Noise-cancelling over-ear headphones", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB101", "Headphones", "HDP-230904", "Zimmetli" },
-                    { 6, "128GB USB 3.0 Flash Drive", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB112", "USB Drive", "USB-3847502", "Zimmetli" },
-                    { 7, "Latest model smartphone with 5G", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB130", "Smartphone", "SMP-1234A678", "Zimmetli" },
-                    { 8, "10-inch tablet with stylus support", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB145", "Tablet", "TAB-5467D2025", "Zimmetli" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
                 columns: new[] { "Id", "Description", "ProductAddDate", "ProductBarkod", "ProductName", "SerialNumber" },
                 values: new object[,]
                 {
-                    { 9, "Fitness smartwatch with heart-rate monitor", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB162", "Smartwatch", "SW-9476253" },
-                    { 10, "High-DPI gaming mouse", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB170", "Gaming Mouse", "GM-845320" },
-                    { 11, "Protective laptop sleeve", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB183", "Laptop Sleeve", "LS-210987" },
-                    { 12, "DSLR camera with 24MP sensor", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB195", "Camera", "CAM-584230" },
-                    { 13, "Portable Bluetooth speaker with rich sound", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB210", "Bluetooth Speaker", "BTS-789403" },
-                    { 14, "10,000mAh power bank", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB230", "Power Bank", "PB-543210" },
-                    { 15, "Virtual reality headset for immersive experiences", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB245", "VR Headset", "VR-902384" },
-                    { 16, "2TB external hard drive", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB260", "External Hard Drive", "EHDD-098723" },
-                    { 17, "Ergonomic gaming chair", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB275", "Gaming Chair", "GC-765493" },
-                    { 18, "Foldable electric scooter", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB280", "Electric Scooter", "ES-129845" },
-                    { 19, "4K camera drone with flight stabilization", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB295", "Drone", "DRN-589301" },
-                    { 20, "Portable mini projector", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB310", "Projector", "PRJ-765123" }
+                    { 1, "High-performance laptop", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB054", "Laptop1", "3872-5930-4832" },
+                    { 2, "Wireless mouse", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB060", "Ekipman1", "3840294-9F5A3C2D" },
+                    { 3, "Mechanical keyboard", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB024", "Ekipman2", "A2B3-5829-20250111" },
+                    { 4, "27-inch 4K monitor", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB095", "Ekipman3", "WLG-384029-2024" },
+                    { 5, "Noise-cancelling over-ear headphones", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB101", "Ekipman4", "HDP-230904" },
+                    { 16, "2TB external hard drive", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB260", "Desktop1", "EHDD-098723" },
+                    { 18, "Foldable electric scooter", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB280", "Desktop2", "ES-129845" },
+                    { 19, "4K camera drone with flight stabilization", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB295", "Donanım1", "DRN-589301" },
+                    { 20, "Portable mini projector", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "JGNB310", "Donanım2", "PRJ-765123" }
                 });
 
             migrationBuilder.InsertData(
@@ -346,15 +377,31 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9115), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9119), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9120), 3, 5, 1 },
-                    { 4, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9122), 3, 6, 2 },
-                    { 5, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9123), 3, 3, 3 },
-                    { 6, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9124), 3, 4, 4 },
-                    { 7, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9125), 3, 7, 5 },
-                    { 8, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9126), 3, 8, 6 },
-                    { 9, new DateTime(2025, 1, 27, 22, 45, 21, 18, DateTimeKind.Utc).AddTicks(9127), 3, 9, 6 }
+                    { 1, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8319), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8322), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8323), 3, 3, 1 },
+                    { 4, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8325), 3, 4, 2 },
+                    { 5, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8326), 3, 5, 3 },
+                    { 6, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8327), 3, 16, 4 },
+                    { 7, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8328), 3, 18, 5 },
+                    { 8, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8329), 3, 19, 6 },
+                    { 9, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8330), 3, 20, 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductCategories",
+                columns: new[] { "CategoryId", "ProductId" },
+                values: new object[,]
+                {
+                    { 1, 16 },
+                    { 1, 18 },
+                    { 2, 1 },
+                    { 3, 2 },
+                    { 3, 3 },
+                    { 3, 4 },
+                    { 3, 5 },
+                    { 4, 19 },
+                    { 4, 20 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -410,6 +457,12 @@ namespace JoygameInventory.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_Url",
+                table: "Categories",
+                column: "Url",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InventoryAssigments_PreviusAssigmenId",
                 table: "InventoryAssigments",
                 column: "PreviusAssigmenId");
@@ -429,6 +482,11 @@ namespace JoygameInventory.Migrations
                 table: "JoyStaffs",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_ProductId",
+                table: "ProductCategories",
+                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -453,6 +511,9 @@ namespace JoygameInventory.Migrations
                 name: "AssigmentHistorys");
 
             migrationBuilder.DropTable(
+                name: "ProductCategories");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -460,6 +521,9 @@ namespace JoygameInventory.Migrations
 
             migrationBuilder.DropTable(
                 name: "InventoryAssigments");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "JoyStaffs");

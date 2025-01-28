@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CategoryViewModel>
+
+
+
+<div class="container d-flex justify-content-center">
+    <div class="row g-3 justify-content-center">
+        <div class="col-auto">
+            <a asp-controller="Management" asp-action="ProductList" class="btn @(ViewBag.SelectedCategory == null ? "btn-outline-secondary" : "btn-outline-secondary")" >
+                Tüm Ürünler
+            </a>
+        </div>
+        @foreach (var category in Model)
+        {
+            <div class="col-auto">
+                <a class="btn @(ViewBag.SelectedCategory == category.Url ? "btn-secondary" : "btn-outline-secondary")"
+                   asp-controller="Management" asp-action="ProductList" asp-route-category="@category.Url">
+                    @category.Name
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -38,6 +38,27 @@ namespace JoygameInventory.Business.Services
             return await _context.Products.FirstOrDefaultAsync(s => s.Id == id);
 
         }
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryUrl)
+        {
+            // Belirtilen kategoriye ait ürünleri getir
+            var products = await _context.Products
+                                 .Where(p => p.Categories.Any(c => c.Url == categoryUrl))
+                                                 .Include(p => p.InventoryAssigments)
+                                 .ToListAsync();
+            foreach (var product in products)
+            {
+                if (product.InventoryAssigments == null || !product.InventoryAssigments.Any())
+                {
+                    product.Status = "Depoda";
+                }
+                else
+                {
+                    product.Status = "Zimmetli";
+                }
+            }
+            return products;
+
+        }
         public async Task UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);

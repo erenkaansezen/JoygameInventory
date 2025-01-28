@@ -202,10 +202,12 @@ namespace JoygameInventory.Web.Controllers
 
 
         //Envanter Yönetimi
-        public async Task<IActionResult> ProductList()
+        public async Task<IActionResult> ProductList(string category)
         {
-            var product = await _productservice.GetAllProductsAsync();
 
+            var product = string.IsNullOrEmpty(category)
+            ? await _productservice.GetAllProductsAsync()
+                : await _productservice.GetProductsByCategoryAsync(category);
             return View("ProductManagement/ProductList", product);
         }
         [HttpGet]
@@ -429,7 +431,7 @@ namespace JoygameInventory.Web.Controllers
             return View("StaffManagement/StaffList", joyStaffs);
         }
 
-        [HttpGet]   
+        [HttpGet]
         public async Task<IActionResult> StaffDetails(int id)
         {
             var staff = await _staffmanager.GetStaffByIdAsync(id);
@@ -487,7 +489,7 @@ namespace JoygameInventory.Web.Controllers
 
         }
 
-        public async Task<IActionResult>StaffRegister()
+        public async Task<IActionResult> StaffRegister()
         {
             return View("StaffManagement/StaffRegister");
         }

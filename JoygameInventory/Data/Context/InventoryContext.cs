@@ -14,8 +14,11 @@ namespace JoygameInventory.Data.Context
         // DbSet tanımlamaları
         public DbSet<Product> Products => Set<Product>();
         public DbSet<InventoryAssigment> InventoryAssigments => Set<InventoryAssigment>();
+
+        public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();
 
+        public DbSet<Category> Categories => Set<Category>();
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
         public DbSet<JoyUser> JoyUsers => Set<JoyUser>();
         public DbSet<JoyRole> JoyRoles => Set<JoyRole>();
@@ -66,8 +69,14 @@ namespace JoygameInventory.Data.Context
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.HasKey(s => s.Id);
+
                 entity.Property(p => p.Status)
-                      .HasDefaultValue("Depoda"); 
+                      .HasDefaultValue("Depoda");
+
+                entity.HasMany(p => p.Categories)
+                      .WithMany(c => c.Products)
+                      .UsingEntity<ProductCategory>();
             });
             modelBuilder.Entity<JoyStaff>(entity =>
             {
@@ -76,35 +85,72 @@ namespace JoygameInventory.Data.Context
                       .IsUnique()
                       .HasDatabaseName("IX_Staff_Email");
             });
+            modelBuilder.Entity<Category>(entity =>
+            {
+                // Primary Key and Default Value
+                entity.HasKey(p => p.Id);
+
+                entity.HasIndex(u => u.Url)
+                .IsUnique();
+            });
+
 
             // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(
-                    new Product { Id = 1, ProductName = "Laptop", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054",Status="Zimmetli" },
-                    new Product { Id = 2, ProductName = "Mouse", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", ProductBarkod = "JGNB060", Status = "Zimmetli" },
-                    new Product { Id = 3, ProductName = "Keyboard", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", ProductBarkod = "JGNB024", Status = "Zimmetli" },
-                    new Product { Id = 4, ProductName = "Monitor", Description = "27-inch 4K monitor", SerialNumber = "WLG-384029-2024", ProductBarkod = "JGNB095", Status = "Zimmetli" },
-                    new Product { Id = 5, ProductName = "Headphones", Description = "Noise-cancelling over-ear headphones", SerialNumber = "HDP-230904", ProductBarkod = "JGNB101", Status = "Zimmetli" },
-                    new Product { Id = 6, ProductName = "USB Drive", Description = "128GB USB 3.0 Flash Drive", SerialNumber = "USB-3847502", ProductBarkod = "JGNB112", Status = "Zimmetli" },
-                    new Product { Id = 7, ProductName = "Smartphone", Description = "Latest model smartphone with 5G", SerialNumber = "SMP-1234A678"    , ProductBarkod = "JGNB130", Status = "Zimmetli" },
-                    new Product { Id = 8, ProductName = "Tablet", Description = "10-inch tablet with stylus support", SerialNumber = "TAB-5467D2025"    , ProductBarkod = "JGNB145", Status = "Zimmetli" },
-                    new Product { Id = 9, ProductName = "Smartwatch", Description = "Fitness smartwatch with heart-rate monitor", SerialNumber = "SW-9476253", ProductBarkod = "JGNB162" },
-                    new Product { Id = 10, ProductName = "Gaming Mouse", Description = "High-DPI gaming mouse", SerialNumber = "GM-845320"  , ProductBarkod = "JGNB170" },
-                    new Product { Id = 11, ProductName = "Laptop Sleeve", Description = "Protective laptop sleeve", SerialNumber = "LS-210987"  , ProductBarkod = "JGNB183" },
-                    new Product { Id = 12, ProductName = "Camera", Description = "DSLR camera with 24MP sensor", SerialNumber = "CAM-584230", ProductBarkod = "JGNB195" },
-                    new Product { Id = 13, ProductName = "Bluetooth Speaker", Description = "Portable Bluetooth speaker with rich sound", SerialNumber = "BTS-789403", ProductBarkod = "JGNB210" },
-                    new Product { Id = 14, ProductName = "Power Bank", Description = "10,000mAh power bank", SerialNumber = "PB-543210", ProductBarkod = "JGNB230" },
-                    new Product { Id = 15, ProductName = "VR Headset", Description = "Virtual reality headset for immersive experiences", SerialNumber = "VR-902384", ProductBarkod = "JGNB245" },
-                    new Product { Id = 16, ProductName = "External Hard Drive", Description = "2TB external hard drive", SerialNumber = "EHDD-098723", ProductBarkod = "JGNB260" },
-                    new Product { Id = 17, ProductName = "Gaming Chair", Description = "Ergonomic gaming chair", SerialNumber = "GC-765493", ProductBarkod = "JGNB275" },
-                    new Product { Id = 18, ProductName = "Electric Scooter", Description = "Foldable electric scooter", SerialNumber = "ES-129845", ProductBarkod = "JGNB280" },
-                    new Product { Id = 19, ProductName = "Drone", Description = "4K camera drone with flight stabilization", SerialNumber = "DRN-589301", ProductBarkod = "JGNB295" },
-                    new Product { Id = 20, ProductName = "Projector", Description = "Portable mini projector", SerialNumber = "PRJ-765123", ProductBarkod = "JGNB310", }
+            // Notebook Kategorisi
+            new Product { Id = 1, ProductName = "Laptop1", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054" },
+
+
+            // Ekipman Kategorisi
+            new Product { Id = 2, ProductName = "Ekipman1", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", ProductBarkod = "JGNB060" },
+            new Product { Id = 3, ProductName = "Ekipman2", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", ProductBarkod = "JGNB024" },
+            new Product { Id = 4, ProductName = "Ekipman3", Description = "27-inch 4K monitor", SerialNumber = "WLG-384029-2024", ProductBarkod = "JGNB095" },
+            new Product { Id = 5, ProductName = "Ekipman4", Description = "Noise-cancelling over-ear headphones", SerialNumber = "HDP-230904", ProductBarkod = "JGNB101" },
+
+
+            // Masaüstü Bilgisayar ve Donanım Kategorisi
+            new Product { Id = 16, ProductName = "Desktop1", Description = "2TB external hard drive", SerialNumber = "EHDD-098723", ProductBarkod = "JGNB260" },
+            new Product { Id = 18, ProductName = "Desktop2", Description = "Foldable electric scooter", SerialNumber = "ES-129845", ProductBarkod = "JGNB280" },
+
+            // Donanım Kategorisi
+            new Product { Id = 19, ProductName = "Donanım1", Description = "4K camera drone with flight stabilization", SerialNumber = "DRN-589301", ProductBarkod = "JGNB295" },
+            new Product { Id = 20, ProductName = "Donanım2", Description = "Portable mini projector", SerialNumber = "PRJ-765123", ProductBarkod = "JGNB310" }
 
 
 
 
             );
 
+            modelBuilder.Entity<Category>().HasData(
+                new List<Category>()
+                {
+                            new() {Id=1,Name="Masaüstü",Url="Masaüstü"},
+                            new() {Id=2,Name="Notebook",Url="Notebook"},
+                            new() {Id=3,Name="Ekipman",Url="Ekipman"},
+                            new() {Id=4,Name="Donanım",Url="Donanım"}, 
+                }
+
+            );
+                    modelBuilder.Entity<ProductCategory>().HasData(
+                new List<ProductCategory>()
+                {
+                            new ProductCategory() {ProductId = 16, CategoryId =1},
+                            new ProductCategory() {ProductId = 18, CategoryId =1},
+
+                            new ProductCategory() {ProductId = 1, CategoryId =2},
+
+                            new ProductCategory() {ProductId = 2, CategoryId =3},
+                            new ProductCategory() {ProductId = 3, CategoryId =3},
+                            new ProductCategory() {ProductId = 4, CategoryId =3},
+                            new ProductCategory() {ProductId = 5, CategoryId =3},
+
+                            new ProductCategory() {ProductId = 19, CategoryId =4},
+                            new ProductCategory() {ProductId = 20, CategoryId =4},
+
+
+                    // ıd kesişimleri uniq olmalıdır
+                }
+            );
             // Add Users (Kullanıcılar) - IdentityUser örneği olarak string Id kullanıyoruz.
             modelBuilder.Entity<JoyUser>().HasData(
                 new JoyUser { Id = "1", UserName = "eren_sezen", Email = "eren.sezen@joygame.com", FirstName = "Eren", LastName = "Sezen" },
@@ -148,15 +194,15 @@ namespace JoygameInventory.Data.Context
             modelBuilder.Entity<InventoryAssigment>().HasData(
                     new InventoryAssigment { Id = 1, ProductId = 1, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3},
                     new InventoryAssigment { Id = 2, ProductId = 2, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
-                    new InventoryAssigment { Id = 3, ProductId = 5, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
-                    new InventoryAssigment { Id = 4, ProductId = 6, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 3, ProductId = 3, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 4, ProductId = 4, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
 
-                    new InventoryAssigment { Id = 5, ProductId = 3, UserId = 3, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
-                    new InventoryAssigment { Id = 6, ProductId = 4, UserId = 4, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 5, ProductId = 5, UserId = 3, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 6, ProductId = 16, UserId = 4, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
 
-                    new InventoryAssigment { Id = 7, ProductId = 7, UserId = 5, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
-                    new InventoryAssigment { Id = 8, ProductId = 8, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
-                    new InventoryAssigment { Id = 9, ProductId = 9, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 }
+                    new InventoryAssigment { Id = 7, ProductId = 18, UserId = 5, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 8, ProductId = 19, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
+                    new InventoryAssigment { Id = 9, ProductId = 20, UserId = 6, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 }
 
 
 

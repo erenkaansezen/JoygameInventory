@@ -2,6 +2,7 @@
 @{
     Layout = "_Layout";
 }
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -57,20 +58,35 @@
                 </div>
             </form>
         </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
         <!-- Kullanıcılar Tablosu -->
         <div class="table-container">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Ad</th>
                         <th>Email</th>
-                        <th>İşlemler</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var users in Model)
                     {
                         <tr>
+                            <td>@users.Id</td>
                             <td>@users.Name @users.Surname</td>
                             <td>@users.Email</td>
                             <td>

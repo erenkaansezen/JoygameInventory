@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JoygameInventory.Business.Services;
+using JoygameInventory.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace JoygameInventory.Data.Entities
 {
@@ -17,6 +19,8 @@ namespace JoygameInventory.Data.Entities
 
         public string? Status { get; set; }
 
+        public ICollection<ProductCategory> ProductCategories { get; set; }
+        public ICollection<Category> Categories { get; set; }
 
         public ICollection<InventoryAssigment> InventoryAssigments { get; set; }
         public ICollection<AssigmentHistory> AssigmentHistorys { get; set; }

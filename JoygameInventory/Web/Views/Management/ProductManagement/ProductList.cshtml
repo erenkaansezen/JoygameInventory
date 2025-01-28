@@ -48,7 +48,9 @@
         <h2 class="my-4 text-center">
             <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
             | Envanter Listesi
-        </h2>        
+        </h2>
+        @await Component.InvokeAsync("CategoriesList")
+        <vc:categories-list />
         <hr />
         <!-- Ürünler Tablosu -->
         <div class="table-container">
