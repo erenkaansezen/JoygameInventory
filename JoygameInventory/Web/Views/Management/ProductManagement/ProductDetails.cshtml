@@ -7,7 +7,7 @@
     <h2 class="my-4 text-center">
         <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
         | Envanter Detayı
-    </h2>        
+    </h2>
     <hr />
 
     <form asp-action="ProductDetails" method="post">
@@ -69,7 +69,7 @@
                 <label for="SelectedUserId" class="form-label">Yeni Atama Yap</label>
                 <select name="SelectedUserId" class="form-control">
 
-                    @if(Model.InventoryAssigments != null) 
+                    @if (Model.InventoryAssigments != null)
                     {
                         <option value="">Yeni Atama Seçiniz ↓ </option>
                         @foreach (var assignment in Model.JoyStaffs)
@@ -135,7 +135,7 @@
             Geçmiş Atamaların Tamamını Görüntüle
         </button>
         <br />
-        
+
 
         <!-- Modal (Önceki Atamalar) -->
         <div class="modal fade" id="previousAssignmentsModal" tabindex="-1" aria-labelledby="previousAssignmentsModalLabel" aria-hidden="true">
@@ -147,15 +147,15 @@
                     </div>
                     <div class="modal-body">
 
-                            <ul class="list-group">
-                                @foreach (var item in Model.AssigmentHistorys)
-                                {
-                                    <li class="list-group-item">
-                                        <strong>@item.User.Name @item.User.Surname</strong><br />
-                                        <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
-                                    </li>
-                                }
-                            </ul>
+                        <ul class="list-group">
+                            @foreach (var item in Model.AssigmentHistorys)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@item.User.Name @item.User.Surname</strong><br />
+                                    <span class="text-muted">@item.AssignmentDate.ToString("yyyy-MM-dd")</span>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>

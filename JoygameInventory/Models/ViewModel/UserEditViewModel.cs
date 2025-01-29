@@ -15,7 +15,7 @@ namespace JoygameInventory.Models.ViewModel
             [Display(Name = "Kullanıcı Email")]
             [Required(ErrorMessage = "Email gereklidir.")]
             [EmailAddress(ErrorMessage = "Geçersiz email adresi.")]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             [Display(Name = "Kullanıcı Telefon Numarası")]
             [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]

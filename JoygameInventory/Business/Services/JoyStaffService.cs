@@ -74,6 +74,13 @@ namespace JoygameInventory.Business.Services
         //JoyUser
         public async Task<bool> PanelIsEmailUnique(string email)
         {
+            // Eğer e-posta boşsa, true döndür (boş e-posta adresi zaten geçersizdir)
+            if (string.IsNullOrEmpty(email))
+            {
+                return true;
+            }
+
+            // E-posta zaten veritabanında mevcut mu?
             return !await _context.JoyUsers.AnyAsync(s => s.Email == email);
         }
         public async Task<IEnumerable<JoyUser>> SearchPanelStaff(string searchTerm)
@@ -82,7 +89,8 @@ namespace JoygameInventory.Business.Services
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(staff => EF.Functions.Like(staff.UserName, "%" + searchTerm + "%"));
+                query = query.Where(panelUser => EF.Functions.Like(panelUser.UserName, "%" + searchTerm + "%") ||
+                                              EF.Functions.Like(panelUser.Email, "%" + searchTerm + "%"));
             }
 
             return await query.ToListAsync();

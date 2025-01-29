@@ -59,6 +59,14 @@ namespace JoygameInventory.Business.Services
             return products;
 
         }
+
+        public async Task<bool> CreateProduct(Product product)
+        {
+            _context.Products.Add(product);
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
+        }
         public async Task UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
@@ -88,5 +96,9 @@ namespace JoygameInventory.Business.Services
             return await query.ToListAsync();
         }
 
+        public async Task<bool> ProductBarkodUnique(string barkod)
+        {
+            return !await _context.Products.AnyAsync(s => s.ProductBarkod == barkod);
+        }
     }
 }
