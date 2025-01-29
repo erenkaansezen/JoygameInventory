@@ -5,6 +5,7 @@ using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace JoygameInventory.Web.Controllers
 {
@@ -202,13 +203,24 @@ namespace JoygameInventory.Web.Controllers
 
 
         //Envanter Yönetimi
-        public async Task<IActionResult> ProductList(string category)
-        {
+        public async Task<IActionResult> ProductList(string category, string searchTerm)
+        {            // İlk olarak tüm ürünleri alıyoruz
+            var joyproducts = await _productservice.GetAllProductsAsync();
 
-            var product = string.IsNullOrEmpty(category)
-            ? await _productservice.GetAllProductsAsync()
-                : await _productservice.GetProductsByCategoryAsync(category);
-            return View("ProductManagement/ProductList", product);
+            // Eğer arama terimi varsa, arama sonuçlarına göre filtreleme yapıyoruz
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                joyproducts = await _productservice.SearchProduct(searchTerm); // Kategoriye göre filtreleme
+            }
+
+            // Eğer kategori seçilmişse, kategoriye göre filtreleme yapıyoruz
+            if (!string.IsNullOrEmpty(category))
+            {
+                joyproducts = await _productservice.GetProductsByCategoryAsync(category); // Kategoriye göre filtreleme
+            }
+
+
+            return View("ProductManagement/ProductList", joyproducts);
         }
         [HttpGet]
         public async Task<IActionResult> ProductDetails(int id)

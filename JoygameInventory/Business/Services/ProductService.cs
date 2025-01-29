@@ -75,5 +75,18 @@ namespace JoygameInventory.Business.Services
             }
         }
 
+        public async Task<IEnumerable<Product>> SearchProduct(string searchTerm)
+        {
+            var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(product => EF.Functions.Like(product.ProductName, "%" + searchTerm + "%") ||
+                                              EF.Functions.Like(product.ProductBarkod, "%" + searchTerm + "%"));
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
 }
