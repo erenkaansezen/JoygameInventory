@@ -314,9 +314,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "1e92a068-3b5a-4ae9-badf-c2085e1a84b2", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "831e7421-2427-4823-83a6-bff69dee1b8c", false, "eren_sezen" },
-                    { "2", 0, "4fe95ddb-7f2b-4361-a396-6c1f2fa00b9b", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "3914e630-6cd3-4595-818f-4717c0825964", false, "osman_benlice" },
-                    { "3", 0, "56cc80ea-d875-4691-a082-dd9996efb054", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "e03a0bcc-156d-4d7e-98d2-f69fd7d6b3a2", false, "onur.unlu" }
+                    { "1", 0, "17a3a0c4-8512-4bd8-97a1-4ea3f82481bc", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "0ca430b8-cab0-4313-9cce-a5e19bbf53a1", false, "eren_sezen" },
+                    { "2", 0, "a9d4a79e-3bdb-4dcd-86b0-e463eee61438", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "08205a29-7d7e-4a24-9fc2-fcb1529ea3ea", false, "osman_benlice" },
+                    { "3", 0, "f2e4c6a2-6401-4c26-a1fd-667d8b32c881", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "c869b3d7-5fea-44ed-bdc3-99b4931ee1f6", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -377,15 +377,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8319), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8322), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8323), 3, 3, 1 },
-                    { 4, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8325), 3, 4, 2 },
-                    { 5, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8326), 3, 5, 3 },
-                    { 6, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8327), 3, 16, 4 },
-                    { 7, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8328), 3, 18, 5 },
-                    { 8, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8329), 3, 19, 6 },
-                    { 9, new DateTime(2025, 1, 28, 22, 29, 58, 139, DateTimeKind.Utc).AddTicks(8330), 3, 20, 6 }
+                    { 1, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1869), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1872), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1873), 3, 3, 1 },
+                    { 4, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1874), 3, 4, 2 },
+                    { 5, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1876), 3, 5, 3 },
+                    { 6, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1877), 3, 16, 4 },
+                    { 7, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1878), 3, 18, 5 },
+                    { 8, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1879), 3, 19, 6 },
+                    { 9, new DateTime(2025, 1, 29, 8, 51, 40, 678, DateTimeKind.Utc).AddTicks(1880), 3, 20, 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -434,6 +434,12 @@ namespace JoygameInventory.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -487,6 +493,12 @@ namespace JoygameInventory.Migrations
                 name: "IX_ProductCategories_ProductId",
                 table: "ProductCategories",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_ProductBarkod",
+                table: "Products",
+                column: "ProductBarkod",
+                unique: true);
         }
 
         /// <inheritdoc />

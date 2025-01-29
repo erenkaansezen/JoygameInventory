@@ -18,13 +18,13 @@ namespace JoygameInventory.Models.ViewModel
             public string Email { get; set; }
 
             [Display(Name = "Kullanıcı Telefon Numarası")]
-            [Compare("Password", ErrorMessage = "Telefon Numarası giriniz.")]
+            [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
             public string PhoneNumber { get; set; }
 
 
             [Display(Name = "Kullanıcı Şifresi")]
             [DataType(DataType.Password)]
-            [Compare("Password", ErrorMessage = "Parola giriniz.")]
+            [Required(ErrorMessage = "Geçerli bir telefon numarası girin.")]
 
             public string Password { get; set; }
 

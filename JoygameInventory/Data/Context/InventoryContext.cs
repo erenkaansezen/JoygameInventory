@@ -77,6 +77,10 @@ namespace JoygameInventory.Data.Context
                 entity.HasMany(p => p.Categories)
                       .WithMany(c => c.Products)
                       .UsingEntity<ProductCategory>();
+
+                entity.HasIndex(s => s.ProductBarkod)
+                       .IsUnique()
+                      .HasDatabaseName("IX_Product_ProductBarkod");
             });
             modelBuilder.Entity<JoyStaff>(entity =>
             {
@@ -92,6 +96,13 @@ namespace JoygameInventory.Data.Context
 
                 entity.HasIndex(u => u.Url)
                 .IsUnique();
+            });
+            modelBuilder.Entity<JoyUser>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+                entity.HasIndex(s => s.Email)
+                      .IsUnique()
+                      .HasDatabaseName("IX_User_Email");
             });
 
 

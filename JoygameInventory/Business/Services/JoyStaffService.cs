@@ -70,6 +70,12 @@ namespace JoygameInventory.Business.Services
 
             return await query.ToListAsync();
         }
+
+        //JoyUser
+        public async Task<bool> PanelIsEmailUnique(string email)
+        {
+            return !await _context.JoyUsers.AnyAsync(s => s.Email == email);
+        }
         public async Task<IEnumerable<JoyUser>> SearchPanelStaff(string searchTerm)
         {
             var query = _context.JoyUsers.AsQueryable();

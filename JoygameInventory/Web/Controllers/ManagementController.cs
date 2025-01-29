@@ -83,11 +83,22 @@ namespace JoygameInventory.Web.Controllers
             var user = await _usermanager.FindByIdAsync(model.Id);
             if (user != null)
             {
+                if (!string.IsNullOrEmpty(model.Email))
+                {
+                    if (!await _staffmanager.PanelIsEmailUnique(model.Email))
+                    {
+
+                        ModelState.AddModelError("Email", "Bu Email Adresi Kayıtlı.");
+                        return View("UserManagement/UserDetails", model); // Eşleşmiyorsa hatayı döndürüyoruz
+
+                    }
+                }
                 user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
 
-                // Şifreyi yalnızca boş değilse değiştirelim
+
+
                 if (!string.IsNullOrEmpty(model.Password))
                 {
                     // Şifre ve şifre onayı eşleşiyor mu kontrol et
@@ -112,6 +123,7 @@ namespace JoygameInventory.Web.Controllers
                     }
                 }
 
+
                 var result = await _usermanager.UpdateAsync(user);
 
                 if (result.Succeeded)
@@ -123,13 +135,14 @@ namespace JoygameInventory.Web.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
+
                         ModelState.AddModelError(string.Empty, error.Description);
-                        if (!ModelState.IsValid)
-                        {
-                            return View("UserManagement/UserDetails", model); // Hatalı form gönderildiğinde formu tekrar göster
-                        }
+
+
                     }
                 }
+                
+
             }
 
             return RedirectToAction("Index", "Home");
@@ -152,8 +165,11 @@ namespace JoygameInventory.Web.Controllers
                 PhoneNumber = model.PhoneNumber
             };
 
-            // Kullanıcıyı oluşturuyoruz
-            // Şifreyi yalnızca boş değilse ekleyelim
+            if (!await _staffmanager.PanelIsEmailUnique(model.Email))
+            {
+                ModelState.AddModelError("Email", "Bu Kullanıcı Kayıtlı.");
+                return View("UserManagement/UserRegister", model);
+            }
             if (!string.IsNullOrEmpty(model.Password))
             {
                 var result = await _usermanager.CreateAsync(user, model.Password);
@@ -182,7 +198,7 @@ namespace JoygameInventory.Web.Controllers
                 ModelState.AddModelError("Password", "Parola gereklidir.");
             }
 
-            return View("UserRegister", model);
+            return View("UserManagement/UserRegister", model);
         }
 
         [HttpPost]
