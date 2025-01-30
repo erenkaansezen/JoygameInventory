@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Servers>
+@{
+    Layout = "_Layout";
+}
+
+<head>
+    <style>
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-custom {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .btn-edit {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .btn-view {
+            background-color: #5bc0de;
+            color: white;
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sayfa Başlığı -->
+    <div class="container">
+        <h2 class="my-4 text-center">
+            <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
+            | Sunucu Envanter Listesi
+        </h2>
+        <div class="row">
+            <div class="col-md-6">
+                <a asp-controller="Management" asp-action="ServerCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Sunucu Ekle</a>
+            </div>
+            <div class="col-md-6">
+                <form asp-action="ServerList" method="get">
+                    <div class="input-group mb-3">
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Sunucu Adı ile ara" />
+                        <button class="btn btn-outline-secondary" type="submit">Ara</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr />
+        <!-- Sunucular Tablosu -->
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Sunucu Adı</th>
+                        <th>IP Adresi</th>
+                        <th>MAC Adresi</th>
+                        <th>İşletim Sistemi</th>
+                        <th>RAM (GB)</th>
+                        <th>Depolama (GB)</th>
+                        <th>Durum</th>
+                        <th>Konum</th>
+                        <th>Detaylar</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var server in Model)
+                    {
+                        <tr>
+                            <td>@server.ServerName</td>
+                            <td>@server.IPAddress</td>
+                            <td>@server.MACAddress</td>
+                            <td>@server.OperatingSystem</td>
+                            <td>@server.RAM</td>
+                            <td>@server.Storage</td>
+                            <td>@server.Status</td>
+                            <td>@server.Location</td>
+                            <td>
+                                <a asp-controller="Management" asp-action="ServerDetails" asp-route-id="@server.ServerId" class="btn btn-outline-dark btn-custom">Detaylar</a>
+                            </td>
+                            <td>
+                                <form asp-controller="Management" asp-action="ServerDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                    <input type="hidden" value="@server.ServerId" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap ve jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

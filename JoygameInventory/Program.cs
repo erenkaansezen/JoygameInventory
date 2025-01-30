@@ -1,6 +1,7 @@
 using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<JoyStaffService>();
+builder.Services.AddScoped<ServerService>();
+
 
 
 builder.Services.AddControllersWithViews()
@@ -27,9 +30,27 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddDbContext<InventoryContext>(options =>
     options.UseSqlite(builder.Configuration["ConnectionStrings:Dbconnection"]));
 
-builder.Services.AddIdentity<JoyUser, JoyRole>()
-    .AddEntityFrameworkStores<InventoryContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<JoyUser, JoyRole>(options =>
+{
+    // Kullanýcý oturum açma süresi
+    options.SignIn.RequireConfirmedAccount = false;  // E-posta onayý zorunlu deðilse
+})
+.AddEntityFrameworkStores<InventoryContext>()
+.AddDefaultTokenProviders();
+
+// Cookie ayarlarýný yapýlandýrýyoruz
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";  // Giriþ yapmamýþ kullanýcýyý yönlendirecek yol
+    options.LogoutPath = "/User/Logout"; // Çýkýþ yaptýktan sonra yönlendirecek yol
+    options.AccessDeniedPath = "/User/AccessDenied"; // Eriþim engellendiðinde yönlendirilecek yol
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Oturum süresi 30 dakika
+    options.SlidingExpiration = true; // Oturum süresi her etkinlikte uzar
+    options.Cookie.HttpOnly = true; // Cookie yalnýzca sunucu tarafýndan eriþilebilir
+    options.Cookie.SameSite = SameSiteMode.Strict; // Güvenlik için SameSite seçeneði
+});
+
+
 
 var app = builder.Build();
 

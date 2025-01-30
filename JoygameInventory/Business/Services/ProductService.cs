@@ -67,6 +67,22 @@ namespace JoygameInventory.Business.Services
 
             return result > 0;
         }
+        public async Task<List<Category>> GetAllCategoriesAsync()
+        {
+            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
+            return await _context.Categories.ToListAsync();
+        }
+        public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync()
+        {
+            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
+            return await _context.ProductCategories.ToListAsync();
+        }
+        public async Task AddProductCategory(ProductCategory productCategory)
+        {
+            _context.ProductCategories.Add(productCategory);
+             await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);

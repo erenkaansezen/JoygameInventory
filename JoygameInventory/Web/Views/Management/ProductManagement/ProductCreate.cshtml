@@ -30,28 +30,45 @@
                 <div class="col-md-6 mb-3">
                     <label asp-for="ProductBarkod" class="form-label">Ürün Barkodu</label>
                     <input asp-for="ProductBarkod" class="form-control" />
-                    <span asp-validation-for="ProductBarkod" class="text-danger"></span> <!-- Hata mesajları için -->
+                    <span asp-validation-for="ProductBarkod" class="text-danger"></span> 
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="ProductName" class="form-label">Ürün Adı</label>
                     <input asp-for="ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger"></span> <!-- Hata mesajları için -->
+                    <span asp-validation-for="ProductName" class="text-danger"></span> 
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label asp-for="Description" class="form-label">Açıklama</label>
                     <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span> <!-- Hata mesajları için -->
+                    <span asp-validation-for="Description" class="text-danger"></span> 
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="SerialNumber" class="form-label">Seri Numarası</label>
                     <input asp-for="SerialNumber" class="form-control" />
-                    <span asp-validation-for="SerialNumber" class="text-danger"></span> <!-- Hata mesajları için -->
+                    <span asp-validation-for="SerialNumber" class="text-danger"></span> 
                 </div>
             </div>
-        </section>
+             <div class="mb-3">
+                <label asp-for="SelectedCategoryId" class="form-label">Ürün Kategorisi</label>
+                <select asp-for="SelectedCategoryId" class="form-control">
+                    <option>
+                        Kategori seç
+                    </option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">
+                            @category.Name
+                        </option>
+                    }
+                </select>
 
+        </div>
+        </section>
+        <!-- Dropdown ile Personel Seçimi -->
+
+            <br />
         <!-- Kaydet Butonu -->
         <div class="row">
             <div class="col-md-12">

@@ -1,0 +1,136 @@
+﻿@model ServerEditViewModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="container my-5">
+    <h2 class="my-4 text-center">
+        <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
+        | Sunucu Detayı ve Düzenleme
+    </h2>
+    <hr />
+
+    <form asp-action="ServerDetails" method="post">
+        <input name="Id" type="hidden" value="@Model.ServerId" />
+        <a asp-controller="Management" asp-action="ServerList" class="btn btn-dark">Geriye Dön</a>
+        <br />
+        <br />
+
+        <!-- Sunucu Bilgileri -->
+        <section class="mb-5">
+            <h4 class="section-title">Sunucu Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ServerName" class="form-label">Sunucu Adı</label>
+                    <input asp-for="ServerName" id="ServerName" class="form-control" value="@Model.ServerName" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="IPAddress" class="form-label">IP Adresi</label>
+                    <input asp-for="IPAddress" id="IPAddress" class="form-control" value="@Model.IPAddress" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MACAddress" class="form-label">MAC Adresi</label>
+                    <input asp-for="MACAddress" id="MACAddress" class="form-control" value="@Model.MACAddress" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="OperatingSystem" class="form-label">İşletim Sistemi</label>
+                    <input asp-for="OperatingSystem" id="OperatingSystem" class="form-control" value="@Model.OperatingSystem" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CPU" class="form-label">CPU</label>
+                    <input asp-for="CPU" id="CPU" class="form-control" value="@Model.CPU" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="RAM" class="form-label">RAM (GB)</label>
+                    <input asp-for="RAM" id="RAM" class="form-control" value="@Model.RAM" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Storage" class="form-label">Depolama (GB)</label>
+                    <input asp-for="Storage" id="Storage" class="form-control" value="@Model.Storage" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Status" class="form-label">Durum</label>
+                    <input asp-for="Status" id="Status" class="form-control" value="@Model.Status" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Sunucu Konumu -->
+        <section class="mb-5">
+            <h4 class="section-title">Sunucu Konumu</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Location" class="form-label">Konum</label>
+                    <input asp-for="Location" id="Location" class="form-control" value="@Model.Location" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HostName" class="form-label">Host Adı</label>
+                    <input asp-for="HostName" id="HostName" class="form-control" value="@Model.HostName" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SerialNumber" class="form-label">Seri Numarası</label>
+                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NetworkInterface" class="form-label">Ağ Arayüzü</label>
+                    <input asp-for="NetworkInterface" id="NetworkInterface" class="form-control" value="@Model.NetworkInterface" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Güç ve Yedek Durumu -->
+        <section class="mb-5">
+            <h4 class="section-title">Durum Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="PowerStatus" class="form-label">Güç Durumu</label>
+                    <input asp-for="PowerStatus" id="PowerStatus" class="form-control" value="@Model.PowerStatus" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="BackupStatus" class="form-label">Yedek Durumu</label>
+                    <input asp-for="BackupStatus" id="BackupStatus" class="form-control" value="@Model.BackupStatus" />
+                </div>
+            </div>
+        </section>
+
+        <button type="submit" class="btn btn-outline-danger">Bilgileri Güncelle</button>
+    </form>
+</div>
+
+<!-- Özelleştirilmiş Stil -->
+<style>
+    /* Özelleştirilmiş Stil */
+    .container {
+        max-width: 1200px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+</style>

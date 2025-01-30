@@ -37,6 +37,11 @@ namespace JoygameInventory.Business.Services
 
             return inventoryAssignments;
         }
+        public async Task<List<Category>> GetAllStaffsAsync()
+        {
+            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
+            return await _context.Categories.ToListAsync();
+        }
 
         public async Task<InventoryAssigment> GetAssignmentByIdAsync(int inventoryAssigmentId)
         {

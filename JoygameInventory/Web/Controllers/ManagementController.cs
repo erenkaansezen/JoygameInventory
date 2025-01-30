@@ -2,6 +2,8 @@
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,23 +17,25 @@ namespace JoygameInventory.Web.Controllers
 
 
 
-
+    [Authorize]
     public class ManagementController : Controller
     {
+
         public InventoryContext _context;
         public UserManager<JoyUser> _usermanager;
         public JoyStaffService _staffmanager;
         public ProductService _productservice;
         public RoleManager<JoyRole> _rolemanager;
         public AssigmentService _assigmentservice;
-        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, InventoryContext context)
+        public ServerService _serverservice;
+        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice)
         {
             _usermanager = usermanager;
             _productservice = productservice;
             _rolemanager = rolemanager;
             _assigmentservice = assigmentservice;
             _staffmanager = staffmanager;
-            _context = context;
+            _serverservice = serverservice;
         }
 
 
@@ -107,6 +111,22 @@ namespace JoygameInventory.Web.Controllers
             return View("StaffManagement/StaffList", joyStaffs);
         }
 
+        [HttpGet]
+
+        public async Task<IActionResult> ServerList(string searchTerm)
+        {
+            // Arama terimi varsa, arama sonuçlarını alıyoruz
+            var servers = await _serverservice.SearchStaff(searchTerm);
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                servers = await _serverservice.GetAllServersAsync();
+            }
+
+
+            ViewBag.SearchTerm = searchTerm;
+            return View("ServerManagement/ServerList", servers);
+        }
+
         //Details Get
         [HttpGet]
         public async Task<IActionResult> UserDetails(string id)
@@ -135,6 +155,44 @@ namespace JoygameInventory.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ServerDetails(int id)
+        {
+            // Sunucu bilgilerini alıyoruz
+            var server = await _serverservice.GetServerByIdAsync(id);
+
+            if (server != null)
+            {
+
+
+                // ViewModel'i oluşturuyoruz
+                var model = new ServerEditViewModel
+                {
+                    ServerId = server.ServerId,
+                    ServerName = server.ServerName,
+                    IPAddress = server.IPAddress,
+                    MACAddress = server.MACAddress,
+                    OperatingSystem = server.OperatingSystem,
+                    CPU = server.CPU,
+                    RAM = server.RAM,
+                    Storage = server.Storage,
+                    Status = server.Status,
+                    Location = server.Location,
+                    DateInstalled = server.DateInstalled,
+                    HostName = server.HostName,
+                    SerialNumber = server.SerialNumber,
+                    NetworkInterface = server.NetworkInterface,
+                    PowerStatus = server.PowerStatus,
+                    BackupStatus = server.BackupStatus,
+                };
+
+                return View("ServerManagement/ServerDetails", model);  // Sunucu detaylarını gösterecek view'a gönderiyoruz
+            }
+
+            // Sunucu bulunamadıysa anasayfaya yönlendiriyoruz
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ProductDetails(int id)
         {
             var staff = await _productservice.GetIdProductAsync(id);
@@ -143,6 +201,8 @@ namespace JoygameInventory.Web.Controllers
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
                 var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
+                var category = await _assigmentservice.GetAllStaffsAsync();
+
                 var joystaff = await _staffmanager.GetAllStaffsAsync();
                 var model = new ProductEditViewModel
                 {
@@ -155,7 +215,8 @@ namespace JoygameInventory.Web.Controllers
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
                     JoyStaffs = joystaff,
-                    AssigmentHistorys = assignmentHistorys
+                    AssigmentHistorys = assignmentHistorys,
+                    Categories = category,
 
 
 
@@ -210,7 +271,13 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ProductCreate()
         {
-            return View("ProductManagement/ProductCreate");
+            var productcategory = await _productservice.GetAllProductCategoriesAsync();
+            var category = await _assigmentservice.GetAllStaffsAsync();
+            var model = new ProductEditViewModel
+            {
+                Categories = category
+            };
+            return View("ProductManagement/ProductCreate",model);
 
         }
 
@@ -359,6 +426,45 @@ namespace JoygameInventory.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> ServerDetails(ServerEditViewModel model)
+        {
+            var server = await _serverservice.GetServerByIdAsync(model.ServerId);
+
+            if (server != null)
+            {
+
+                server.ServerId = model.ServerId;
+                server.ServerName = model.ServerName;
+                server.IPAddress = model.IPAddress;
+                server.MACAddress = model.MACAddress;
+                server.OperatingSystem = model.OperatingSystem;
+                server.CPU = model.CPU;
+                server.RAM = model.RAM.Value;
+                server.Storage = model.Storage.Value;
+                server.Status = model.Status;
+                server.Location = model.Location;
+                server.DateInstalled = model.DateInstalled;
+                server.HostName = model.HostName;
+                server.SerialNumber = model.SerialNumber;
+                server.NetworkInterface = model.NetworkInterface;
+                server.PowerStatus = model.PowerStatus;
+                server.BackupStatus = model.BackupStatus;
+
+                await _serverservice.UpdateServerAsync(server);
+
+                return View("ServerManagement/ServerList");
+
+
+            }
+            else
+            {
+                return View("ServerManagement/ServerList");
+
+            }
+
+        }
+
+        [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
             var products = await _productservice.GetIdProductAsync(model.Id);
@@ -380,21 +486,6 @@ namespace JoygameInventory.Web.Controllers
 
                     if (currentAssignment != null)
                     {
-                        if (currentAssignment.PreviusAssigmenId.HasValue)
-                        {
-                            var previousUser = await _staffmanager.GetStaffByIdAsync(currentAssignment.PreviusAssigmenId.Value);
-                            if (previousUser != null)
-                            {
-                                model.PreviousUserName = previousUser.Name;
-                                model.PreviousUserSurname = previousUser.Surname;
-                            }
-                        }
-                        else
-                        {
-                            // Eğer PreviusAssigmenId null ise yapılacak işlem
-                            model.PreviousUserName = "Bilgi Yok";
-                            model.PreviousUserSurname = "Bilgi Yok";
-                        }
 
 
                         // Mevcut atama varsa ve kullanıcı değişmişse
@@ -545,38 +636,61 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> ProductCreate(ProductEditViewModel model)
         {
+            // Barkodun benzersiz olup olmadığını kontrol ediyoruz
+            if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
+            {
+                TempData["ErrorMessage"] = "Girdiğiniz barkod numarası başka ürüne ait";
+                return View("ProductCreate", model);
+            }
+
+            // Kategori seçilmediği durum için hata mesajı ekliyoruz
+            if (model.SelectedCategoryId <= 0)
+            {
+                TempData["ErrorMessage"] = "Lütfen Kategori Seçiniz";
+                return RedirectToAction("ProductCreate", model);
+            }
+            // Ürün nesnesini oluşturuyoruz
             var product = new Product
             {
                 ProductName = model.ProductName,
                 ProductBarkod = model.ProductBarkod,
                 Description = model.Description,
                 SerialNumber = model.SerialNumber,
+                Categories = model.Categories
             };
-            if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
-            {
-                ModelState.AddModelError("ProductBarkod", "Bu Barkod Kayıtlı.");
-                return View("ProductManagement/ProductCreate", model);
-            }
+
+
+
+            // Ürünü kaydetmeye başlıyoruz
             var result = await _productservice.CreateProduct(product);
 
-            if (result)
+            if (result) // Eğer ürün başarılı bir şekilde kaydedildiyse
             {
-                TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
+                // Ürün kaydedildikten sonra ProductCategory tablosuna ilişkilendirme ekliyoruz
+                var productCategory = new ProductCategory
+                {
+                    ProductId = product.Id, // Ürün ID'si
+                    CategoryId = model.SelectedCategoryId // Seçilen kategori ID'si
+                };
+
+                // ProductCategory kaydını ekliyoruz
+                await _productservice.AddProductCategory(productCategory);
+
+                TempData["SuccessMessage"] = "Ürün başarıyla oluşturuldu ve kategoriyle ilişkilendirildi!";
                 return RedirectToAction("ProductDetails", new { id = product.Id });
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulurken bir hata oluştu.");
-                return View("StaffManagement/StaffRegister", model);
-
-
+                TempData["ErrorMessage"] = "Ürün Oluşturulamadı, lütfen girdiğiniz bilgileri kontrol ediniz";
+                return RedirectToAction("ProductCreate", model);
             }
-
         }
+
+
 
 
         //Delete Post

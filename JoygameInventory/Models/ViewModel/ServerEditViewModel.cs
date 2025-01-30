@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JoygameInventory.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace JoygameInventory.Data.Entities
+namespace JoygameInventory.Models.ViewModel
 {
-    public class Servers
+
+
+public class ServerEditViewModel
     {
         [Key]
         public int ServerId { get; set; }
@@ -11,8 +14,8 @@ namespace JoygameInventory.Data.Entities
         public string? MACAddress { get; set; }
         public string? OperatingSystem { get; set; }
         public string? CPU { get; set; }
-        public int RAM { get; set; }
-        public int Storage { get; set; }
+        public int? RAM { get; set; }
+        public int? Storage { get; set; }
         public string? Status { get; set; }
         public string? Location { get; set; }
         public DateTime DateInstalled { get; set; }
@@ -21,11 +24,13 @@ namespace JoygameInventory.Data.Entities
         public string? NetworkInterface { get; set; }
         public string? PowerStatus { get; set; }
         public string? BackupStatus { get; set; }
-
-
-
-
-
-
     }
+
+
+
 }
+
+
+
+
+
