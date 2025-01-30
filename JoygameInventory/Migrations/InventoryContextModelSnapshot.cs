@@ -126,7 +126,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3800),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(858),
                             PreviusAssigmenId = 3,
                             ProductId = 1,
                             UserId = 1
@@ -134,7 +134,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3804),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(862),
                             PreviusAssigmenId = 3,
                             ProductId = 2,
                             UserId = 2
@@ -142,7 +142,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3805),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(863),
                             PreviusAssigmenId = 3,
                             ProductId = 3,
                             UserId = 1
@@ -150,7 +150,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3806),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(864),
                             PreviusAssigmenId = 3,
                             ProductId = 4,
                             UserId = 2
@@ -158,7 +158,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 5,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3807),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(865),
                             PreviusAssigmenId = 3,
                             ProductId = 5,
                             UserId = 3
@@ -166,7 +166,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 6,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3808),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(868),
                             PreviusAssigmenId = 3,
                             ProductId = 16,
                             UserId = 4
@@ -174,7 +174,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 7,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3810),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(869),
                             PreviusAssigmenId = 3,
                             ProductId = 18,
                             UserId = 5
@@ -182,7 +182,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 8,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3811),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(870),
                             PreviusAssigmenId = 3,
                             ProductId = 19,
                             UserId = 6
@@ -190,7 +190,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 9,
-                            AssignmentDate = new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3812),
+                            AssignmentDate = new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(871),
                             PreviusAssigmenId = 3,
                             ProductId = 20,
                             UserId = 6
@@ -430,14 +430,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2914d6af-0733-4c67-b096-c8009f3fcfa7",
+                            ConcurrencyStamp = "4d12cfa0-3741-4a84-a6ad-80932d6913fb",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a4b4d502-129a-4fa3-a7e4-b1c08373aff9",
+                            SecurityStamp = "7e2425b1-e2f2-4db5-8587-133bdb500a5c",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -445,14 +445,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55a722ab-7b5c-4c57-92a4-6f1652df157d",
+                            ConcurrencyStamp = "49312212-9ddf-44b3-9d75-f00e4cda646f",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "93a4a38b-65c7-4ac2-b156-7df2fa4ab6b7",
+                            SecurityStamp = "28bdecba-c8a0-43d7-95fd-5992ae3d391a",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -460,14 +460,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67a92574-7ae9-46f6-bee4-79442261a78f",
+                            ConcurrencyStamp = "f3d21ea0-451a-41fa-8da3-0e094bc532fa",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e84c82e9-a896-45cf-b864-7eb15631f1aa",
+                            SecurityStamp = "2619b5be-782b-42f6-ab09-2e18fb6e0f80",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });
@@ -674,75 +674,63 @@ namespace JoygameInventory.Migrations
 
             modelBuilder.Entity("JoygameInventory.Data.Entities.Servers", b =>
                 {
-                    b.Property<int>("ServerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("BackupStatus")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CPU")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateInstalled")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HostName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IPAddress")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MACAddress")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NetworkInterface")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OperatingSystem")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PowerStatus")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("RAM")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SerialNumber")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ServerName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Storage")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ServerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Servers");
 
                     b.HasData(
                         new
                         {
-                            ServerId = 1,
+                            Id = 1,
                             BackupStatus = "Completed",
                             CPU = "Intel Xeon E5-2670",
                             DateInstalled = new DateTime(2020, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -761,7 +749,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 2,
+                            Id = 2,
                             BackupStatus = "Pending",
                             CPU = "AMD Ryzen 9 5950X",
                             DateInstalled = new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -780,7 +768,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 3,
+                            Id = 3,
                             BackupStatus = "Not Completed",
                             CPU = "Intel Core i7-9700K",
                             DateInstalled = new DateTime(2022, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -799,7 +787,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 4,
+                            Id = 4,
                             BackupStatus = "Completed",
                             CPU = "Intel Xeon Gold 6248",
                             DateInstalled = new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -818,7 +806,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 5,
+                            Id = 5,
                             BackupStatus = "In Progress",
                             CPU = "AMD EPYC 7742",
                             DateInstalled = new DateTime(2022, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -837,7 +825,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 6,
+                            Id = 6,
                             BackupStatus = "Completed",
                             CPU = "Intel Core i5-8500",
                             DateInstalled = new DateTime(2021, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -856,7 +844,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 7,
+                            Id = 7,
                             BackupStatus = "Completed",
                             CPU = "Intel Core i9-9900K",
                             DateInstalled = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -875,7 +863,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 8,
+                            Id = 8,
                             BackupStatus = "Pending",
                             CPU = "Intel Xeon E3-1230",
                             DateInstalled = new DateTime(2020, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -894,7 +882,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 9,
+                            Id = 9,
                             BackupStatus = "Not Completed",
                             CPU = "AMD Ryzen 5 3600",
                             DateInstalled = new DateTime(2022, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -913,7 +901,7 @@ namespace JoygameInventory.Migrations
                         },
                         new
                         {
-                            ServerId = 10,
+                            Id = 10,
                             BackupStatus = "Completed",
                             CPU = "Intel Core i7-10700K",
                             DateInstalled = new DateTime(2021, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),

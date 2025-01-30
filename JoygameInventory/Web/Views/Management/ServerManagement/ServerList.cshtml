@@ -92,11 +92,11 @@
                             <td>@server.Status</td>
                             <td>@server.Location</td>
                             <td>
-                                <a asp-controller="Management" asp-action="ServerDetails" asp-route-id="@server.ServerId" class="btn btn-outline-dark btn-custom">Detaylar</a>
+                                <a asp-controller="Management" asp-action="ServerDetails" asp-route-id="@server.Id" class="btn btn-outline-dark btn-custom">Detaylar</a>
                             </td>
                             <td>
                                 <form asp-controller="Management" asp-action="ServerDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
-                                    <input type="hidden" value="@server.ServerId" name="id">
+                                    <input type="hidden" value="@server.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Sil</button>
                                 </form>
                             </td>

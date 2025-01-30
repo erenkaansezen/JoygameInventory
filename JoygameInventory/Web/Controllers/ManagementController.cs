@@ -167,7 +167,7 @@ namespace JoygameInventory.Web.Controllers
                 // ViewModel'i oluşturuyoruz
                 var model = new ServerEditViewModel
                 {
-                    ServerId = server.ServerId,
+                    Id = server.Id,
                     ServerName = server.ServerName,
                     IPAddress = server.IPAddress,
                     MACAddress = server.MACAddress,
@@ -285,6 +285,11 @@ namespace JoygameInventory.Web.Controllers
         public async Task<IActionResult> StaffRegister()
         {
             return View("StaffManagement/StaffRegister");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ServerCreate()
+        {
+            return View("ServerManagement/ServerCreate");
         }
 
 
@@ -428,19 +433,32 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ServerDetails(ServerEditViewModel model)
         {
-            var server = await _serverservice.GetServerByIdAsync(model.ServerId);
+            // Model doğrulamasını yapalım
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var server = await _serverservice.GetServerByIdAsync(model.Id);
 
             if (server != null)
             {
+                // Nullable değerler için null kontrolü yapıyoruz
+                if (model.RAM.HasValue)
+                {
+                    server.RAM = model.RAM.Value;
+                }
 
-                server.ServerId = model.ServerId;
+                if (model.Storage.HasValue)
+                {
+                    server.Storage = model.Storage.Value;
+                }
+
                 server.ServerName = model.ServerName;
                 server.IPAddress = model.IPAddress;
                 server.MACAddress = model.MACAddress;
                 server.OperatingSystem = model.OperatingSystem;
                 server.CPU = model.CPU;
-                server.RAM = model.RAM.Value;
-                server.Storage = model.Storage.Value;
                 server.Status = model.Status;
                 server.Location = model.Location;
                 server.DateInstalled = model.DateInstalled;
@@ -450,19 +468,22 @@ namespace JoygameInventory.Web.Controllers
                 server.PowerStatus = model.PowerStatus;
                 server.BackupStatus = model.BackupStatus;
 
+                // Sunucuyu güncelliyoruz
                 await _serverservice.UpdateServerAsync(server);
 
-                return View("ServerManagement/ServerList");
+                // Başarı mesajı ekliyoruz
+                TempData["SuccessMessage"] = "Sunucu başarıyla güncellendi!";
 
-
+                // Güncellenen sunucunun detaylarına yönlendiriyoruz
+                return RedirectToAction("ServerDetails", new { id = server.Id });
             }
             else
             {
-                return View("ServerManagement/ServerList");
-
+                // Sunucu bulunamazsa ana sayfaya yönlendirebiliriz
+                return RedirectToAction("");
             }
-
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
@@ -690,7 +711,50 @@ namespace JoygameInventory.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ServerCreate(ServerEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ServerManagement/ServerCreate", model);
 
+            }
+
+            var servers = new Servers
+            {
+                ServerName = model.ServerName,
+                IPAddress = model.IPAddress,
+                MACAddress = model.MACAddress,
+                OperatingSystem = model.OperatingSystem,
+                CPU = model.CPU,
+                Status = model.Status,
+                Location = model.Location,
+                DateInstalled = model.DateInstalled,
+                HostName = model.HostName,
+                SerialNumber = model.SerialNumber,
+                NetworkInterface = model.NetworkInterface,
+                PowerStatus = model.PowerStatus,
+                BackupStatus = model.BackupStatus,
+                RAM = model.RAM.Value,
+                Storage = model.Storage.Value
+
+            };
+            var result = await _serverservice.CreateServer(servers);
+
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
+                return RedirectToAction("ServerList");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulurken bir hata oluştu.");
+                return View("ServerManagement/ServerCreate", model);
+
+
+            }
+
+        }
 
 
         //Delete Post

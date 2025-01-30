@@ -5,7 +5,7 @@ namespace JoygameInventory.Data.Entities
     public class Servers
     {
         [Key]
-        public int ServerId { get; set; }
+        public int Id { get; set; }
         public string? ServerName { get; set; }
         public string? IPAddress { get; set; }
         public string? MACAddress { get; set; }

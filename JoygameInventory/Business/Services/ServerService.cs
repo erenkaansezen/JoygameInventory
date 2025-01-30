@@ -32,14 +32,21 @@ namespace JoygameInventory.Business.Services
 
         public async Task<Servers> GetServerByIdAsync(int id)
         {
-            // Veritabanından staff'ı ID ile arıyoruz
-            return await _context.Servers.FirstOrDefaultAsync(s => s.ServerId == id);
+            return await _context.Servers.FirstOrDefaultAsync(s => s.Id == id);
         }
         public async Task UpdateServerAsync(Servers server)
         {
             _context.Servers.Update(server);
              await _context.SaveChangesAsync();
 
+        }
+
+        public async Task<bool> CreateServer(Servers servers)
+        {
+            _context.Servers.Add(servers);
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

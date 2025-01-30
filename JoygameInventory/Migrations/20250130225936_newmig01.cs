@@ -107,27 +107,27 @@ namespace JoygameInventory.Migrations
                 name: "Servers",
                 columns: table => new
                 {
-                    ServerId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ServerName = table.Column<string>(type: "TEXT", nullable: false),
-                    IPAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    MACAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    OperatingSystem = table.Column<string>(type: "TEXT", nullable: false),
-                    CPU = table.Column<string>(type: "TEXT", nullable: false),
+                    ServerName = table.Column<string>(type: "TEXT", nullable: true),
+                    IPAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    MACAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    OperatingSystem = table.Column<string>(type: "TEXT", nullable: true),
+                    CPU = table.Column<string>(type: "TEXT", nullable: true),
                     RAM = table.Column<int>(type: "INTEGER", nullable: false),
                     Storage = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    Location = table.Column<string>(type: "TEXT", nullable: true),
                     DateInstalled = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    HostName = table.Column<string>(type: "TEXT", nullable: false),
-                    SerialNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    NetworkInterface = table.Column<string>(type: "TEXT", nullable: false),
-                    PowerStatus = table.Column<string>(type: "TEXT", nullable: false),
-                    BackupStatus = table.Column<string>(type: "TEXT", nullable: false)
+                    HostName = table.Column<string>(type: "TEXT", nullable: true),
+                    SerialNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    NetworkInterface = table.Column<string>(type: "TEXT", nullable: true),
+                    PowerStatus = table.Column<string>(type: "TEXT", nullable: true),
+                    BackupStatus = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Servers", x => x.ServerId);
+                    table.PrimaryKey("PK_Servers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,9 +343,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "2914d6af-0733-4c67-b096-c8009f3fcfa7", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "a4b4d502-129a-4fa3-a7e4-b1c08373aff9", false, "eren_sezen" },
-                    { "2", 0, "55a722ab-7b5c-4c57-92a4-6f1652df157d", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "93a4a38b-65c7-4ac2-b156-7df2fa4ab6b7", false, "osman_benlice" },
-                    { "3", 0, "67a92574-7ae9-46f6-bee4-79442261a78f", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "e84c82e9-a896-45cf-b864-7eb15631f1aa", false, "onur.unlu" }
+                    { "1", 0, "4d12cfa0-3741-4a84-a6ad-80932d6913fb", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "7e2425b1-e2f2-4db5-8587-133bdb500a5c", false, "eren_sezen" },
+                    { "2", 0, "49312212-9ddf-44b3-9d75-f00e4cda646f", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "28bdecba-c8a0-43d7-95fd-5992ae3d391a", false, "osman_benlice" },
+                    { "3", 0, "f3d21ea0-451a-41fa-8da3-0e094bc532fa", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "2619b5be-782b-42f6-ab09-2e18fb6e0f80", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -394,7 +394,7 @@ namespace JoygameInventory.Migrations
 
             migrationBuilder.InsertData(
                 table: "Servers",
-                columns: new[] { "ServerId", "BackupStatus", "CPU", "DateInstalled", "HostName", "IPAddress", "Location", "MACAddress", "NetworkInterface", "OperatingSystem", "PowerStatus", "RAM", "SerialNumber", "ServerName", "Status", "Storage" },
+                columns: new[] { "Id", "BackupStatus", "CPU", "DateInstalled", "HostName", "IPAddress", "Location", "MACAddress", "NetworkInterface", "OperatingSystem", "PowerStatus", "RAM", "SerialNumber", "ServerName", "Status", "Storage" },
                 values: new object[,]
                 {
                     { 1, "Completed", "Intel Xeon E5-2670", new DateTime(2020, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "server001", "192.168.1.10", "Data Center A", "00:1A:2B:3C:4D:5E", "Ethernet", "Windows Server 2019", "On", 32, "SN123456789", "Server001", "Active", 1024 },
@@ -423,15 +423,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3800), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3804), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3805), 3, 3, 1 },
-                    { 4, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3806), 3, 4, 2 },
-                    { 5, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3807), 3, 5, 3 },
-                    { 6, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3808), 3, 16, 4 },
-                    { 7, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3810), 3, 18, 5 },
-                    { 8, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3811), 3, 19, 6 },
-                    { 9, new DateTime(2025, 1, 30, 20, 56, 43, 286, DateTimeKind.Utc).AddTicks(3812), 3, 20, 6 }
+                    { 1, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(858), 3, 1, 1 },
+                    { 2, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(862), 3, 2, 2 },
+                    { 3, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(863), 3, 3, 1 },
+                    { 4, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(864), 3, 4, 2 },
+                    { 5, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(865), 3, 5, 3 },
+                    { 6, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(868), 3, 16, 4 },
+                    { 7, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(869), 3, 18, 5 },
+                    { 8, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(870), 3, 19, 6 },
+                    { 9, new DateTime(2025, 1, 30, 22, 59, 36, 43, DateTimeKind.Utc).AddTicks(871), 3, 20, 6 }
                 });
 
             migrationBuilder.InsertData(

@@ -10,8 +10,7 @@
     </h2>
     <hr />
 
-    <form asp-action="ServerDetails" method="post">
-        <input name="Id" type="hidden" value="@Model.Id" />
+    <form asp-action="ServerCreate" method="post">
         <a asp-controller="Management" asp-action="ServerList" class="btn btn-dark">Geriye Dön</a>
         <br />
         <br />
@@ -92,11 +91,11 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label asp-for="PowerStatus" class="form-label">Güç Durumu</label>
-                    <input asp-for="PowerStatus" id="PowerStatus" class="form-control" value="@Model.PowerStatus" />
+                    <input asp-for="PowerStatus" id="PowerStatus" class="form-control" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="BackupStatus" class="form-label">Yedek Durumu</label>
-                    <input asp-for="BackupStatus" id="BackupStatus" class="form-control" value="@Model.BackupStatus" />
+                    <input asp-for="BackupStatus" id="BackupStatus" class="form-control" />
                 </div>
             </div>
         </section>
