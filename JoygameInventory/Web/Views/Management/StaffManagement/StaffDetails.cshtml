@@ -2,7 +2,12 @@
 @{
     Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
 }
+<!-- Bootstrap CSS (Yükleme) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- Bootstrap JS ve jQuery (Yükleme) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <br />
 <h3> | Kullanıcı Bilgisi </h3>
 <br />
@@ -37,23 +42,53 @@
             Zimmetli Envanterler
         </div>
         <div class="card-body">
-            @if (Model.Document != null)
+        @if (Model.Document != null)
             {
+            <div class="d-inline-block mr-2">
                 <a asp-controller="Management"
                    asp-action="ViewZimmetDocument"
                    asp-route-documentName="@Model.Document"
                    class="btn btn-outline-dark"
                    target="_blank">
-                    <i class="fas fa-eye"></i> Belgeyi Görüntüle
+                    <i class="fas fa-eye"></i> Zimmet Belgesini Görüntüle
                 </a>
+            </div>
+
+            <div class="d-inline-block">
+                <form asp-controller="Management"
+                      asp-action="DeleteZimmetDocument"
+                      method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="fas fa-eye"></i> Zimmet Belgesini Kaldır
+                    </button>
+                </form>
+            </div>
             }
-            else
-            {
-                <a asp-controller="Management"
-                   class="btn btn-outline-dark">
+        else
+        {
+            <div>
+                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#fileUploadForm">
                     <i class="fas fa-plus"></i> Zimmet Dosyası Ekle
-                </a>
-            }
+                </button>
+
+                <!-- Dosya Yükleme Formu (Collapse olarak gösterilecek) -->
+                <div id="fileUploadForm" class="collapse mt-3">
+                    <form asp-action="AddZimmetDocument" method="post" enctype="multipart/form-data">
+                        <input name="Id" type="hidden" value="@Model.Id" />
+                        <input name="Name" type="hidden" value="@Model.Name" />
+                        <input name="Surname" type="hidden" value="@Model.Surname" />
+
+
+                        <div class="form-group">
+                            <label for="modelFile ">Görsel Yükle:</label>
+                            <input type="file" name="modelFile" class="form-control" />
+                        </div>
+                        <button class="btn btn-dark">Yükle</button>
+                    </form>
+                </div>
+            </div>
+        }
 
 
 

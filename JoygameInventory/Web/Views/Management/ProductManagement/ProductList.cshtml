@@ -7,37 +7,44 @@
 <head>
     <style>
         .table-container {
-        margin-top: 20px;
+            margin-top: 20px;
         }
 
         .table th, .table td {
-        vertical-align: middle;
+            vertical-align: middle;
+            text-align: center; /* Diğer kolonlar için yazıları ortalamak */
+            padding: 15px; /* Kolonlar arasındaki boşluğu artırmak için */
         }
 
+            /* Sadece Açıklama kolonunun hizalamasını sola yap */
+            .table td.description {
+                text-align: left; /* Açıklama kolonundaki verileri sola hizala */
+            }
+
         .btn-custom {
-        padding: 8px 12px;
-        font-size: 14px;
+            padding: 8px 12px;
+            font-size: 14px;
         }
 
         .btn-edit {
-        background-color: #f0ad4e;
-        color: white;
+            background-color: #f0ad4e;
+            color: white;
         }
 
         .btn-delete {
-        background-color: #d9534f;
-        color: white;
+            background-color: #d9534f;
+            color: white;
         }
 
         .btn-view {
-        background-color: #5bc0de;
-        color: white;
+            background-color: #5bc0de;
+            color: white;
         }
 
         .product-img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -52,7 +59,6 @@
         <div class="row">
             <div class="col-md-6">
                 <a asp-controller="Management" asp-action="ProductCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Ürün Ekle</a>
-
             </div>
             <div class="col-md-6">
                 <form asp-action="ProductList" method="get">
@@ -71,10 +77,10 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Ürün Barkodu</th>
                         <th>Ürün Adı</th>
                         <th>Açıklama</th>
-                        <th>Seri Numarası</th>
                         <th>Teslim Durumu</th>
                     </tr>
                 </thead>
@@ -82,22 +88,21 @@
                     @foreach (var product in Model)
                     {
                         <tr>
+                            <th>@product.Id</th>
                             <td>@product.ProductBarkod</td>
                             <td>@product.ProductName</td>
-                            <td>@product.Description</td>
-                            <td>@product.SerialNumber</td>
-                            <td>@product.Status
-                            </td>
+                            <td class="description">@product.Description</td> <!-- Açıklama kolonuna özel class ekledik -->
+                            <td>@product.Status</td>
 
                             <td>
                                 <a asp-controller="Management" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
-                           </td>
-                           <td>
+                            </td>
+                            <td>
                                 <form asp-controller="Management" asp-action="ProductDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@product.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Envanteri Sil</button>
                                 </form>
-                           </td>
+                            </td>
                         </tr>
                     }
                 </tbody>

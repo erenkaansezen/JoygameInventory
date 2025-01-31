@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
@@ -24,7 +25,8 @@ namespace JoygameInventory.Business.Services
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(server => EF.Functions.Like(server.ServerName, "%" + searchTerm + "%"));
+                query = query.Where(server => EF.Functions.Like(server.ServerName, "%" + searchTerm + "%") ||
+                                             EF.Functions.Like(server.IPAddress, "%" + searchTerm + "%"));
             }
 
             return await query.ToListAsync();

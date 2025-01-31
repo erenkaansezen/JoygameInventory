@@ -11,7 +11,14 @@
 
         .table th, .table td {
             vertical-align: middle;
+            text-align: center; /* Diğer kolonlar için yazıları ortalamak */
+            padding: 15px; /* Kolonlar arasındaki boşluğu artırmak için */
         }
+
+            /* Sadece Açıklama kolonunun hizalamasını sola yap */
+            .table td.description {
+                text-align: left; /* Açıklama kolonundaki verileri sola hizala */
+            }
 
         .btn-custom {
             padding: 8px 12px;
@@ -32,12 +39,6 @@
             background-color: #5bc0de;
             color: white;
         }
-
-        .product-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-        }
     </style>
 </head>
 <body>
@@ -55,7 +56,7 @@
             <div class="col-md-6">
                 <form asp-action="ServerList" method="get">
                     <div class="input-group mb-3">
-                        <input type="text" name="searchTerm" class="form-control" placeholder="Sunucu Adı ile ara" />
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Sunucu Adı Veya Ip Adresi İle Ara" />
                         <button class="btn btn-outline-secondary" type="submit">Ara</button>
                     </div>
                 </form>
@@ -67,30 +68,27 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Sunucu Adı</th>
                         <th>IP Adresi</th>
-                        <th>MAC Adresi</th>
                         <th>İşletim Sistemi</th>
                         <th>RAM (GB)</th>
                         <th>Depolama (GB)</th>
                         <th>Durum</th>
-                        <th>Konum</th>
-                        <th>Detaylar</th>
-                        <th>Sil</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var server in Model)
                     {
                         <tr>
+                            <td>@server.Id</td>
                             <td>@server.ServerName</td>
                             <td>@server.IPAddress</td>
-                            <td>@server.MACAddress</td>
                             <td>@server.OperatingSystem</td>
                             <td>@server.RAM</td>
                             <td>@server.Storage</td>
                             <td>@server.Status</td>
-                            <td>@server.Location</td>
                             <td>
                                 <a asp-controller="Management" asp-action="ServerDetails" asp-route-id="@server.Id" class="btn btn-outline-dark btn-custom">Detaylar</a>
                             </td>

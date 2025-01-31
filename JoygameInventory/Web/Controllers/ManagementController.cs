@@ -319,6 +319,53 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddZimmetDocument(StaffEditViewModel model, IFormFile modelFile)
+        {
+            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id); // id'yi almak için model üzerinden kullanabilirsiniz.
+            if (staffs != null)
+            {
+
+                if (modelFile != null)
+                {
+                    // Dosya uzantısını al
+                    var extension = Path.GetExtension(modelFile.FileName);
+
+                    // Benzersiz dosya adı oluştur
+                    var DocumentName = $"{model.Name}{model.Surname}{DateTime.Now:dd-MM-yyyy}{extension}";
+                    // Dosyanın kaydedileceği yolu oluştur
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents", DocumentName);
+
+                    // Dosyayı belirtilen konuma kaydet
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await modelFile.CopyToAsync(stream);
+                    }
+
+                    // Slider modeline görsel adını ata
+                    model.Document = DocumentName;
+
+
+                }
+                staffs.Document = model.Document;
+                await _staffmanager.UpdateStaffAsync(staffs);
+            }
+
+            return RedirectToAction("StaffDetails", new { id = model.Id }); // Yönlendirme
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteZimmetDocument(StaffEditViewModel model)
+        {
+            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id); // id'yi almak için model üzerinden kullanabilirsiniz.
+            if (staffs != null)
+            {
+                staffs.Document = null;
+                await _staffmanager.UpdateStaffAsync(staffs);
+            }
+
+            return RedirectToAction("StaffDetails", new { id = model.Id }); // Yönlendirme
+        }
+
 
 
 
