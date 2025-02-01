@@ -33,6 +33,21 @@
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
     </div>
+    <div class="mb-3">
+        <label asp-for="SelectedTeamId" class="form-label">Ürün Kategorisi</label>
+        <select asp-for="SelectedTeamId" class="form-control">
+            <option>
+                Takım seç
+            </option>
+            @foreach (var team in Model.Team)
+            {
+                <option value="@team.Id">
+                    @team.TeamName
+                </option>
+            }
+        </select>
+
+    </div>
     <button class="btn btn-dark">Kaydet</button>
 </form>
 <br />

@@ -29,7 +29,7 @@ namespace JoygameInventory.Data.Context
                     UserName = adminUser,
                     Email = "admin@store.com",
                     PhoneNumber = "1234567890",
-
+                    
 
                 };
                 await userManager.CreateAsync(user, adminPassword);

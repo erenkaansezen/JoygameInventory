@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using JoygameInventory.Data.Entities;
+﻿using JoygameInventory.Data.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Data.Context
 {
@@ -19,6 +18,7 @@ namespace JoygameInventory.Data.Context
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();
         public DbSet<Servers> Servers => Set<Servers>();
+        public DbSet<Team> Teams => Set<Team>();
 
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
@@ -35,22 +35,22 @@ namespace JoygameInventory.Data.Context
                 // Primary Key
                 entity.HasKey(ia => ia.Id);
 
-                entity.HasOne(ia => ia.Product)  
-                      .WithMany(p => p.InventoryAssigments) 
+                entity.HasOne(ia => ia.Product)
+                      .WithMany(p => p.InventoryAssigments)
                       .HasForeignKey(ia => ia.ProductId)
-                      .OnDelete(DeleteBehavior.Cascade); 
+                      .OnDelete(DeleteBehavior.Cascade);
 
 
                 entity.HasOne(ia => ia.User)
-                      .WithMany(u => u.InventoryAssigments) 
+                      .WithMany(u => u.InventoryAssigments)
                       .HasForeignKey(ia => ia.UserId)
-                      .OnDelete(DeleteBehavior.Cascade); 
+                      .OnDelete(DeleteBehavior.Cascade);
 
-     
-                entity.HasOne(ia => ia.PreviusAssigmentUserNavigation)  
-                      .WithMany() 
+
+                entity.HasOne(ia => ia.PreviusAssigmentUserNavigation)
+                      .WithMany()
                       .HasForeignKey(ia => ia.PreviusAssigmenId)
-                      .OnDelete(DeleteBehavior.Cascade); 
+                      .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<AssigmentHistory>(entity =>
             {
@@ -75,9 +75,9 @@ namespace JoygameInventory.Data.Context
 
                 entity.Property(p => p.Status)
                       .HasDefaultValue("Depoda");
-                        entity.HasMany(p => p.Categories)
-              .WithMany(c => c.Products)
-              .UsingEntity<ProductCategory>();
+                entity.HasMany(p => p.Categories)
+      .WithMany(c => c.Products)
+      .UsingEntity<ProductCategory>();
 
                 entity.HasIndex(s => s.ProductBarkod)
                        .IsUnique()
@@ -113,6 +113,23 @@ namespace JoygameInventory.Data.Context
                 entity.HasOne(pc => pc.Category)
                       .WithMany(c => c.ProductCategories)
                       .HasForeignKey(pc => pc.CategoryId)
+                      .OnDelete(DeleteBehavior.Cascade); // Kategori silindiğinde ilişkiyi de sil
+            });
+            modelBuilder.Entity<UserTeam>(entity =>
+            {
+                // Birincil Anahtar
+                entity.HasKey(ia => ia.Id);
+
+                // Ürün ile ilişkiyi kuruyoruz
+                entity.HasOne(pc => pc.Staff)
+                      .WithMany(p => p.Teams)
+                      .HasForeignKey(pc => pc.StaffId)
+                      .OnDelete(DeleteBehavior.Cascade); // Ürün silindiğinde ilişkiyi de sil
+
+                // Kategori ile ilişkiyi kuruyoruz
+                entity.HasOne(pc => pc.Team)
+                      .WithMany(c => c.Teams)
+                      .HasForeignKey(pc => pc.TeamId)
                       .OnDelete(DeleteBehavior.Cascade); // Kategori silindiğinde ilişkiyi de sil
             });
             modelBuilder.Entity<JoyUser>(entity =>
@@ -156,11 +173,40 @@ namespace JoygameInventory.Data.Context
                             new() {Id=1,Name="Masaüstü",Url="Masaüstü"},
                             new() {Id=2,Name="Notebook",Url="Notebook"},
                             new() {Id=3,Name="Ekipman",Url="Ekipman"},
-                            new() {Id=4,Name="Donanım",Url="Donanım"}, 
+                            new() {Id=4,Name="Donanım",Url="Donanım"},
                 }
 
             );
-                    modelBuilder.Entity<ProductCategory>().HasData(
+            modelBuilder.Entity<Team>().HasData(
+                new List<Team>()
+                {
+                            new() {Id=1,TeamName="Madbyte"},
+                            new() {Id=2,TeamName="JoyGame"},
+                            new() {Id=3,TeamName="DesertWarrior"},
+                            new() {Id=4,TeamName="Growth"},
+                            new() {Id=5,TeamName="AI"},
+
+
+
+                }
+
+            );
+            modelBuilder.Entity<UserTeam>().HasData(
+                    new List<UserTeam>()
+                    {
+                                    new UserTeam() { Id = 1, StaffId = 1, TeamId = 1 },
+                                    new UserTeam() { Id = 2, StaffId = 2, TeamId = 1 },
+                                    new UserTeam() { Id = 3, StaffId = 3, TeamId = 2 },
+                                    new UserTeam() { Id = 4, StaffId = 4, TeamId = 2 },
+                                    new UserTeam() { Id = 5, StaffId = 5, TeamId = 3 },
+                                    new UserTeam() { Id = 6, StaffId = 6, TeamId = 3 },
+                                    new UserTeam() { Id = 7, StaffId = 7, TeamId = 4 },
+                                    new UserTeam() { Id = 8, StaffId = 8, TeamId = 4 },
+                                    new UserTeam() { Id = 9, StaffId = 9, TeamId = 5 },
+                                    new UserTeam() { Id = 10, StaffId = 10, TeamId = 5 },
+                    }
+                );
+            modelBuilder.Entity<ProductCategory>().HasData(
                 new List<ProductCategory>()
                 {
                     new ProductCategory() { Id = 1, ProductId = 16, CategoryId = 1 },
@@ -232,7 +278,7 @@ namespace JoygameInventory.Data.Context
 
             // Add InventoryAssigments (Zimmetler)
             modelBuilder.Entity<InventoryAssigment>().HasData(
-                    new InventoryAssigment { Id = 1, ProductId = 1, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3},
+                    new InventoryAssigment { Id = 1, ProductId = 1, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
                     new InventoryAssigment { Id = 2, ProductId = 2, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
                     new InventoryAssigment { Id = 3, ProductId = 3, UserId = 1, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },
                     new InventoryAssigment { Id = 4, ProductId = 4, UserId = 2, AssignmentDate = DateTime.UtcNow, PreviusAssigmenId = 3 },

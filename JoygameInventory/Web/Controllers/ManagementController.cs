@@ -238,6 +238,7 @@ namespace JoygameInventory.Web.Controllers
             if (staff != null)
             {
                 var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
+   
 
                 var model = new StaffEditViewModel
                 {

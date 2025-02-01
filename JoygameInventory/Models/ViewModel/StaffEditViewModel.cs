@@ -28,8 +28,14 @@ namespace JoygameInventory.Models.ViewModel
 
         public string? Document { get; set; } = string.Empty;
 
+        [Range(1, int.MaxValue, ErrorMessage = "Geçerli bir takım seçin.")]
+        public int SelectedTeamId { get; set; }
 
-        public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; } 
+
+        public List<Team> Team { get; set; }
+        public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
+        public IEnumerable<UserTeam>? UserTeam { get; set; }
+
 
 
     }
