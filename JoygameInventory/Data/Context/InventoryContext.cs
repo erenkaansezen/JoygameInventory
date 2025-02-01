@@ -14,6 +14,7 @@ namespace JoygameInventory.Data.Context
         // DbSet tanımlamaları
         public DbSet<Product> Products => Set<Product>();
         public DbSet<InventoryAssigment> InventoryAssigments => Set<InventoryAssigment>();
+        public DbSet<UserTeam> userTeam => Set<UserTeam>();
 
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();

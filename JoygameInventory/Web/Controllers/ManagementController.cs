@@ -28,7 +28,9 @@ namespace JoygameInventory.Web.Controllers
         public RoleManager<JoyRole> _rolemanager;
         public AssigmentService _assigmentservice;
         public ServerService _serverservice;
-        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice)
+        public TeamService _teamservice;
+
+        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice, TeamService teamservice)
         {
             _usermanager = usermanager;
             _productservice = productservice;
@@ -36,6 +38,7 @@ namespace JoygameInventory.Web.Controllers
             _assigmentservice = assigmentservice;
             _staffmanager = staffmanager;
             _serverservice = serverservice;
+            _teamservice = teamservice;
         }
 
 
@@ -160,6 +163,7 @@ namespace JoygameInventory.Web.Controllers
             // Sunucu bilgilerini alıyoruz
             var server = await _serverservice.GetServerByIdAsync(id);
 
+
             if (server != null)
             {
 
@@ -238,7 +242,7 @@ namespace JoygameInventory.Web.Controllers
             if (staff != null)
             {
                 var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
-   
+
 
                 var model = new StaffEditViewModel
                 {
@@ -285,7 +289,12 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> StaffRegister()
         {
-            return View("StaffManagement/StaffRegister");
+            var teams = await _teamservice.GetAllTeamsAsync();
+            var model = new StaffEditViewModel
+            {
+                Team = teams
+            };
+            return View("StaffManagement/StaffRegister",model);
         }
         [HttpGet]
         public async Task<IActionResult> ServerCreate()
@@ -681,18 +690,33 @@ namespace JoygameInventory.Web.Controllers
                 ModelState.AddModelError("Email", "Bu Kullanıcı Kayıtlı.");
                 return View("StaffManagement/StaffRegister", model);
             }
+            if (model.SelectedTeamId <= 0)
+            {
+                TempData["ErrorMessage"] = "Lütfen Kategori Seçiniz";
+                return RedirectToAction("ProductCreate", model);
+            }
 
             var staff = new JoyStaff
             {
                 Name = model.Name,
                 Surname = model.Surname,
                 Email = model.Email,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+
+
             };
             var result = await _staffmanager.CreateStaff(staff);
 
             if (result)
             {
+                var staffTeam = new UserTeam
+                {
+                    StaffId = staff.Id, // Ürün ID'si
+                    TeamId = model.SelectedTeamId // Seçilen kategori ID'si
+                };
+
+                // ProductCategory kaydını ekliyoruz
+                await _teamservice.AddUserTeam(staffTeam);
                 TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
                 return RedirectToAction("StaffDetails", new { id = staff.Id });
             }

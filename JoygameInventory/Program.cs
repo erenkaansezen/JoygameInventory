@@ -13,6 +13,8 @@ builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<JoyStaffService>();
 builder.Services.AddScoped<ServerService>();
+builder.Services.AddScoped<TeamService>();
+
 
 
 

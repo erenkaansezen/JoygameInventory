@@ -32,7 +32,7 @@ namespace JoygameInventory.Models.ViewModel
         public int SelectedTeamId { get; set; }
 
 
-        public List<Team> Team { get; set; }
+        public List<Team>? Team { get; set; }
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
         public IEnumerable<UserTeam>? UserTeam { get; set; }
 

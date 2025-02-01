@@ -32,6 +32,21 @@
         <label asp-for="PhoneNumber"></label>
         <input asp-for="PhoneNumber" class="form-control" />
     </div>
+    <div class="mb-3">
+        <label asp-for="SelectedTeamId" class="form-label">Takım Seç</label>
+        <select asp-for="SelectedTeamId" class="form-control">
+            <option>
+                Takım seç
+            </option>
+            @foreach (var team in Model.Team)
+            {
+                <option value="@team?.Id">
+                    @team?.TeamName
+                </option>
+            }
+        </select>
+
+    </div>
 
 
 
