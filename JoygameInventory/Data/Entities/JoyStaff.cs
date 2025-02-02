@@ -25,6 +25,7 @@ namespace JoygameInventory.Data.Entities
 
         public ICollection<UserTeam> Teams { get; set; }
 
+
         public ICollection<InventoryAssigment>? InventoryAssigments { get; set; }
         public ICollection<AssigmentHistory>? AssigmentHistorys { get; set; }
 

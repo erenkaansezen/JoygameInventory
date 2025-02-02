@@ -24,10 +24,17 @@ namespace JoygameInventory.Business.Services
 
             return usersTeam;
         }
+
+
         public async Task<List<Team>> GetAllTeamsAsync()
         {
             // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Teams.ToListAsync();
+        }
+        public async Task UpdateTeamAsync(UserTeam userteams)
+        {
+            _context.userTeam.Update(userteams);
+            await _context.SaveChangesAsync();
         }
         public async Task AddUserTeam(UserTeam staffTeam)
         {

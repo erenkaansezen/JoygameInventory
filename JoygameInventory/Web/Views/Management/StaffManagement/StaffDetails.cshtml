@@ -33,7 +33,53 @@
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
     </div>
+    <div class="card">
+        <div class="card-header">
+            Bulunduğu Ekip : 
+            @if (Model.UserTeam != null)
+            {
+                @foreach (var item in Model.UserTeam)
+                {
+                    @item.Team.TeamName
+                }
+            }
+            else
+            {
+                <p>Personel henüz bir ekibe atanmamıştır.</p>
+            }
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="SelectedTeamId" class="form-label">Yeni Takıma Ata</label>
 
+                <select asp-for="SelectedTeamId" class="form-control">
+                    @if (Model.UserTeam != null && Model.Team != null)
+                    {
+                        @if (Model.UserTeam != null)
+                        {
+                            @foreach (var item in Model.UserTeam)
+                            {
+                                <option value="@item.TeamId">Takım Seç</option>
+                            }
+                            @foreach (var team in Model.Team)
+                            {
+
+                                <option value="@team?.Id">
+
+                                    @team?.TeamName
+                                </option>
+                            }
+                        }
+                    }
+
+
+
+                </select>
+
+            </div>
+        </div>
+    </div>
+    <br />
     <button class="btn btn-dark">Kaydet</button>
 </form>
 <br />

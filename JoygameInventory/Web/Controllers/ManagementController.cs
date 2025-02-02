@@ -101,6 +101,7 @@ namespace JoygameInventory.Web.Controllers
             // Arama terimi varsa, arama sonuçlarını alıyoruz
             var joyStaffs = await _staffmanager.SearchStaff(searchTerm);
 
+
             // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
@@ -242,7 +243,8 @@ namespace JoygameInventory.Web.Controllers
             if (staff != null)
             {
                 var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
-
+                var userteams = await _teamservice.GetUserAssignmentsAsync(staff.Id);
+                var teams = await _teamservice.GetAllTeamsAsync();
 
                 var model = new StaffEditViewModel
                 {
@@ -253,6 +255,8 @@ namespace JoygameInventory.Web.Controllers
                     PhoneNumber = staff.PhoneNumber,
                     Document = staff.Document,
                     InventoryAssigments = inventoryAssignments,
+                    UserTeam = userteams,
+                    Team = teams,
 
                 };
 
@@ -461,7 +465,6 @@ namespace JoygameInventory.Web.Controllers
         public async Task<IActionResult> StaffDetails(StaffEditViewModel model)
         {
             var staffs = await _staffmanager.GetStaffByIdAsync(model.Id);
-
             if (staffs != null)
             {
 
@@ -469,8 +472,33 @@ namespace JoygameInventory.Web.Controllers
                 staffs.Surname = model.Surname;
                 staffs.Email = model.Email;
                 staffs.PhoneNumber = model.PhoneNumber;
+               
+                var usersteam = await _teamservice.GetUserAssignmentsAsync(staffs.Id);
+
+
+                if (usersteam != null && usersteam.Any())
+                {
+                    var userteam = usersteam.FirstOrDefault();
+                    if(model.SelectedTeamId != null)
+                    {
+                        if (userteam.TeamId != model.SelectedTeamId)
+                        {
+                            userteam.TeamId = model.SelectedTeamId;
+
+
+                        }
+
+                        await _teamservice.UpdateTeamAsync(userteam);
+
+                    }
+
+
+
+                }
 
                 bool updateSuccess = await _staffmanager.UpdateStaffAsync(staffs);
+
+
 
                 if (updateSuccess)
                 {
