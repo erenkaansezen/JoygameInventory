@@ -34,6 +34,8 @@ namespace JoygameInventory.Models.ViewModel
 
         public IEnumerable<Team>? Team { get; set; }
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
+        public List<LicenceUser>? LicencesUser { get; set; }
+
         public IEnumerable<UserTeam>? UserTeam { get; set; }
 
 

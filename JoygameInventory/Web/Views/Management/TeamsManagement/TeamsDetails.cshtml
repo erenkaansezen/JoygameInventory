@@ -1,0 +1,60 @@
+﻿@model TeamEditViewModel
+@{
+    Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
+}
+<!-- Bootstrap CSS (Yükleme) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS ve jQuery (Yükleme) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<br />
+<h3> | Kullanıcı Bilgisi </h3>
+<br />
+<p> "@Model.TeamName"  Takımının Detayları </p>
+<hr />
+
+<form asp-action="TeamDetails" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <!-- Kullanıcı Adı ve Email -->
+    <div class="mb-3">
+        <label asp-for="TeamName"></label>
+        <input asp-for="TeamName" class="form-control" />
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Takım'a Bağlı Personeller
+        </div>
+            <div class="card-body">
+            @if (Model.Teams != null && Model.Teams.Any())
+            {
+                <table class="table">
+                    <tbody>
+                        @foreach (var item in Model.Teams)
+                        {
+                            <tr>
+                                <td>@item.Staff.Name @item.Staff.Surname</td>
+                                <td>
+
+                                    <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
+
+
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Bu kullanıcının zimmetli envanteri bulunmamaktadır.</p>
+            }
+            </div>
+
+    </div>
+
+    <button class="btn btn-dark">Kaydet</button>
+</form>
+

@@ -1,0 +1,24 @@
+﻿@model TeamEditViewModel
+@{
+    Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
+}
+
+<br />
+<h3> | Yeni Takım Ekle </h3>
+<hr />
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<form asp-action="TeamCreate" method="post">
+
+    <!-- Kullanıcı Adı ve Email -->
+    <div class="mb-3">
+        <label asp-for="TeamName">Takım Ünvanı</label>
+        <input asp-for="TeamName" class="form-control" />
+    </div>
+    <br />
+    <button class="btn btn-dark">Kaydet</button>
+</form>

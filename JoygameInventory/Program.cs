@@ -14,6 +14,8 @@ builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<JoyStaffService>();
 builder.Services.AddScoped<ServerService>();
 builder.Services.AddScoped<TeamService>();
+builder.Services.AddScoped<LicenceService>();
+
 
 
 

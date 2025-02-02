@@ -15,16 +15,20 @@ namespace JoygameInventory.Data.Context
         public DbSet<Product> Products => Set<Product>();
         public DbSet<InventoryAssigment> InventoryAssigments => Set<InventoryAssigment>();
         public DbSet<UserTeam> userTeam => Set<UserTeam>();
+        public DbSet<LicenceUser> LicenceUser => Set<LicenceUser>();
+
 
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();
         public DbSet<Servers> Servers => Set<Servers>();
         public DbSet<Team> Teams => Set<Team>();
+        public DbSet<Licence> Licence => Set<Licence>();
 
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
         public DbSet<JoyUser> JoyUsers => Set<JoyUser>();
         public DbSet<JoyRole> JoyRoles => Set<JoyRole>();
+
 
         // Seed Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -77,8 +81,8 @@ namespace JoygameInventory.Data.Context
                 entity.Property(p => p.Status)
                       .HasDefaultValue("Depoda");
                 entity.HasMany(p => p.Categories)
-      .WithMany(c => c.Products)
-      .UsingEntity<ProductCategory>();
+                      .WithMany(c => c.Products)
+                      .UsingEntity<ProductCategory>();
 
                 entity.HasIndex(s => s.ProductBarkod)
                        .IsUnique()
@@ -108,30 +112,42 @@ namespace JoygameInventory.Data.Context
                 entity.HasOne(pc => pc.Product)
                       .WithMany(p => p.ProductCategories)
                       .HasForeignKey(pc => pc.ProductId)
-                      .OnDelete(DeleteBehavior.Cascade); // Ürün silindiğinde ilişkiyi de sil
+                      .OnDelete(DeleteBehavior.Cascade); 
 
                 // Kategori ile ilişkiyi kuruyoruz
                 entity.HasOne(pc => pc.Category)
                       .WithMany(c => c.ProductCategories)
                       .HasForeignKey(pc => pc.CategoryId)
-                      .OnDelete(DeleteBehavior.Cascade); // Kategori silindiğinde ilişkiyi de sil
+                      .OnDelete(DeleteBehavior.Cascade); 
             });
             modelBuilder.Entity<UserTeam>(entity =>
             {
-                // Birincil Anahtar
                 entity.HasKey(ia => ia.Id);
 
-                // Ürün ile ilişkiyi kuruyoruz
+
                 entity.HasOne(pc => pc.Staff)
                       .WithMany(p => p.Teams)
                       .HasForeignKey(pc => pc.StaffId)
-                      .OnDelete(DeleteBehavior.Cascade); // Ürün silindiğinde ilişkiyi de sil
+                      .OnDelete(DeleteBehavior.Cascade); 
 
-                // Kategori ile ilişkiyi kuruyoruz
                 entity.HasOne(pc => pc.Team)
                       .WithMany(c => c.Teams)
                       .HasForeignKey(pc => pc.TeamId)
-                      .OnDelete(DeleteBehavior.Cascade); // Kategori silindiğinde ilişkiyi de sil
+                      .OnDelete(DeleteBehavior.Cascade); 
+            });
+            modelBuilder.Entity<LicenceUser>(entity =>
+            {
+                entity.HasKey(ia => ia.Id);
+
+                entity.HasOne(pc => pc.staff)
+                      .WithMany(p => p.LicenceUser)
+                      .HasForeignKey(pc => pc.StaffId)
+                      .OnDelete(DeleteBehavior.Cascade); 
+
+                entity.HasOne(pc => pc.Licence)
+                      .WithMany(c => c.LicenceUser)
+                      .HasForeignKey(pc => pc.LicenceId)
+                      .OnDelete(DeleteBehavior.Cascade); 
             });
             modelBuilder.Entity<JoyUser>(entity =>
             {
@@ -140,32 +156,31 @@ namespace JoygameInventory.Data.Context
                       .IsUnique()
                       .HasDatabaseName("IX_User_Email");
             });
+            modelBuilder.Entity<Team>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+                entity.HasIndex(s => s.TeamName)
+                      .IsUnique()
+                      .HasDatabaseName("IX_Team_TeamName");
+            });
+            modelBuilder.Entity<Licence>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+                entity.HasIndex(s => s.LicenceName)
+                      .IsUnique()
+                      .HasDatabaseName("IX_Licence_LicenceName");
+            });
 
-
-            // Add Products (Ürünler)
             modelBuilder.Entity<Product>().HasData(
-            // Notebook Kategorisi
             new Product { Id = 1, ProductName = "Laptop1", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054" },
-
-
-            // Ekipman Kategorisi
             new Product { Id = 2, ProductName = "Ekipman1", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", ProductBarkod = "JGNB060" },
             new Product { Id = 3, ProductName = "Ekipman2", Description = "Mechanical keyboard", SerialNumber = "A2B3-5829-20250111", ProductBarkod = "JGNB024" },
             new Product { Id = 4, ProductName = "Ekipman3", Description = "27-inch 4K monitor", SerialNumber = "WLG-384029-2024", ProductBarkod = "JGNB095" },
             new Product { Id = 5, ProductName = "Ekipman4", Description = "Noise-cancelling over-ear headphones", SerialNumber = "HDP-230904", ProductBarkod = "JGNB101" },
-
-
-            // Masaüstü Bilgisayar ve Donanım Kategorisi
             new Product { Id = 16, ProductName = "Desktop1", Description = "2TB external hard drive", SerialNumber = "EHDD-098723", ProductBarkod = "JGNB260" },
             new Product { Id = 18, ProductName = "Desktop2", Description = "Foldable electric scooter", SerialNumber = "ES-129845", ProductBarkod = "JGNB280" },
-
-            // Donanım Kategorisi
             new Product { Id = 19, ProductName = "Donanım1", Description = "4K camera drone with flight stabilization", SerialNumber = "DRN-589301", ProductBarkod = "JGNB295" },
             new Product { Id = 20, ProductName = "Donanım2", Description = "Portable mini projector", SerialNumber = "PRJ-765123", ProductBarkod = "JGNB310" }
-
-
-
-
             );
 
             modelBuilder.Entity<Category>().HasData(
@@ -178,6 +193,16 @@ namespace JoygameInventory.Data.Context
                 }
 
             );
+            modelBuilder.Entity<Licence>().HasData(
+                new List<Licence>()
+                {
+                            new() {Id=1,LicenceName="Adobe Creative Cloud",LicenceActiveDate=new DateTime(2024, 02, 01),LicenceEndDate=new DateTime(2025, 02, 01)},
+                            new() {Id=2,LicenceName="Adobe Photoshop",LicenceActiveDate=new DateTime(2024, 02, 01),LicenceEndDate=new DateTime(2025, 02, 01)},
+                            new() {Id=3,LicenceName="Adobe Substance",LicenceActiveDate=new DateTime(2024, 02, 01),LicenceEndDate=new DateTime(2025, 02, 01)},
+                            new() {Id=4,LicenceName="Autodesk 3dmax",LicenceActiveDate=new DateTime(2024, 02, 01),LicenceEndDate=new DateTime(2025, 02, 01)},
+                }
+
+            );
             modelBuilder.Entity<Team>().HasData(
                 new List<Team>()
                 {
@@ -186,12 +211,23 @@ namespace JoygameInventory.Data.Context
                             new() {Id=3,TeamName="DesertWarrior"},
                             new() {Id=4,TeamName="Growth"},
                             new() {Id=5,TeamName="AI"},
-
-
-
                 }
 
             );
+            modelBuilder.Entity<LicenceUser>().HasData(
+                    new List<LicenceUser>()
+                    {
+                                    new LicenceUser() { Id = 1, StaffId = 1, LicenceId = 1 },
+                                    new LicenceUser() { Id = 2, StaffId = 2, LicenceId = 1 },
+                                    new LicenceUser() { Id = 3, StaffId = 3, LicenceId = 2 },
+                                    new LicenceUser() { Id = 4, StaffId = 4, LicenceId = 2 },
+                                    new LicenceUser() { Id = 5, StaffId = 5, LicenceId = 3 },
+                                    new LicenceUser() { Id = 6, StaffId = 6, LicenceId = 3 },
+                                    new LicenceUser() { Id = 7, StaffId = 7, LicenceId = 4 },
+                                    new LicenceUser() { Id = 8, StaffId = 8, LicenceId = 4 },
+                                    new LicenceUser() { Id = 9, StaffId = 9, LicenceId = 4 },
+                    }
+                );
             modelBuilder.Entity<UserTeam>().HasData(
                     new List<UserTeam>()
                     {

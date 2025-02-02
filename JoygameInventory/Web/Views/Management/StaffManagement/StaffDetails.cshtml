@@ -33,29 +33,36 @@
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
     </div>
+
     <div class="card">
-        <div class="card-header">
-            Bulunduğu Ekip : 
+        <div class="card-body">
+            Bulunduğu Ekip:
             @if (Model.UserTeam != null)
             {
                 @foreach (var item in Model.UserTeam)
                 {
-                    @item.Team.TeamName
+                    <strong>@item.Team.TeamName</strong>
+                    <br />
+
                 }
             }
             else
             {
                 <p>Personel henüz bir ekibe atanmamıştır.</p>
-            }
-        </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label asp-for="SelectedTeamId" class="form-label">Yeni Takıma Ata</label>
+                <br />
 
-                <select asp-for="SelectedTeamId" class="form-control">
-                    @if (Model.UserTeam != null && Model.Team != null)
-                    {
-                        @if (Model.UserTeam != null)
+            }
+            <br />
+            <div>
+                <!-- Bu buton formu açmak için kullanılacak -->
+                <button type="button" class="btn btn-outline-dark" data-toggle="collapse" data-target="#selectedTeam">
+                    <i class="fas fa-plus"></i> Yeni Takıma Ata
+                </button>
+
+                <!-- Personel Seçimi Formu -->
+                <div id="selectedTeam" class="collapse mt-3">
+                    <select asp-for="SelectedTeamId" class="form-control">
+                        @if (Model.UserTeam != null && Model.Team != null)
                         {
                             @foreach (var item in Model.UserTeam)
                             {
@@ -63,25 +70,21 @@
                             }
                             @foreach (var team in Model.Team)
                             {
-
-                                <option value="@team?.Id">
-
-                                    @team?.TeamName
-                                </option>
+                                <option value="@team?.Id">@team?.TeamName</option>
                             }
                         }
-                    }
-
-
-
-                </select>
-
+                    </select>
+                    <br />
+                </div>
             </div>
         </div>
     </div>
     <br />
-    <button class="btn btn-dark">Kaydet</button>
+    <br />
+    <!-- Ana formun submit butonu -->
+    <button type="submit" class="btn btn-dark">Kaydet</button>
 </form>
+
 <br />
     <!-- Zimmetli Envanterler -->
     <div class="card">
@@ -191,4 +194,50 @@
         </div>
     </div>
     <br />
+<br />
+<!-- Lisans -->
+<div class="card">
+    <div class="card-header">
+        Atanmış Lisanslar
+    </div>
+    <div class="card-body">
+    @if (Model.LicencesUser != null && Model.LicencesUser.Any())
+        {
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model.LicencesUser)
+                    {
+                        <tr>
+                            <td>@item.Licence.LicenceName</td>
+                            <td>
+
+                                <a asp-controller="Management" asp-action="LicenceDetails" asp-route-id="@item.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
+
+
+                            </td>
+                            <td>
+                            <form asp-controller="Management" asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                <input type="hidden" name="userId" value="@item.staff.Id" />
+                                <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-custom">Zimmeti Kaldır</button>
+                            </form>
+
+
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Bu kullanıcının zimmetli envanteri bulunmamaktadır.</p>
+        }
+    </div>
+</div>
+<br />
 

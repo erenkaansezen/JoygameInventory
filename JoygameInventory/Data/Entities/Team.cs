@@ -8,7 +8,7 @@ namespace JoygameInventory.Data.Entities
         public int Id { get; set; }
         public string TeamName { get; set; } 
 
-        public ICollection<UserTeam> Teams { get; set; }
+        public List<UserTeam> Teams { get; set; }
 
     }
 }

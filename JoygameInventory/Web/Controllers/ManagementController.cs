@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
 
 namespace JoygameInventory.Web.Controllers
@@ -29,8 +30,9 @@ namespace JoygameInventory.Web.Controllers
         public AssigmentService _assigmentservice;
         public ServerService _serverservice;
         public TeamService _teamservice;
+        public LicenceService _licenceservice;
 
-        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice, TeamService teamservice)
+        public ManagementController(UserManager<JoyUser> usermanager, ProductService productservice, RoleManager<JoyRole> rolemanager, AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice, TeamService teamservice, LicenceService licenceservice)
         {
             _usermanager = usermanager;
             _productservice = productservice;
@@ -39,6 +41,7 @@ namespace JoygameInventory.Web.Controllers
             _staffmanager = staffmanager;
             _serverservice = serverservice;
             _teamservice = teamservice;
+            _licenceservice = licenceservice;
         }
 
 
@@ -114,6 +117,49 @@ namespace JoygameInventory.Web.Controllers
             // Arama sonuçlarını view'a gönderiyoruz
             return View("StaffManagement/StaffList", joyStaffs);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TeamList(string searchTerm)
+        {
+            // Arama terimi varsa, arama sonuçlarını alıyoruz
+            var teams = await _teamservice.SearchTeam(searchTerm);
+
+
+            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                teams = await _teamservice.GetAllTeamsAsync();
+            }
+
+            // Arama terimi ViewBag içinde gönderiliyor
+            ViewBag.SearchTerm = searchTerm;
+
+
+            // Arama sonuçlarını view'a gönderiyoruz
+            return View("TeamsManagement/TeamList", teams);
+        }
+        [HttpGet]
+        public async Task<IActionResult> LicenceList(string searchTerm)
+        {
+            // Arama terimi varsa, arama sonuçlarını alıyoruz
+            var licences = await _licenceservice.SearchLicence(searchTerm);
+
+
+            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                licences = await _licenceservice.GetAllLicencesAsync();
+            }
+
+            // Arama terimi ViewBag içinde gönderiliyor
+            ViewBag.SearchTerm = searchTerm;
+
+
+            // Arama sonuçlarını view'a gönderiyoruz
+            return View("LicenceManagement/LicenceList", licences);
+        }  
+        
+
 
         [HttpGet]
 
@@ -244,6 +290,7 @@ namespace JoygameInventory.Web.Controllers
             {
                 var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
                 var userteams = await _teamservice.GetUserAssignmentsAsync(staff.Id);
+                var userlicenses = await _licenceservice.GetUserLicenceAssignmentsAsync(staff.Id);
                 var teams = await _teamservice.GetAllTeamsAsync();
 
                 var model = new StaffEditViewModel
@@ -257,10 +304,70 @@ namespace JoygameInventory.Web.Controllers
                     InventoryAssigments = inventoryAssignments,
                     UserTeam = userteams,
                     Team = teams,
+                    LicencesUser = userlicenses
 
                 };
 
                 return View("StaffManagement/StaffDetails", model);
+
+
+
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> TeamDetails(int id)
+        {
+            var teams = await _teamservice.GetTeamByIdAsync(id);
+
+
+
+
+
+            if (teams != null)
+            {
+                var userteams = await _teamservice.GetTeamUserAssignmentsAsync(teams.Id);
+
+                var model = new TeamEditViewModel
+                {
+                    Id = teams.Id,
+                    TeamName = teams.TeamName,
+                    Teams = userteams,
+                };
+
+
+                return View("TeamsManagement/TeamsDetails", model);
+
+
+
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LicenceDetails(int id)
+        {
+            var licence = await _licenceservice.GetLicenceByIdAsync(id);
+            var joystaff = await _staffmanager.GetAllStaffsAsync();
+
+            if (licence != null)
+            {
+                var licenceusers = await _licenceservice.GetLicenceUserAssignmentsAsync(licence.Id);
+
+                var model = new LicenceEditViewModel
+                {
+                    Id = licence.Id,
+                    LicenceName = licence.LicenceName,
+                    LicenceActiveDate = licence.LicenceActiveDate,
+                    LicenceEndDate = licence.LicenceEndDate,
+                    LicenceUser = licenceusers,
+                    JoyStaffs = joystaff
+                };
+
+
+                return View("LicenceManagement/LicenceDetails", model);
 
 
 
@@ -301,9 +408,15 @@ namespace JoygameInventory.Web.Controllers
             return View("StaffManagement/StaffRegister",model);
         }
         [HttpGet]
+
         public async Task<IActionResult> ServerCreate()
         {
             return View("ServerManagement/ServerCreate");
+        }
+        [HttpGet]
+        public async Task<IActionResult> TeamCreate()
+        {
+            return View("TeamsManagement/TeamCreate");
         }
 
 
@@ -379,6 +492,36 @@ namespace JoygameInventory.Web.Controllers
 
             return RedirectToAction("StaffDetails", new { id = model.Id }); // Yönlendirme
         }
+
+        [HttpPost]
+        public async Task<IActionResult> NewAssigmentLicence(LicenceEditViewModel model)
+        {
+            // Lisansı veritabanından al
+            var licence = await _licenceservice.GetLicenceByIdAsync(model.Id);
+            var joyStaff = await _staffmanager.GetAllStaffsAsync();
+
+            if (licence != null)
+            {
+                // JoyStaff listesi form modeline aktarılacak
+                model.JoyStaffs = joyStaff;
+
+                // Eğer bir personel seçildiyse
+                if (model.SelectedStaffId.HasValue)
+                {
+                    var selectedStaff = joyStaff.FirstOrDefault(staff => staff.Id == model.SelectedStaffId.Value);
+
+                    if (selectedStaff != null)
+                    {
+                        // Atama işlemi yap
+                        await _licenceservice.AddAssignmentAsync(licence, selectedStaff);
+                    }
+                }
+            }
+
+            // İşlem tamamlandıktan sonra yönlendirme
+            return RedirectToAction("LicenceDetails", new { id = model.Id });
+        }
+
 
 
 
@@ -855,9 +998,44 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> TeamCreate(TeamEditViewModel model)
+        {
 
+            if (!await _teamservice.IsTeamUnique(model.TeamName))
+            {
+                TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
+                return View("TeamsManagement/TeamCreate", model);
+            }
 
-        //Delete Post
+            if (!string.IsNullOrEmpty(model.TeamName))
+            {
+
+                var teams = new Team
+                {
+                    TeamName = model.TeamName,
+                };
+                var result = await _teamservice.AddTeam(teams);
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
+                    return RedirectToAction("TeamList");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulurken bir hata oluştu.");
+                    return View("TeamsManagement/TeamCreate", model);
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lütfen Belirtilen alanı doldurunuz";
+                return View("TeamsManagement/TeamCreate", model);
+            }
+
+        }
+
+                //Delete Post
         [HttpPost]
         public async Task<IActionResult> UserDelete(string id)
         {
@@ -910,6 +1088,16 @@ namespace JoygameInventory.Web.Controllers
         {
             await _productservice.DeleteProductAsync(id);
             return RedirectToAction("ProductList", "Management");
+        }
+        [HttpPost]
+        public async Task<IActionResult> LicenceAssigmentDelete(int LicenceAssigmentId, int userId)
+        {
+            var staff = await _staffmanager.GetStaffByIdAsync(userId);
+            var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
+
+            await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
+
+            return RedirectToAction("LicenceDetails", new { id = userId });
         }
     }
 

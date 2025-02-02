@@ -1,0 +1,24 @@
+﻿@model LicenceEditViewModel
+@{
+    Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
+}
+
+<br />
+<h3> | Yeni Lisans Ekle </h3>
+<hr />
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<form asp-action="LicenceCreate" method="post">
+
+    <!-- Kullanıcı Adı ve Email -->
+    <div class="mb-3">
+        <label asp-for="LicenceName">Lisans Adı</label>
+        <input asp-for="LicenceName" class="form-control" />
+    </div>
+    <br />
+    <button class="btn btn-dark">Kaydet</button>
+</form>

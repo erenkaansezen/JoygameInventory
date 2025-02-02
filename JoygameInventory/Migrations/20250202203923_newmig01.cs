@@ -86,6 +86,21 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Licence",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LicenceName = table.Column<string>(type: "TEXT", nullable: false),
+                    LicenceActiveDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LicenceEndDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Licence", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -250,6 +265,32 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LicenceUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LicenceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StaffId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LicenceUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LicenceUser_JoyStaffs_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "JoyStaffs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LicenceUser_Licence_LicenceId",
+                        column: x => x.LicenceId,
+                        principalTable: "Licence",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InventoryAssigments",
                 columns: table => new
                 {
@@ -310,7 +351,7 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTeam",
+                name: "userTeam",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -320,15 +361,15 @@ namespace JoygameInventory.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTeam", x => x.Id);
+                    table.PrimaryKey("PK_userTeam", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTeam_JoyStaffs_StaffId",
+                        name: "FK_userTeam_JoyStaffs_StaffId",
                         column: x => x.StaffId,
                         principalTable: "JoyStaffs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTeam_Teams_TeamId",
+                        name: "FK_userTeam_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
@@ -382,9 +423,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "09312e9e-0b31-4b86-a953-e22dddf6bb9a", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "bb886ecc-2abf-4f69-b3d8-215e91a97bf2", false, "eren_sezen" },
-                    { "2", 0, "3103bbba-18a4-4b69-b5d1-788359a936d7", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "e8cc008f-1826-4c75-b7de-3db7fa6a624f", false, "osman_benlice" },
-                    { "3", 0, "926dd8ae-f8e6-419e-a33d-d713639ff687", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "a5da7fc0-f6d8-477e-b392-e23989473594", false, "onur.unlu" }
+                    { "1", 0, "da5198b8-d5c4-42b0-890e-a99480b86356", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "fb572e9f-7e25-464e-82f6-3163d06e0dfa", false, "eren_sezen" },
+                    { "2", 0, "5095cd62-2c5e-4df7-998d-7d6bc210bf4e", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "0615a102-34b2-4f8a-95a0-362c2a4bbb26", false, "osman_benlice" },
+                    { "3", 0, "aed223e8-d6b9-438a-a957-ddfe3b94ff76", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "20dc1aed-72af-4da7-9e76-9a84f33e14c5", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -413,6 +454,17 @@ namespace JoygameInventory.Migrations
                     { 8, null, "hasan.sahin@joygame.com", "Hasan", "555-0108", "Şahin" },
                     { 9, null, "zeynep.kucuk@joygame.com", "Zeynep", "555-0109", "Küçük" },
                     { 10, null, "yusuf.bozkurt@joygame.com", "Yusuf", "555-0110", "Bozkurt" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Licence",
+                columns: new[] { "Id", "LicenceActiveDate", "LicenceEndDate", "LicenceName" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adobe Creative Cloud" },
+                    { 2, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adobe Photoshop" },
+                    { 3, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adobe Substance" },
+                    { 4, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Autodesk 3dmax" }
                 });
 
             migrationBuilder.InsertData(
@@ -474,15 +526,31 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9392), 3, 1, 1 },
-                    { 2, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9395), 3, 2, 2 },
-                    { 3, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9396), 3, 3, 1 },
-                    { 4, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9397), 3, 4, 2 },
-                    { 5, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9399), 3, 5, 3 },
-                    { 6, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9400), 3, 16, 4 },
-                    { 7, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9401), 3, 18, 5 },
-                    { 8, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9402), 3, 19, 6 },
-                    { 9, new DateTime(2025, 1, 31, 23, 57, 28, 571, DateTimeKind.Utc).AddTicks(9403), 3, 20, 6 }
+                    { 1, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7920), 3, 1, 1 },
+                    { 2, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7922), 3, 2, 2 },
+                    { 3, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7923), 3, 3, 1 },
+                    { 4, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7925), 3, 4, 2 },
+                    { 5, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7926), 3, 5, 3 },
+                    { 6, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7928), 3, 16, 4 },
+                    { 7, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7929), 3, 18, 5 },
+                    { 8, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7930), 3, 19, 6 },
+                    { 9, new DateTime(2025, 2, 2, 20, 39, 23, 513, DateTimeKind.Utc).AddTicks(7931), 3, 20, 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LicenceUser",
+                columns: new[] { "Id", "LicenceId", "StaffId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 1, 2 },
+                    { 3, 2, 3 },
+                    { 4, 2, 4 },
+                    { 5, 3, 5 },
+                    { 6, 3, 6 },
+                    { 7, 4, 7 },
+                    { 8, 4, 8 },
+                    { 9, 4, 9 }
                 });
 
             migrationBuilder.InsertData(
@@ -502,7 +570,7 @@ namespace JoygameInventory.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "UserTeam",
+                table: "userTeam",
                 columns: new[] { "Id", "StaffId", "TeamId" },
                 values: new object[,]
                 {
@@ -604,6 +672,22 @@ namespace JoygameInventory.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Licence_LicenceName",
+                table: "Licence",
+                column: "LicenceName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LicenceUser_LicenceId",
+                table: "LicenceUser",
+                column: "LicenceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LicenceUser_StaffId",
+                table: "LicenceUser",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductCategories_CategoryId",
                 table: "ProductCategories",
                 column: "CategoryId");
@@ -620,13 +704,19 @@ namespace JoygameInventory.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTeam_StaffId",
-                table: "UserTeam",
+                name: "IX_Team_TeamName",
+                table: "Teams",
+                column: "TeamName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userTeam_StaffId",
+                table: "userTeam",
                 column: "StaffId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTeam_TeamId",
-                table: "UserTeam",
+                name: "IX_userTeam_TeamId",
+                table: "userTeam",
                 column: "TeamId");
         }
 
@@ -652,13 +742,16 @@ namespace JoygameInventory.Migrations
                 name: "AssigmentHistorys");
 
             migrationBuilder.DropTable(
+                name: "LicenceUser");
+
+            migrationBuilder.DropTable(
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
                 name: "Servers");
 
             migrationBuilder.DropTable(
-                name: "UserTeam");
+                name: "userTeam");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -668,6 +761,9 @@ namespace JoygameInventory.Migrations
 
             migrationBuilder.DropTable(
                 name: "InventoryAssigments");
+
+            migrationBuilder.DropTable(
+                name: "Licence");
 
             migrationBuilder.DropTable(
                 name: "Categories");
