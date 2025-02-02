@@ -91,7 +91,7 @@
                                 <!-- Align buttons to the right -->
                                 <a asp-controller="Management" asp-action="TeamDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Takım Detayı</a>
 
-                                <form asp-controller="Management" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                <form asp-controller="Management" asp-action="TeamDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@users.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
                                 </form>

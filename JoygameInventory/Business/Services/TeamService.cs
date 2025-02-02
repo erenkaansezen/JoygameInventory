@@ -81,5 +81,14 @@ namespace JoygameInventory.Business.Services
 
             return await query.ToListAsync();
         }
+        public async Task DeleteTeamAsync(int id)
+        {
+            var deleteTeam = await _context.Teams.FindAsync(id);
+            if (deleteTeam != null)
+            {
+                _context.Teams.Remove(deleteTeam);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

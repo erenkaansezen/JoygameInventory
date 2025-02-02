@@ -1081,6 +1081,7 @@ namespace JoygameInventory.Web.Controllers
 
         }
 
+
         //Delete Post
         [HttpPost]
         public async Task<IActionResult> UserDelete(string id)
@@ -1134,6 +1135,18 @@ namespace JoygameInventory.Web.Controllers
         {
             await _productservice.DeleteProductAsync(id);
             return RedirectToAction("ProductList", "Management");
+        }
+        [HttpPost]
+        public async Task<IActionResult> TeamDelete(int id)
+        {
+            await _teamservice.DeleteTeamAsync(id);
+            return RedirectToAction("TeamList", "Management");
+        }
+        [HttpPost]
+        public async Task<IActionResult> LicenceDelete(int id)
+        {
+            await _licenceservice.DeleteLicenceAsync(id);
+            return RedirectToAction("LicenceDetails", "Management");
         }
         [HttpPost]
         public async Task<IActionResult> LicenceAssigmentDelete(int LicenceAssigmentId, int userId)

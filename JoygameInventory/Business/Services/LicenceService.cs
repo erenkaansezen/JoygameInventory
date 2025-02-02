@@ -91,6 +91,15 @@ namespace JoygameInventory.Business.Services
             _context.LicenceUser.Add(assignment);
             await _context.SaveChangesAsync();
         }
+        public async Task DeleteLicenceAsync(int id)
+        {
+            var deleteLicence = await _context.Licence.FindAsync(id);
+            if (deleteLicence != null)
+            {
+                _context.Licence.Remove(deleteLicence);
+                await _context.SaveChangesAsync();
+            }
+        }
         public async Task<bool> IsLicenceUnique(string licenceName)
         {
             return !await _context.Licence.AnyAsync(s => s.LicenceName == licenceName);
