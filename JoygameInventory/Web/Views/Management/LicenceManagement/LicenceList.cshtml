@@ -90,7 +90,7 @@
                             <td>@lisans.LicenceEndDate.ToString("dd-MM-yyyy")</td>
                             <td class="text-end">
                                 <!-- Align buttons to the right -->
-                                <a asp-controller="Management" asp-action="LicenceDetails" asp-route-id="@lisans.Id" class="btn btn-outline-dark btn-custom">Takım Detayı</a>
+                                <a asp-controller="Management" asp-action="LicenceDetails" asp-route-id="@lisans.Id" class="btn btn-outline-dark btn-custom">Lisans Detayı</a>
 
                                 <form asp-controller="Management" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@lisans.Id" name="id">

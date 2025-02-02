@@ -26,7 +26,7 @@
         <input asp-for="Surname" class="form-control" />
     </div>
     <div class="mb-3">
-        <label asp-for="PhoneNumber"></label>
+        <label asp-for="PhoneNumber">Telefon Numarası</label>
         <input asp-for="PhoneNumber" class="form-control" />
     </div>
     <div class="mb-3">
@@ -211,7 +211,7 @@
                             <td>@item.Licence.LicenceName</td>
                             <td>
 
-                                <a asp-controller="Management" asp-action="LicenceDetails" asp-route-id="@item.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
+                                <a asp-controller="Management" asp-action="LicenceDetails" asp-route-id="@item.Id" class="btn btn-outline-dark btn-custom">Lisans Detayı</a>
 
 
                             </td>
