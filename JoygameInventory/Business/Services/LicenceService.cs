@@ -31,6 +31,12 @@ namespace JoygameInventory.Business.Services
 
             return await query.ToListAsync();
         }
+        public async Task<bool> AddLicence(Licence Licence)
+        {
+            _context.Licence.Add(Licence);
+            await _context.SaveChangesAsync();
+            return true;
+        }
         public async Task<Licence> GetLicenceByIdAsync(int id)
         {
             // Veritabanından staff'ı ID ile arıyoruz
@@ -84,6 +90,10 @@ namespace JoygameInventory.Business.Services
 
             _context.LicenceUser.Add(assignment);
             await _context.SaveChangesAsync();
+        }
+        public async Task<bool> IsLicenceUnique(string licenceName)
+        {
+            return !await _context.Licence.AnyAsync(s => s.LicenceName == licenceName);
         }
     }
 }

@@ -42,12 +42,12 @@
 <div class="container">
     <h2 class="my-4 text-center">
         <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
-        | Takım Listesi
+        | Lisans Listesi
     </h2>
     <hr />
     <div class="row">
         <div class="col-md-6">
-            <a asp-controller="Management" asp-action="TeamsCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Lisans Ekle</a>
+            <a asp-controller="Management" asp-action="LicenceCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Lisans Ekle</a>
         </div>
         <div class="col-md-6">
             <form asp-action="LicenceList" method="get">
@@ -94,7 +94,7 @@
 
                                 <form asp-controller="Management" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@lisans.Id" name="id">
-                                    <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
+                                    <button type="submit" class="btn btn-danger btn-custom">Lisansı Sil</button>
                                 </form>
                             </td>
                         </tr>

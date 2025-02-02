@@ -19,6 +19,15 @@
         <label asp-for="LicenceName">Lisans Adı</label>
         <input asp-for="LicenceName" class="form-control" />
     </div>
+    <div class="mb-3">
+        <label asp-for="LicenceActiveDate" class="control-label">Lisans Başlangıç Tarihi</label>
+        <input asp-for="LicenceActiveDate" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LicenceEndDate" class="control-label">Lisans Bitiş Tarihi</label>
+        <input asp-for="LicenceEndDate" class="form-control" type="date" />
+    </div>
     <br />
     <button class="btn btn-dark">Kaydet</button>
 </form>

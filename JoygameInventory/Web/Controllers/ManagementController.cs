@@ -418,7 +418,11 @@ namespace JoygameInventory.Web.Controllers
         {
             return View("TeamsManagement/TeamCreate");
         }
-
+        [HttpGet]
+        public async Task<IActionResult> LicenceCreate()
+        {
+            return View("LicenceManagement/LicenceCreate");
+        }
 
         [HttpGet]
         public async Task<IActionResult> ViewZimmetDocument(string documentName)
@@ -1034,8 +1038,50 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> LicenceCreate(LicenceEditViewModel model)
+        {
 
-                //Delete Post
+            if (!await _licenceservice.IsLicenceUnique(model.LicenceName))
+            {
+                TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
+                return View("LicenceManagement/LicenceCreate", model);
+            }
+            if (model.LicenceActiveDate == null && model.LicenceEndDate == null)
+            {
+                TempData["ErrorMessage"] = "Lütfen belirtilen alanları tam doldurunuz";
+                return View("LicenceManagement/LicenceCreate", model);
+            }
+            if (!string.IsNullOrEmpty(model.LicenceName))
+            {
+
+                var licence = new Licence
+                {
+                    LicenceName = model.LicenceName,
+                    LicenceActiveDate = model.LicenceActiveDate,
+                    LicenceEndDate = model.LicenceEndDate
+                };
+                var result = await _licenceservice.AddLicence(licence);
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Lisans başarıyla oluşturuldu!";
+                    return RedirectToAction("LicenceList");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Lisans oluşturulurken bir hata oluştu.");
+                    return View("LicenceManagement/LicenceCreate", model);
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Belirtilen alanı doldurunuz";
+                return View("LicenceManagement/LicenceCreate", model);
+            }
+
+        }
+
+        //Delete Post
         [HttpPost]
         public async Task<IActionResult> UserDelete(string id)
         {

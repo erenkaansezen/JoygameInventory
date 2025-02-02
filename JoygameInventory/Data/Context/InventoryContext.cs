@@ -171,6 +171,7 @@ namespace JoygameInventory.Data.Context
                       .HasDatabaseName("IX_Licence_LicenceName");
             });
 
+
             modelBuilder.Entity<Product>().HasData(
             new Product { Id = 1, ProductName = "Laptop1", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054" },
             new Product { Id = 2, ProductName = "Ekipman1", Description = "Wireless mouse", SerialNumber = "3840294-9F5A3C2D", ProductBarkod = "JGNB060" },
