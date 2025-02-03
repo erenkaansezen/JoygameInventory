@@ -46,7 +46,7 @@
     <hr />
     <div class="row">
         <div class="col-md-6">
-            <a asp-controller="Management" asp-action="UserRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
+            <a asp-controller="User" asp-action="UserRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
         </div>
         <div class="col-md-6">
             <form asp-action="UserList" method="get">
@@ -71,8 +71,8 @@
                             <td>@users.UserName</td>
                             <td>@users.Email</td>
                             <td>
-                                <a asp-controller="Management" asp-action="UserDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Görüntüle & Düzenle</a>
-                                <form asp-controller="Management" asp-action="UserDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                <a asp-controller="User" asp-action="UserDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Görüntüle & Düzenle</a>
+                                <form asp-controller="User" asp-action="UserDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@users.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
                                 </form>

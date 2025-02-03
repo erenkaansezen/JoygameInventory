@@ -95,10 +95,10 @@
                             <td>@product.Status</td>
 
                             <td>
-                                <a asp-controller="Management" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
+                                <a asp-controller="ProductManagement" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-outline-dark btn-custom">Envanter Detayı</a>
                             </td>
                             <td>
-                                <form asp-controller="Management" asp-action="ProductDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                <form asp-controller="ProductManagement" asp-action="ProductDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@product.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Envanteri Sil</button>
                                 </form>

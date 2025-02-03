@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Team>
+﻿@model IEnumerable<JoyStaff>
 @{
     Layout = "_Layout";
 }
@@ -38,21 +38,22 @@
     </style>
 </head>
 
-<!-- Sayfa Başlığı -->
-<div class="container">
+    <!-- Sayfa Başlığı -->
+    <div class="container">
     <h2 class="my-4 text-center">
         <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
-        | Takım Listesi
+        | Personel Listesi
     </h2>
-    <hr />
+        <hr />
     <div class="row">
         <div class="col-md-6">
-            <a asp-controller="Management" asp-action="TeamCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Takım Ekle</a>
+            <a asp-controller="Management" asp-action="StaffRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
+
         </div>
         <div class="col-md-6">
-            <form asp-action="TeamList" method="get">
+            <form asp-action="StaffList" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Takım İsmi ile ara" />
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Kullanıcı İsmi Veya Email Adresi ile ara" />
                     <button class="btn btn-outline-secondary" type="submit">Ara</button>
                 </div>
             </form>
@@ -77,7 +78,9 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Takım</th>
+                        <th>Ad</th>
+                        <th>Email</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,22 +88,24 @@
                     {
                         <tr>
                             <td>@users.Id</td>
-                            <td>@users.TeamName</td>
+                            <td>@users.Name @users.Surname</td>
+                            <td>@users.Email</td>
+                            <td>
+                            <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
 
-                            <td class="text-end">
-                                <!-- Align buttons to the right -->
-                                <a asp-controller="Management" asp-action="TeamDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Takım Detayı</a>
-
-                                <form asp-controller="Management" asp-action="TeamDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                <form asp-controller="StaffManagement" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@users.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
                                 </form>
                             </td>
                         </tr>
                     }
+
+
                 </tbody>
             </table>
         </div>
+
     </div>
 
     <!-- Bootstrap ve jQuery JS -->

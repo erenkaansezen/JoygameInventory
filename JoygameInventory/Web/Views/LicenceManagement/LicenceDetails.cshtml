@@ -73,10 +73,10 @@
                             <tr>
                                 <td>@item.staff.Name @item.staff.Surname</td>
                                 <td>
-                                    <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
+                                    <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
                                 </td>
                                 <td>
-                                    <form asp-controller="Management" asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                    <form  asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
                                         <input type="hidden" name="userId" value="@item.staff.Id" />
                                         <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
                                         <button type="submit" class="btn btn-danger btn-custom">Atamayı Kaldır</button>

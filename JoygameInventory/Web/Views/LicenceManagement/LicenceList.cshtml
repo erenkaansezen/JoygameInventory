@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JoyStaff>
+﻿@model IEnumerable<Licence>
 @{
     Layout = "_Layout";
 }
@@ -38,22 +38,21 @@
     </style>
 </head>
 
-    <!-- Sayfa Başlığı -->
-    <div class="container">
+<!-- Sayfa Başlığı -->
+<div class="container">
     <h2 class="my-4 text-center">
         <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
-        | Personel Listesi
+        | Lisans Listesi
     </h2>
-        <hr />
+    <hr />
     <div class="row">
         <div class="col-md-6">
-            <a asp-controller="Management" asp-action="StaffRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
-
+            <a asp-action="LicenceCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Lisans Ekle</a>
         </div>
         <div class="col-md-6">
-            <form asp-action="StaffList" method="get">
+            <form asp-action="LicenceList" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Kullanıcı İsmi Veya Email Adresi ile ara" />
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Lisans İsmi ile ara" />
                     <button class="btn btn-outline-secondary" type="submit">Ara</button>
                 </div>
             </form>
@@ -78,34 +77,31 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Ad</th>
-                        <th>Email</th>
-                        <th></th>
+                        <th>Lisans Adı</th>
+                        <th>Bitiş Süresi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var users in Model)
+                    @foreach (var lisans in Model)
                     {
                         <tr>
-                            <td>@users.Id</td>
-                            <td>@users.Name @users.Surname</td>
-                            <td>@users.Email</td>
-                            <td>
-                            <a asp-controller="Management" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
+                            <td>@lisans.Id</td>
+                            <td>@lisans.LicenceName</td>
+                            <td>@lisans.LicenceEndDate.ToString("dd-MM-yyyy")</td>
+                            <td class="text-end">
+                                <!-- Align buttons to the right -->
+                                <a asp-action="LicenceDetails" asp-route-id="@lisans.Id" class="btn btn-outline-dark btn-custom">Lisans Detayı</a>
 
                                 <form asp-controller="Management" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
-                                    <input type="hidden" value="@users.Id" name="id">
-                                    <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
+                                    <input type="hidden" value="@lisans.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Lisansı Sil</button>
                                 </form>
                             </td>
                         </tr>
                     }
-
-
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <!-- Bootstrap ve jQuery JS -->
