@@ -423,9 +423,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "253b7474-5b56-4ef5-af13-a23f0daebe45", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "05e8fc07-0215-467d-8b2b-938878bbda62", false, "eren_sezen" },
-                    { "2", 0, "4f4609ae-dd65-47ec-94ba-f12efea5c92a", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "158068fa-897b-43dc-b9f6-46535a9dbaf9", false, "osman_benlice" },
-                    { "3", 0, "73a978e5-1b24-405b-afc5-9e68b4fa85f6", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "030216c7-e41f-454f-a96c-ec758df758bc", false, "onur.unlu" }
+                    { "1", 0, "166c0fbd-a153-4a2b-9f90-8f4cbbff0dc0", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "20d8aa67-bea5-4dd1-8464-f9096e516b18", false, "eren_sezen" },
+                    { "2", 0, "a95bbb4d-aeda-4f5c-b07c-3e9a0cd2e1a4", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "5f7c6fab-a8bd-4c3f-8c17-88908f2c92da", false, "osman_benlice" },
+                    { "3", 0, "647e88ea-0029-4837-862d-26a7dc331a42", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "60438309-d829-42f0-add3-d8e8237acc0c", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -526,15 +526,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2252), 3, 1, 1 },
-                    { 2, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2257), 3, 2, 2 },
-                    { 3, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2258), 3, 3, 1 },
-                    { 4, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2260), 3, 4, 2 },
-                    { 5, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2261), 3, 5, 3 },
-                    { 6, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2262), 3, 16, 4 },
-                    { 7, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2263), 3, 18, 5 },
-                    { 8, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2264), 3, 19, 6 },
-                    { 9, new DateTime(2025, 2, 2, 23, 39, 52, 809, DateTimeKind.Utc).AddTicks(2265), 3, 20, 6 }
+                    { 1, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2705), 3, 1, 1 },
+                    { 2, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2710), 3, 2, 2 },
+                    { 3, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2711), 3, 3, 1 },
+                    { 4, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2712), 3, 4, 2 },
+                    { 5, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2713), 3, 5, 3 },
+                    { 6, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2715), 3, 16, 4 },
+                    { 7, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2716), 3, 18, 5 },
+                    { 8, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2717), 3, 19, 6 },
+                    { 9, new DateTime(2025, 2, 3, 0, 1, 26, 297, DateTimeKind.Utc).AddTicks(2718), 3, 20, 6 }
                 });
 
             migrationBuilder.InsertData(
