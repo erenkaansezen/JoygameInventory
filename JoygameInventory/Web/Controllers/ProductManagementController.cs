@@ -10,12 +10,14 @@ namespace JoygameInventory.Web.Controllers
         public ProductService _productservice;
         public JoyStaffService _staffmanager;
         public AssigmentService _assigmentservice;
+        public EmailService _emailService;
 
-        public ProductManagementController(ProductService productservice, JoyStaffService staffmanager,AssigmentService assigmentService)
+        public ProductManagementController(ProductService productservice, JoyStaffService staffmanager,AssigmentService assigmentService, EmailService emailService)
         {
             _productservice = productservice;
             _staffmanager = staffmanager;
             _assigmentservice = assigmentService;
+            _emailService = emailService;   
         }
 
 
@@ -139,7 +141,14 @@ namespace JoygameInventory.Web.Controllers
 
                             // Atama tarihini güncelliyoruz
                             currentAssignment.AssignmentDate = DateTime.Now;
-
+                            var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                            if (newUser != null)
+                            {
+                                var ToEmailAddress = newUser.Email;
+                                var subject = "Yeni Ürün Ataması";
+                                var body = $"<html><head></head><body><p>Merhaba {newUser.Name},</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p>Ürün Adı: {products.ProductName}</p><p>Teşekkürler.</p></body></html>";
+                                await _emailService.SendEmailAsync(ToEmailAddress, subject, body);
+                            }
                             // Atama kaydını güncelliyoruz
                             await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
                         }
@@ -163,11 +172,17 @@ namespace JoygameInventory.Web.Controllers
                         PreviusAssigmenId = null,  // null yapılıyor
                     };
 
+
                     // Yeni atamayı kaydediyoruz
                     await _assigmentservice.AddAssignmentAsync(newAssignment);
 
+                    // Yeni kullanıcıya e-posta gönderiyoruz
+
+
                     return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
+
+
 
                 // Ürün bilgilerini güncelliyoruz
                 await _productservice.UpdateProductAsync(products);

@@ -52,13 +52,13 @@
 
     <!-- Sayfa Başlığı -->
     <div class="container">
-        <h2 class="my-4 text-center">
-             Envanter Listesi
+        <h2 class="my-4">
+            | Envanter Listesi
         </h2>
         <hr />
         <div class="row">
             <div class="col-md-6">
-                <a asp-controller="Management" asp-action="ProductCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Ürün Ekle</a>
+                <a asp-controller="ProductManagement" asp-action="ProductCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Ürün Ekle</a>
             </div>
             <div class="col-md-6">
                 <form asp-action="ProductList" method="get">

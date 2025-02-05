@@ -1,6 +1,7 @@
 using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,17 +9,17 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
 builder.Services.AddScoped<JoyStaffService>();
 builder.Services.AddScoped<ServerService>();
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<LicenceService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddHttpClient();
 
-
-
-
+// Configure RelatedDigitalEmailSettings from appsettings.json
+builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));
 
 builder.Services.AddControllersWithViews()
     .AddRazorOptions(options =>
@@ -54,8 +55,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.Strict; // Güvenlik için SameSite seçeneði
 });
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,7 +75,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Login}/{id?}");
-
 
 IdentitySeedData.IdentityTestUser(app);
 
