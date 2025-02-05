@@ -11,6 +11,7 @@ public class EmailService
     private readonly HttpClient _httpClient;
     private readonly RelatedDigitalEmailSettings _emailSettings;
     private string _accessToken;
+    private DateTime _tokenExpirationTime;
 
     public EmailService(HttpClient httpClient, IOptions<RelatedDigitalEmailSettings> emailSettings)
     {
@@ -18,51 +19,53 @@ public class EmailService
         _emailSettings = emailSettings.Value;
     }
 
-    // Token'ı alır
+    // Kimlik doğrulama işlemi
     public async Task<string> AuthenticateAsync()
     {
-        if (!string.IsNullOrEmpty(_accessToken))
-        {
-            return _accessToken; // Eğer token geçerliyse, hemen geri döner.
-        }
-
         var authData = new
         {
-            // Burada gerekli kimlik doğrulama verilerinizi doldurun
-            UserName = "zula_live_wsuser",
-            Password = "4CC92744"
+            UserName = _emailSettings.ApiUserName,
+            Password = _emailSettings.ApiPassword
         };
 
         var content = new StringContent(JsonConvert.SerializeObject(authData), Encoding.UTF8, "application/json");
 
-        // Authentication API URL'si
-        var authRequest = new HttpRequestMessage(HttpMethod.Post, _emailSettings.AuthServiceURL)
+        var response = await _httpClient.PostAsync(_emailSettings.AuthServiceURL, content);
+
+        if (!response.IsSuccessStatusCode)
         {
-            Content = content
-        };
-
-        // Eğer varsa başlıkları da ekleyebilirsiniz
-
-        var response = await _httpClient.SendAsync(authRequest);
-
-        
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-        var authResponse = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
-
-        if (authResponse == null || string.IsNullOrEmpty(authResponse.AccessToken))
-        {
-            throw new Exception("Authentication failed, no access token returned.");
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Authentication failed. Status code: {response.StatusCode}. Response: {errorContent}");
         }
 
-        _accessToken = authResponse.AccessToken;
-        return _accessToken;
+        var authResponse = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
+
+        if (authResponse.Success && !string.IsNullOrEmpty(authResponse.ServiceTicket))
+        {
+            // Token'ı saklıyoruz ve süresini belirliyoruz
+            _accessToken = authResponse.ServiceTicket;
+            _tokenExpirationTime = DateTime.UtcNow.AddMinutes(30); // Örneğin 30 dakika geçerli
+            return _accessToken;
+        }
+
+        throw new Exception("Authentication failed. No valid service ticket returned.");
+    }
+
+    // Token geçerliliğini kontrol et
+    private bool IsTokenValid()
+    {
+        // Eğer token yoksa veya süresi dolmuşsa, yeni bir token alıyoruz
+        return !string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpirationTime;
     }
 
     // E-posta gönderme işlemi
     public async Task SendEmailAsync(string toAddress, string subject, string body)
     {
-        var token = await AuthenticateAsync(); // Geçerli token'ı al
+        if (!IsTokenValid())
+        {
+            // Token geçersizse veya yoksa, kimlik doğrulama yapıyoruz
+            await AuthenticateAsync();
+        }
 
         var emailData = new
         {
@@ -72,6 +75,9 @@ public class EmailService
             ToAddress = toAddress,
             Subject = subject,
             Body = body,
+            AuthToken = _accessToken,
+
+
             IsHtml = true
         };
 
@@ -81,19 +87,30 @@ public class EmailService
         {
             Content = content
         };
-        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token); // Token'ı başlığa ekle
+
+        // Token'ı başlığa ekle
 
         var response = await _httpClient.SendAsync(request);
 
+        // Hata kontrolü
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            throw new Exception($"Failed to send email. Status code: {response.StatusCode}. Response: {errorContent}");
+            var errorMessage = $"{response.StatusCode}{errorContent}";
+            Console.WriteLine(errorMessage);  // Detaylı hata loglaması
+            throw new Exception(errorMessage);
         }
+
+        // Başarı durumunda ek bilgi yazdırma (isteğe bağlı)
+        Console.WriteLine($"Email sent successfully to {toAddress}. Subject: {subject}");
     }
 }
 
+// Kimlik doğrulama yanıtını tutan sınıf
 public class AuthResponse
 {
-    public string AccessToken { get; set; }
+    public string ServiceTicket { get; set; }
+    public bool Success { get; set; }
+    public string DetailedMessage { get; set; }
+    public string TransactionId { get; set; }
 }

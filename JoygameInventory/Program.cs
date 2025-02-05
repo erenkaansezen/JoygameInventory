@@ -16,10 +16,11 @@ builder.Services.AddScoped<ServerService>();
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<LicenceService>();
 builder.Services.AddScoped<EmailService>();
-builder.Services.AddHttpClient();
 
 // Configure RelatedDigitalEmailSettings from appsettings.json
 builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));
+builder.Services.AddHttpClient<EmailService>();
+
 
 builder.Services.AddControllersWithViews()
     .AddRazorOptions(options =>
