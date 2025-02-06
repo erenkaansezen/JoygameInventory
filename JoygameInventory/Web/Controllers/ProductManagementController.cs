@@ -253,33 +253,6 @@ namespace JoygameInventory.Web.Controllers
             return RedirectToAction("ProductList", "ProductManagement");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AssigmentDelete(int userId, int inventoryAssigmentId)
-        {
-            // Kullanıcıyı veritabanından alıyoruz
-            var staff = await _staffmanager.GetStaffByIdAsync(userId);
-            var assigment = await _assigmentservice.GetAssignmentByIdAsync(inventoryAssigmentId);
 
-            if (assigment != null)
-            {
-
-                // AssigmentHistory kaydını oluşturuyoruz
-                var assignmentHistory = new AssigmentHistory
-                {
-
-                    ProductId = assigment.ProductId,
-                    UserId = userId,
-                    AssignmentDate = DateTime.Now,
-
-
-                };
-                await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  // AssignmentHistory kaydını ekliyoruz
-            }
-
-            await _assigmentservice.DeleteAssignmentAsync(inventoryAssigmentId);
-
-            // Silme işlemi başarılı, kullanıcı detaylarına yönlendirelim
-            return RedirectToAction("StaffDetails", "StaffManagement", new { id = userId });
-        }
     }
 }

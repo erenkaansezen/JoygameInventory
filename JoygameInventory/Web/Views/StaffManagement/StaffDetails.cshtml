@@ -6,7 +6,8 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Bootstrap JS ve jQuery (Yükleme) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <br />
 <h3> | Kullanıcı Bilgisi </h3>
@@ -103,17 +104,45 @@
                     <i class="fas fa-eye"></i> Zimmet Belgesini Görüntüle
                 </a>
             </div>
-
-            <div class="d-inline-block">
-                <form 
-                      asp-action="DeleteZimmetDocument"
-                      method="post">
+            <div id="zimmetDocumentRemoveForm" class="d-inline-block">
+                <form id="zimmetForm" asp-action="DeleteZimmetDocument" method="post">
                     <input type="hidden" name="Id" value="@Model.Id" />
-                    <button type="submit" class="btn btn-outline-danger">
+                    <button type="button" class="btn btn-outline-danger zımmetRemove">
                         <i class="fas fa-eye"></i> Zimmet Belgesini Kaldır
                     </button>
                 </form>
+                <script>
+                    $(document).ready(function () {
+                        // 'Zimmet Belgesini Kaldır' butonuna tıklama olayını dinliyoruz
+                        $('.zımmetRemove').click(function (e) {
+                            e.preventDefault();  // Default form submit işlemini engelliyoruz
+
+                            var form = $('#zimmetForm');  // Formu seçiyoruz
+
+                            // AJAX isteği başlatıyoruz
+                            $.ajax({
+                                url: form.attr('action'),  // Formun action değerini alıyoruz
+                                type: form.attr('method'),  // Formun method türünü alıyoruz (POST)
+                                data: form.serialize(),  // Form verilerini alıyoruz
+                                success: function (response) {
+                                    // Başarılı olduğunda yapılacak işlemler
+                                    alert('Zimmet belgesi başarıyla kaldırıldı!');
+
+                                    // Eğer sadece zimmetli belge kısmını güncellemek istiyorsanız
+                                    $('#zimmetDocumentRemoveForm').html('');  // Zimmet belgesini kaldırdıktan sonra ilgili alanı boşaltabiliriz
+                                    window.location.reload();  // Sayfa yenilenir
+                                },
+                                error: function () {
+                                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
+                                }
+                            });
+                        });
+                    });
+                </script>
             </div>
+
+
+
             }
         else
         {
@@ -124,7 +153,7 @@
 
                 <!-- Dosya Yükleme Formu (Collapse olarak gösterilecek) -->
                 <div id="fileUploadForm" class="collapse mt-3">
-                    <form asp-action="AddZimmetDocument" method="post" enctype="multipart/form-data">
+                    <form id="addFile" asp-action="AddZimmetDocument" method="post" enctype="multipart/form-data">
                         <input name="Id" type="hidden" value="@Model.Id" />
                         <input name="Name" type="hidden" value="@Model.Name" />
                         <input name="Surname" type="hidden" value="@Model.Surname" />
@@ -134,9 +163,35 @@
                             <label for="modelFile ">Görsel Yükle:</label>
                             <input type="file" name="modelFile" class="form-control" />
                         </div>
-                        <button class="btn btn-dark">Yükle</button>
+                        <button class="btn btn-dark zımmetAdd">Yükle</button>
                     </form>
                 </div>
+                <script>
+                    $(document).ready(function () {
+                        $('.zımmetAdd').click(function () {
+                            var row = $(this).closest('tr');  // Satırın kendisini al
+
+                            var form = $('#fileUploadForm');  // Formu alıyoruz
+
+                            // AJAX isteği
+                            $.ajax({
+                                url: '@Url.Action("AddZimmetDocument", "StaffManagement")',
+                                type: form.attr('method'),  // Formun method türünü alıyoruz
+                                data: form.serialize(),  // Form verilerini alıyoruz
+                                success: function (response) {
+                                    row.reload();  // Başarıyla silindiğinde satırı kaldır
+                                    alert('Zimmet başarıyla yüklendi!');
+
+                                    // Başarılı olduğunda, tbody'yi güncellenmiş haliyle almak için
+                                     window.location.reload();  // Sayfa yenilenir
+
+                                    // İsteğe bağlı: Başarı mesajı gösterebiliriz
+                                },
+                            });
+                        });
+                    });
+                </script>
+
             </div>
         }
 
@@ -157,7 +212,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                <tbody>
                         @foreach (var item in Model.InventoryAssigments)
                         {
                             <tr>
@@ -170,11 +225,40 @@
 
                                 </td>
                                 <td>
-                                <form asp-controller="ProductManagement" asp-action="AssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
-                                     <input type="hidden" name="userId" value="@item.UserId" />
-                                    <input type="hidden" name="inventoryAssigmentId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger btn-custom">Zimmeti Kaldır</button>
-                                </form>
+                                        <form id ="zimmetForm" asp-controller="StaffManagement" asp-action="AssigmentDelete" method="post" onsubmit="return false;" style="display: inline;">
+                                            <input type="hidden" name="userId" value="@item.UserId" />
+                                            <input type="hidden" name="inventoryAssigmentId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-custom deleteSingle">Zimmeti Kaldır</button>
+                                        </form>
+                                        <script>
+                                            $(document).ready(function () {
+                                                $('.deleteSingle').click(function () {
+                                                    var id = $(this).data('id');  // Tıklanan butona ait ID'yi al
+                                                    var row = $(this).closest('tr');  // Satırın kendisini al
+
+                                                    var form = $('#zimmetForm');  // Formu alıyoruz
+
+                                                    // AJAX isteği
+                                                    $.ajax({
+                                                        url: '@Url.Action("AssigmentDelete", "StaffManagement")',                                                        
+                                                        type: form.attr('method'),  // Formun method türünü alıyoruz
+                                                        data: form.serialize(),  // Form verilerini alıyoruz
+                                                        success: function (response) {
+                                                            row.remove();  // Başarıyla silindiğinde satırı kaldır
+
+                                                            // Başarılı olduğunda, tbody'yi güncellenmiş haliyle almak için
+                                                             window.location.reload();  // Sayfa yenilenir
+
+                                                            // İsteğe bağlı: Başarı mesajı gösterebiliriz
+                                                            alert('Zimmet başarıyla kaldırıldı!');
+                                                        },
+                                                    });
+                                                });
+                                            });
+                                        </script>
+
+
+
 
 
 
@@ -216,12 +300,37 @@
 
                             </td>
                             <td>
-                                <form asp-action="LicenceUserAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                <form id="licenceForm" asp-action="LicenceUserAssigmentDelete" method="post" onsubmit="return false;" style="display: inline;">
                                 <input type="hidden" name="userId" value="@item.staff.Id" />
                                 <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger btn-custom">Zimmeti Kaldır</button>
-                            </form>
+                                    <button type="submit" class="btn btn-danger btn-custom deleteLicence">Zimmeti Kaldır</button>
+                                </form>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.deleteLicence').click(function () {
+                                            var id = $(this).data('id');  // Tıklanan butona ait ID'yi al
+                                            var row = $(this).closest('tr');  // Satırın kendisini al
 
+                                            var form = $('#licenceForm');  // Formu alıyoruz
+
+                                            // AJAX isteği
+                                            $.ajax({
+                                                url: '@Url.Action("LicenceUserAssigmentDelete", "StaffManagement")',
+                                                type: form.attr('method'),  // Formun method türünü alıyoruz
+                                                data: form.serialize(),  // Form verilerini alıyoruz
+                                                success: function (response) {
+                                                    row.remove();  // Başarıyla silindiğinde satırı kaldır
+
+                                                    // Başarılı olduğunda, tbody'yi güncellenmiş haliyle almak için
+                                                     window.location.reload();  // Sayfa yenilenir
+
+                                                    // İsteğe bağlı: Başarı mesajı gösterebiliriz
+                                                    alert('Lisans ataması başarıyla kaldırıldı!');
+                                                },
+                                            });
+                                        });
+                                    });
+                                </script>
 
 
                             </td>

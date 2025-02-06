@@ -1,16 +1,13 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using JoygameInventory.Models.Model;
+﻿using JoygameInventory.Models.Model;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Text;
 
 public class EmailService
 {
     private readonly HttpClient _httpClient;
     private readonly RelatedDigitalEmailSettings _emailSettings;
-    private string _accessToken;
+    private string _jwtToken;
     private DateTime _tokenExpirationTime;
 
     public EmailService(HttpClient httpClient, IOptions<RelatedDigitalEmailSettings> emailSettings)
@@ -32,40 +29,65 @@ public class EmailService
 
         var response = await _httpClient.PostAsync(_emailSettings.AuthServiceURL, content);
 
+        // Başarısız yanıtı logla
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Authentication failed. Status code: {response.StatusCode}. Response: {errorContent}");
             throw new Exception($"Authentication failed. Status code: {response.StatusCode}. Response: {errorContent}");
         }
 
-        var authResponse = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Authentication response: {responseContent}");
 
-        if (authResponse.Success && !string.IsNullOrEmpty(authResponse.ServiceTicket))
+        try
         {
-            // Token'ı saklıyoruz ve süresini belirliyoruz
-            _accessToken = authResponse.ServiceTicket;
-            _tokenExpirationTime = DateTime.UtcNow.AddMinutes(30); // Örneğin 30 dakika geçerli
-            return _accessToken;
-        }
+            // Yanıtı deserialize et
+            var authResponse = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
 
-        throw new Exception("Authentication failed. No valid service ticket returned.");
+            // Yanıt başarılı ise token al
+            if (authResponse != null && authResponse.Success && !string.IsNullOrEmpty(authResponse.ServiceTicket))
+            {
+                _jwtToken = authResponse.ServiceTicket;  // ServiceTicket'ı JWT token olarak alıyoruz
+                _tokenExpirationTime = DateTime.Now.AddMinutes(30); // Token 30 dakika geçerli
+                return _jwtToken;
+            }
+            else
+            {
+                Console.WriteLine($"Authentication failed: {authResponse?.DetailedMessage}");
+                throw new Exception($"Authentication failed: {authResponse?.DetailedMessage}");
+            }
+        }
+        catch (JsonException jsonEx)
+        {
+            Console.WriteLine($"Error parsing JSON response: {jsonEx.Message}");
+            throw new Exception($"Error parsing JSON response: {jsonEx.Message}");
+        }
     }
 
     // Token geçerliliğini kontrol et
     private bool IsTokenValid()
     {
         // Eğer token yoksa veya süresi dolmuşsa, yeni bir token alıyoruz
-        return !string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpirationTime;
+        return !string.IsNullOrEmpty(_jwtToken) && DateTime.Now < _tokenExpirationTime;
+    }
+
+    // Token'ı doğrula veya yenile
+    public async Task<string> GetValidTokenAsync()
+    {
+        // Eğer token geçerli değilse, kimlik doğrulama işlemi yapıyoruz
+        if (!IsTokenValid())
+        {
+            await AuthenticateAsync();
+        }
+        return _jwtToken;
     }
 
     // E-posta gönderme işlemi
     public async Task SendEmailAsync(string toAddress, string subject, string body)
     {
-        if (!IsTokenValid())
-        {
-            // Token geçersizse veya yoksa, kimlik doğrulama yapıyoruz
-            await AuthenticateAsync();
-        }
+        // Geçerli bir token al
+        var token = await GetValidTokenAsync();
 
         var emailData = new
         {
@@ -75,9 +97,7 @@ public class EmailService
             ToAddress = toAddress,
             Subject = subject,
             Body = body,
-            AuthToken = _accessToken,
-
-
+            AuthToken = token, // JWT token'ı burada kullanıyoruz
             IsHtml = true
         };
 
@@ -88,18 +108,9 @@ public class EmailService
             Content = content
         };
 
-        // Token'ı başlığa ekle
-
         var response = await _httpClient.SendAsync(request);
 
-        // Hata kontrolü
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorContent = await response.Content.ReadAsStringAsync();
-            var errorMessage = $"{response.StatusCode}{errorContent}";
-            Console.WriteLine(errorMessage);  // Detaylı hata loglaması
-            throw new Exception(errorMessage);
-        }
+
 
         // Başarı durumunda ek bilgi yazdırma (isteğe bağlı)
         Console.WriteLine($"Email sent successfully to {toAddress}. Subject: {subject}");
@@ -109,7 +120,7 @@ public class EmailService
 // Kimlik doğrulama yanıtını tutan sınıf
 public class AuthResponse
 {
-    public string ServiceTicket { get; set; }
+    public string ServiceTicket { get; set; }  // Token burada alınıyor
     public bool Success { get; set; }
     public string DetailedMessage { get; set; }
     public string TransactionId { get; set; }
