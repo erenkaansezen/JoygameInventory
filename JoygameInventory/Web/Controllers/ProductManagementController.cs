@@ -141,15 +141,15 @@ namespace JoygameInventory.Web.Controllers
 
                             // Atama tarihini güncelliyoruz
                             currentAssignment.AssignmentDate = DateTime.Now;
-                            var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
-                            if (newUser != null)
-                            {
-                                var ToEmailAddress = newUser.Email;
-                                var subject = "Yeni Ürün Ataması";
-                                var body = $"<html><head></head><body><p>Merhaba {newUser.Name},</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p>Ürün Adı: {products.ProductName}</p><p>Teşekkürler.</p></body></html>";
-                                await _emailService.SendEmailAsync(ToEmailAddress, subject, body);
-                            }
-                            // Atama kaydını güncelliyoruz
+                            //var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                            //if (newUser != null)
+                            //{
+                            //    var ToEmailAddress = newUser.Email;
+                            //    var subject = "Yeni Ürün Ataması";
+                            //    var body = $"<html><head></head><body><p>Merhaba {newUser.Name},</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p>Ürün Adı: {products.ProductName}</p><p>Teşekkürler.</p></body></html>";
+                            //    await _emailService.SendEmailAsync(ToEmailAddress, subject, body);
+                            //}
+                            //// Atama kaydını güncelliyoruz
                             await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
                         }
                         else
@@ -157,6 +157,7 @@ namespace JoygameInventory.Web.Controllers
                             // Kullanıcı değişmemişse sadece ürünü güncelliyoruz
                             await _productservice.UpdateProductAsync(products);
                         }
+                        TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
                         return RedirectToAction("ProductDetails", new { id = model.Id });
                     }
@@ -178,6 +179,7 @@ namespace JoygameInventory.Web.Controllers
 
                     // Yeni kullanıcıya e-posta gönderiyoruz
 
+                    TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
                     return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
@@ -186,6 +188,7 @@ namespace JoygameInventory.Web.Controllers
 
                 // Ürün bilgilerini güncelliyoruz
                 await _productservice.UpdateProductAsync(products);
+                TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
                 return RedirectToAction("ProductDetails", new { id = model.Id });
             }

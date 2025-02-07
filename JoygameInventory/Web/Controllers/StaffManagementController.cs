@@ -293,7 +293,6 @@ namespace JoygameInventory.Web.Controllers
             var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
 
             await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
-
             return RedirectToAction("StaffDetails", new { id = userId });
         }
 

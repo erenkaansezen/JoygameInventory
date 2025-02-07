@@ -30,12 +30,12 @@
     <button class="btn btn-dark">Kaydet</button>
 
 </form>
-    <br></br>
-    <div class="card">
-        <div class="card-header">
-            Lisans Ataması Yapılmış Personeller
-        </div>
-            <div class="card-body">
+<br></br>
+<div class="card">
+    <div class="card-header">
+        Lisans Ataması Yapılmış Personeller
+    </div>
+    <div class="card-body">
         <div>
             <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#fileUploadForm">
                 <i class="fas fa-plus"></i> Personel Ata
@@ -43,7 +43,7 @@
 
             <!-- Personel Seçimi Formu -->
             <div id="fileUploadForm" class="collapse mt-3">
-                <form asp-action="NewAssigmentLicence" method="post">
+                <form  asp-action="NewAssigmentLicence" method="post">
                     <input name="Id" type="hidden" value="@Model.Id" />
 
                     <!-- Personel Seçimi -->
@@ -58,10 +58,35 @@
                         </select>
                     </div>
 
-                    <button class="btn btn-dark">Atama Yap</button>
+                    <button type="button" class="btn btn-dark zımmetAdd">Atama Yap</button>
                 </form>
+
+                <script>
+                    $(document).ready(function () {
+                        // "Atama Yap" butonuna tıklama işlemi
+                        $('.zımmetAdd').click(function (event) {
+                            event.preventDefault();  // Sayfanın yenilenmesini engelliyoruz
+
+                            var form = $('#fileUploadForm');  // Formu alıyoruz
+
+                            // AJAX isteği
+                            $.ajax({
+                                url: '@Url.Action("NewAssigmentLicence", "LicenceManagement")',  // URL'yi belirtelim
+                                type: form.attr('method'),  // Formun method türünü alıyoruz
+                                data: form.serialize(),  // Form verilerini alıyoruz
+                                success: function (response) {
+                                        alert('Zimmet başarıyla yüklendi!');
+                                        window.location.reload();  // Sayfayı yenile
+                                        // (örneğin, bir tabloyu güncelleme işlemi yapılabilir)
+                                    
+                            });
+                        });
+                    });
+                </script>
             </div>
         </div>
+    </div>
+</div>
 
         <br />
             @if (Model.LicenceUser != null && Model.LicenceUser.Any())

@@ -8,7 +8,19 @@
          Envanter Detayı
     </h2>
     <hr />
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <form asp-action="ProductDetails" method="post">
         <input name="Id" type="hidden" value="@Model.Id" />
         <a asp-controller="Management" asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
