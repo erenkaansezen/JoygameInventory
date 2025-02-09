@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.Model;
 using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,14 +11,16 @@ namespace JoygameInventory.Web.Controllers
         public ProductService _productservice;
         public JoyStaffService _staffmanager;
         public AssigmentService _assigmentservice;
-        public EmailService _emailService;
+        private readonly EmailService _emailService;
+        public MaintenanceService _maintenanceservice;
 
-        public ProductManagementController(ProductService productservice, JoyStaffService staffmanager,AssigmentService assigmentService, EmailService emailService)
+        public ProductManagementController(ProductService productservice, JoyStaffService staffmanager,AssigmentService assigmentService, EmailService emailService, MaintenanceService maintenanceservice)
         {
             _productservice = productservice;
             _staffmanager = staffmanager;
             _assigmentservice = assigmentService;
-            _emailService = emailService;   
+            _emailService = emailService;
+            _maintenanceservice = maintenanceservice;
         }
 
 
@@ -98,103 +101,110 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
-            var products = await _productservice.GetIdProductAsync(model.Id);
-            if (products != null)
+            var product = await _productservice.GetIdProductAsync(model.Id);
+            if (product == null)
             {
-                // Ürün bilgilerini güncelliyoruz
-                products.ProductName = model.ProductName;
-                products.SerialNumber = model.SerialNumber;
-                products.ProductBarkod = model.ProductBarkod;
-                products.Description = model.Description;
-                products.ProductAddDate = DateTime.Now;
+                return RedirectToAction("Index", "Home");
+            }
 
-                // Mevcut atama kaydını alıyoruz
-                var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(products.Id);
+            // Ürün bilgilerini güncelleme
+            product.ProductName = model.ProductName;
+            product.SerialNumber = model.SerialNumber;
+            product.ProductBarkod = model.ProductBarkod;
+            product.Description = model.Description;
+            product.ProductAddDate = DateTime.Now;
 
-                if (currentAssignments != null && currentAssignments.Any())
+            // Mevcut atama kaydını alıyoruz
+            var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
+
+            if (currentAssignments != null && currentAssignments.Any())
+            {
+                var currentAssignment = currentAssignments.FirstOrDefault();
+
+                if (currentAssignment != null)
                 {
-                    var currentAssignment = currentAssignments.FirstOrDefault();
-
-                    if (currentAssignment != null)
+                    // Kullanıcı değişmişse
+                    if (currentAssignment.UserId != model.SelectedUserId && model.SelectedUserId != null)
                     {
-
-
-                        // Mevcut atama varsa ve kullanıcı değişmişse
-                        if (currentAssignment.UserId != model.SelectedUserId && model.SelectedUserId != null)
+                        // Önceki kullanıcıyı AssignmentHistory tablosuna kaydediyoruz
+                        var assignmentHistory = new AssigmentHistory
                         {
-                            // Önceki kullanıcıyı AssignmentHistory tablosuna kaydediyoruz
-                            var assignmentHistory = new AssigmentHistory
-                            {
-                                ProductId = currentAssignment.ProductId,
-                                UserId = currentAssignment.UserId,  // Eski kullanıcı ID'si
-                                AssignmentDate = DateTime.Now
-                            };
-                            await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  // AssignmentHistory kaydını ekliyoruz
+                            ProductId = currentAssignment.ProductId,
+                            UserId = currentAssignment.UserId,  // Eski kullanıcı ID'si
+                            AssignmentDate = DateTime.Now
+                        };
+                        await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);
 
-                            // Önceki kullanıcıyı PreviusAssigmenId'ye kaydediyoruz
-                            currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
-                            if (model.SelectedUserId != null)
-                            {
-                                currentAssignment.UserId = model.SelectedUserId.Value;
+                        // Önceki kullanıcıyı PreviusAssigmenId'ye kaydediyoruz
+                        currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
 
-                            }
-
-                            // Atama tarihini güncelliyoruz
-                            currentAssignment.AssignmentDate = DateTime.Now;
-                            //var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
-                            //if (newUser != null)
-                            //{
-                            //    var ToEmailAddress = newUser.Email;
-                            //    var subject = "Yeni Ürün Ataması";
-                            //    var body = $"<html><head></head><body><p>Merhaba {newUser.Name},</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p>Ürün Adı: {products.ProductName}</p><p>Teşekkürler.</p></body></html>";
-                            //    await _emailService.SendEmailAsync(ToEmailAddress, subject, body);
-                            //}
-                            //// Atama kaydını güncelliyoruz
-                            await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
-                        }
-                        else
+                        // Yeni kullanıcıyı atıyoruz
+                        if (model.SelectedUserId != null)
                         {
-                            // Kullanıcı değişmemişse sadece ürünü güncelliyoruz
-                            await _productservice.UpdateProductAsync(products);
+                            currentAssignment.UserId = model.SelectedUserId.Value;
                         }
-                        TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
-                        return RedirectToAction("ProductDetails", new { id = model.Id });
+                        currentAssignment.AssignmentDate = DateTime.Now;
+
+                        //Yeni kullanıcıya e-posta gönderimi
+                        var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                        if (newUser != null)
+                        {
+                            var toEmailAddress = newUser.Email;
+                            var subject = "Yeni Ürün Ataması";
+                            var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
+                            var attachmentPaths = new List<string>();  // Boş bir liste oluşturuluyor
+                            await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                        }
+                        await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
                     }
-                }
-                else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0) // Atama kaydı yok ve kullanıcı seçildiyse
-                {
-                    // Yeni bir atama kaydı oluşturuyoruz
-                    var newAssignment = new InventoryAssigment
+                    else
                     {
-                        ProductId = products.Id,
-                        UserId = model.SelectedUserId.Value,  // Seçilen kullanıcı
-                        AssignmentDate = DateTime.Now,
-                        PreviusAssigmenId = null,  // null yapılıyor
-                    };
-
-
-                    // Yeni atamayı kaydediyoruz
-                    await _assigmentservice.AddAssignmentAsync(newAssignment);
-
-                    // Yeni kullanıcıya e-posta gönderiyoruz
+                        // Kullanıcı değişmemişse sadece ürünü güncelliyoruz
+                        await _productservice.UpdateProductAsync(product);
+                    }
 
                     TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
-
                     return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
+            }
+            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0) // Atama kaydı yoksa ve kullanıcı seçildiyse
+            {
+                // Yeni bir atama kaydı oluşturuyoruz
+                var newAssignment = new InventoryAssigment
+                {
+                    ProductId = product.Id,
+                    UserId = model.SelectedUserId.Value,  // Seçilen kullanıcı
+                    AssignmentDate = DateTime.Now,
+                    PreviusAssigmenId = null,  // null yapılıyor
+                };
 
+                // Yeni atamayı kaydediyoruz
+                await _assigmentservice.AddAssignmentAsync(newAssignment);
 
+                // Yeni kullanıcıya e-posta gönderiyoruz
+                var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                if (newUser != null)
+                {
+                    var toEmailAddress = newUser.Email;
+                    var subject = "Yeni Ürün Ataması";
+                    var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
+                    var attachmentPaths = new List<string>();  // Boş bir liste oluşturuluyor
+                    await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                }
 
-                // Ürün bilgilerini güncelliyoruz
-                await _productservice.UpdateProductAsync(products);
                 TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
-
                 return RedirectToAction("ProductDetails", new { id = model.Id });
             }
 
-            return RedirectToAction("Index", "Home");
+            // Ürün bilgilerini güncelliyoruz (yeni atama olmadıysa)
+            await _productservice.UpdateProductAsync(product);
+            TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
+
+            return RedirectToAction("ProductDetails", new { id = model.Id });
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> ProductCreate(ProductEditViewModel model)

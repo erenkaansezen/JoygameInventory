@@ -5,21 +5,32 @@ using JoygameInventory.Models.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
-builder.Services.AddScoped<AssigmentService>(); // ProductService eklenmiþ
+builder.Services.AddScoped<AssigmentService>(); // AssigmentService eklenmiþ
 builder.Services.AddScoped<JoyStaffService>();
-builder.Services.AddScoped<ServerService>();
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<LicenceService>();
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<MaintenanceService>();
 
-// Configure RelatedDigitalEmailSettings from appsettings.json
+
 builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));
-builder.Services.AddHttpClient<EmailService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddTransient<EmailService>();// EmailService eklenmiþ
+builder.Services.AddSingleton<TokenStorage>();
+
+
+
+builder.Services.AddSingleton<IAsyncPolicy>(Policy
+    .Handle<Exception>()  // Hangi tür hatalarýn tekrar deneneceðini belirliyoruz
+    .WaitAndRetryAsync(5, // 5 kez yeniden dene
+        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) // Her denemede bekleme süresi artýyor (2, 4, 8, 16, 32 saniye)
+    ));
+
 
 
 builder.Services.AddControllersWithViews()

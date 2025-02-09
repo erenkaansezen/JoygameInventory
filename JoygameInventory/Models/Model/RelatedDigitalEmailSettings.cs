@@ -2,13 +2,13 @@
 {
     public class RelatedDigitalEmailSettings
     {
-        public string AuthServiceURL { get; set; }
-        public string PostHtmlURL { get; set; }
-        public string PostEmailWithTemplateURL { get; set; }
-        public string FromName { get; set; }
-        public string FromAddress { get; set; }
-        public string ReplyAddress { get; set; }
-        public string ApiUserName { get; set; }
-        public string ApiPassword { get; set; }
+        public string AuthServiceURL { get; set; } // API kimlik doğrulama URL'si
+        public string PostHtmlURL { get; set; } // E-posta gönderimi için URL
+        public string FromName { get; set; } // Gönderenin adı
+        public string FromAddress { get; set; } // Gönderen e-posta adresi
+        public string ReplyAddress { get; set; } // Yanıtlanacak e-posta adresi
+        public string ApiUserName { get; set; } // API kullanıcı adı
+        public string ApiPassword { get; set; } // API şifre
     }
+
 }

@@ -20,9 +20,10 @@ namespace JoygameInventory.Data.Context
 
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<AssigmentHistory> AssigmentHistorys => Set<AssigmentHistory>();
-        public DbSet<Servers> Servers => Set<Servers>();
         public DbSet<Team> Teams => Set<Team>();
         public DbSet<Licence> Licence => Set<Licence>();
+
+        public DbSet<Maintenance> Maintenance => Set<Maintenance>();
 
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
@@ -170,7 +171,22 @@ namespace JoygameInventory.Data.Context
                       .IsUnique()
                       .HasDatabaseName("IX_Licence_LicenceName");
             });
+            modelBuilder.Entity<Maintenance>(entity =>
+            {
+                entity.HasKey(ia => ia.Id);
 
+                entity.HasOne(pc => pc.Product)
+                      .WithMany(p => p.Maintenances)
+                      .HasForeignKey(pc => pc.ProductBarkod)
+                      .HasPrincipalKey(p => p.ProductBarkod);
+
+
+            });
+
+            modelBuilder.Entity<Maintenance>().HasData(
+            new Maintenance { Id = 1, MaintenanceDescription = "Laptop1", CreatedAt = new DateTime(2024, 02, 01), ProductBarkod = "JGNB054" },
+            new Maintenance { Id = 2, MaintenanceDescription = "Ekipman1", CreatedAt = new DateTime(2024, 02, 01), ProductBarkod = "JGNB060" }
+            );
 
             modelBuilder.Entity<Product>().HasData(
             new Product { Id = 1, ProductName = "Laptop1", Description = "High-performance laptop", SerialNumber = "3872-5930-4832", ProductBarkod = "JGNB054" },
@@ -216,7 +232,7 @@ namespace JoygameInventory.Data.Context
 
             );
             modelBuilder.Entity<LicenceUser>().HasData(
-                    new List<LicenceUser>()
+                    new List<LicenceUser>() 
                     {
                                     new LicenceUser() { Id = 1, StaffId = 1, LicenceId = 1 },
                                     new LicenceUser() { Id = 2, StaffId = 2, LicenceId = 1 },
@@ -286,18 +302,6 @@ namespace JoygameInventory.Data.Context
             new JoyStaff { Id = 10, Email = "yusuf.bozkurt@joygame.com", Name = "Yusuf", Surname = "Bozkurt", PhoneNumber = "555-0110" }
             );
 
-            modelBuilder.Entity<Servers>().HasData(
-    new Servers { Id = 1, ServerName = "Server001", IPAddress = "192.168.1.10", MACAddress = "00:1A:2B:3C:4D:5E", OperatingSystem = "Windows Server 2019", CPU = "Intel Xeon E5-2670", RAM = 32, Storage = 1024, Status = "Active", Location = "Data Center A", DateInstalled = new DateTime(2020, 5, 10), HostName = "server001", SerialNumber = "SN123456789", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "Completed" },
-    new Servers { Id = 2, ServerName = "Server002", IPAddress = "192.168.1.11", MACAddress = "00:1A:2B:3C:4D:5F", OperatingSystem = "Linux Ubuntu 20.04", CPU = "AMD Ryzen 9 5950X", RAM = 64, Storage = 2048, Status = "Inactive", Location = "Data Center B", DateInstalled = new DateTime(2021, 2, 15), HostName = "server002", SerialNumber = "SN987654321", NetworkInterface = "WiFi", PowerStatus = "Off", BackupStatus = "Pending" },
-    new Servers { Id = 3, ServerName = "Server003", IPAddress = "192.168.1.12", MACAddress = "00:1A:2B:3C:4D:60", OperatingSystem = "Windows Server 2016", CPU = "Intel Core i7-9700K", RAM = 16, Storage = 512, Status = "Active", Location = "Data Center C", DateInstalled = new DateTime(2022, 8, 5), HostName = "server003", SerialNumber = "SN246813579", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "Not Completed" },
-    new Servers { Id = 4, ServerName = "Server004", IPAddress = "192.168.1.13", MACAddress = "00:1A:2B:3C:4D:61", OperatingSystem = "Windows Server 2022", CPU = "Intel Xeon Gold 6248", RAM = 128, Storage = 4096, Status = "Active", Location = "Data Center D", DateInstalled = new DateTime(2023, 3, 20), HostName = "server004", SerialNumber = "SN654987321", NetworkInterface = "Fiber", PowerStatus = "On", BackupStatus = "Completed" },
-    new Servers { Id = 5, ServerName = "Server005", IPAddress = "192.168.1.14", MACAddress = "00:1A:2B:3C:4D:62", OperatingSystem = "Linux CentOS 8", CPU = "AMD EPYC 7742", RAM = 256, Storage = 8192, Status = "Active", Location = "Data Center E", DateInstalled = new DateTime(2022, 11, 1), HostName = "server005", SerialNumber = "SN9876543210", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "In Progress" },
-    new Servers { Id = 6, ServerName = "Server006", IPAddress = "192.168.1.15", MACAddress = "00:1A:2B:3C:4D:63", OperatingSystem = "Windows Server 2012", CPU = "Intel Core i5-8500", RAM = 8, Storage = 256, Status = "Inactive", Location = "Data Center F", DateInstalled = new DateTime(2021, 6, 10), HostName = "server006", SerialNumber = "SN345678901", NetworkInterface = "WiFi", PowerStatus = "Off", BackupStatus = "Completed" },
-    new Servers { Id = 7, ServerName = "Server007", IPAddress = "192.168.1.16", MACAddress = "00:1A:2B:3C:4D:64", OperatingSystem = "Linux Debian 10", CPU = "Intel Core i9-9900K", RAM = 64, Storage = 2048, Status = "Active", Location = "Data Center G", DateInstalled = new DateTime(2023, 1, 15), HostName = "server007", SerialNumber = "SN789456123", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "Completed" },
-    new Servers { Id = 8, ServerName = "Server008", IPAddress = "192.168.1.17", MACAddress = "00:1A:2B:3C:4D:65", OperatingSystem = "Windows Server 2016", CPU = "Intel Xeon E3-1230", RAM = 16, Storage = 512, Status = "Inactive", Location = "Data Center H", DateInstalled = new DateTime(2020, 12, 5), HostName = "server008", SerialNumber = "SN963852741", NetworkInterface = "WiFi", PowerStatus = "Off", BackupStatus = "Pending" },
-    new Servers { Id = 9, ServerName = "Server009", IPAddress = "192.168.1.18", MACAddress = "00:1A:2B:3C:4D:66", OperatingSystem = "Linux Ubuntu 18.04", CPU = "AMD Ryzen 5 3600", RAM = 16, Storage = 1024, Status = "Active", Location = "Data Center I", DateInstalled = new DateTime(2022, 7, 30), HostName = "server009", SerialNumber = "SN852741963", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "Not Completed" },
-    new Servers { Id = 10, ServerName = "Server010", IPAddress = "192.168.1.19", MACAddress = "00:1A:2B:3C:4D:67", OperatingSystem = "Windows Server 2019", CPU = "Intel Core i7-10700K", RAM = 32, Storage = 2048, Status = "Active", Location = "Data Center J", DateInstalled = new DateTime(2021, 4, 20), HostName = "server010", SerialNumber = "SN1029384756", NetworkInterface = "Ethernet", PowerStatus = "On", BackupStatus = "Completed" }
-);
 
 
             // Add Roles (Roller)

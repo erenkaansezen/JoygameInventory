@@ -71,7 +71,7 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> LicenceCreate()
         {
-            return View("");
+            return View();
         }
 
 
