@@ -7,10 +7,10 @@ namespace JoygameInventory.Web.Controllers
 {
     public class MaintenanceController : Controller
     {
-        public MaintenanceService _maintenanceservice;
-        public ProductService _productservice;
+        private readonly IMaintenanceService _maintenanceservice;
+        private readonly IProductService _productservice;
 
-        public MaintenanceController(MaintenanceService maintenanceservice, ProductService productservice)
+        public MaintenanceController(IMaintenanceService maintenanceservice, IProductService productservice)
         {
             _maintenanceservice = maintenanceservice;
             _productservice = productservice;

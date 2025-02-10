@@ -8,12 +8,12 @@ namespace JoygameInventory.Web.Controllers
 {
     public class UserController : Controller
     {
-        public UserManager<JoyUser> _usermanager;
-        private SignInManager<JoyUser> _signInManager;
-        public JoyStaffService _staffmanager;
+        private readonly UserManager<JoyUser> _usermanager;
+        private readonly SignInManager<JoyUser> _signInManager;
+        private readonly IJoyStaffService _staffmanager;
 
 
-        public UserController(UserManager<JoyUser> usermanager, SignInManager<JoyUser> signInManager,JoyStaffService staffmanager)
+        public UserController(UserManager<JoyUser> usermanager, SignInManager<JoyUser> signInManager, IJoyStaffService staffmanager)
         {
             _usermanager = usermanager;
             _signInManager = signInManager;

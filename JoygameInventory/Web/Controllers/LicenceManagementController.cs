@@ -10,10 +10,10 @@ namespace JoygameInventory.Web.Controllers
 {
     public class LicenceManagementController : Controller
     {
-        public LicenceService _licenceservice;
-        public JoyStaffService _staffmanager;
+        private readonly ILicenceService _licenceservice;
+        private readonly IJoyStaffService _staffmanager;
 
-        public LicenceManagementController(LicenceService licenceservice, JoyStaffService staffmanager)
+        public LicenceManagementController(ILicenceService licenceservice, IJoyStaffService staffmanager)
         {
             _licenceservice = licenceservice;
             _staffmanager = staffmanager;

@@ -9,13 +9,12 @@ using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddScoped<ProductService>(); // ProductService eklenmiþ
-builder.Services.AddScoped<AssigmentService>(); // AssigmentService eklenmiþ
-builder.Services.AddScoped<JoyStaffService>();
-builder.Services.AddScoped<TeamService>();
-builder.Services.AddScoped<LicenceService>();
-builder.Services.AddScoped<MaintenanceService>();
+builder.Services.AddScoped<IProductService,ProductService>(); // ProductService eklenmiþ
+builder.Services.AddScoped<IAssigmentService,AssigmentService>(); // AssigmentService eklenmiþ
+builder.Services.AddScoped<IJoyStaffService,JoyStaffService>();
+builder.Services.AddScoped<ITeamService,TeamService>();
+builder.Services.AddScoped<ILicenceService,LicenceService>();
+builder.Services.AddScoped<IMaintenanceService,MaintenanceService>();
 
 
 builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));

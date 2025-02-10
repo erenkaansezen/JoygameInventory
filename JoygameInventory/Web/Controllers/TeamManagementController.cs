@@ -7,9 +7,9 @@ namespace JoygameInventory.Web.Controllers
 {
     public class TeamManagementController : Controller
     {
-        public TeamService _teamservice;
-        public JoyStaffService _staffmanager;
-        public TeamManagementController(TeamService teamservice, JoyStaffService staffmanager)
+        private readonly ITeamService _teamservice;
+        private readonly IJoyStaffService _staffmanager;
+        public TeamManagementController(ITeamService teamservice, IJoyStaffService staffmanager)
         {
             _teamservice = teamservice;
             _staffmanager = staffmanager;

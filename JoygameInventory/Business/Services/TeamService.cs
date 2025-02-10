@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
 {
-    public class TeamService
+    public class TeamService : ITeamService
     {
         private readonly InventoryContext _context;
 

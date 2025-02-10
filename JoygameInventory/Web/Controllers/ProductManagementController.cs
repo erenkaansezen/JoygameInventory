@@ -7,13 +7,13 @@ namespace JoygameInventory.Web.Controllers
 {
     public class ProductManagementController : Controller
     {
-        public ProductService _productservice;
-        public JoyStaffService _staffmanager;
-        public AssigmentService _assigmentservice;
+        private readonly IProductService _productservice;
+        private readonly IJoyStaffService _staffmanager;
+        private readonly IAssigmentService _assigmentservice;
         private readonly EmailService _emailService;
-        public MaintenanceService _maintenanceservice;
+        private readonly IMaintenanceService _maintenanceservice;
 
-        public ProductManagementController(ProductService productservice, JoyStaffService staffmanager,AssigmentService assigmentService, EmailService emailService, MaintenanceService maintenanceservice)
+        public ProductManagementController(IProductService productservice, IJoyStaffService staffmanager, IAssigmentService assigmentService, EmailService emailService, IMaintenanceService maintenanceservice)
         {
             _productservice = productservice;
             _staffmanager = staffmanager;

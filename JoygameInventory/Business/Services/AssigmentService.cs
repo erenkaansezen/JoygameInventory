@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
 {
-    public class AssigmentService
+    public class AssigmentService : IAssigmentService
     {
         private readonly InventoryContext _context;
 
