@@ -50,10 +50,10 @@
                     <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" />
                 </div>
             </div>
-        </section>
-        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalas">
-            Servis Kaydı Oluştur
-        </button>
+        </section>        
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalas">
+                Servis Kaydı Oluştur
+            </button>
         <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalasasdasd">
             Servis Geçmişi
         </button>
@@ -190,11 +190,11 @@
 </div>
 
 
-<div class="modal fade" id="previousAssignmentsModalas" tabindex="-1" aria-labelledby="previousAssignmentsModalasasdasd" aria-hidden="true">
+<div class="modal fade" id="previousAssignmentsModalasasdasd" tabindex="-1" aria-labelledby="previousAssignmentsModalLabelsas" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="previousAssignmentsModalLabels">@Model.ProductBarkod Servis Kayıtı Oluştur</h5>
+                <h5 class="modal-title" id="previousAssignmentsModalLabelsas">@Model.ProductBarkod Geçmiş Servis</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -203,7 +203,8 @@
                 {
                     <li class="list-group-item">
                         <strong>@item.MaintenanceDescription</strong><br />
-                        <span class="text-muted">Başlangıç : @item.CreatedAt.ToString("yyyy-MM-dd") Bitiş: @item.EndDate.ToString("yyyy-MM-dd")</span>
+                        <span class="text-muted">Servis Başlangıç: @item.CreatedAt.ToString("dd-MM-yyyy")</span><br />
+                        <span class="text-muted">Servis Bitiş: @item.EndDate.ToString("dd-MM-yyyy")</span>
                     </li>
                 }
 
@@ -242,6 +243,7 @@
     </div>
 </div>
 <br />
+
 
 
 <!-- Özelleştirilmiş Stil -->

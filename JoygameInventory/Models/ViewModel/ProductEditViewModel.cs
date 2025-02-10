@@ -45,6 +45,8 @@ public class ProductEditViewModel
 
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
         public IEnumerable<AssigmentHistory>? AssigmentHistorys { get; set; }
+        public Maintenance Maintenance { get; set; }
+
         public IEnumerable<MaintenanceHistory>? MaintenanceHistorys { get; set; }
 
         public IEnumerable<ProductCategory> ProductCategory { get; set; } = new List<ProductCategory>();

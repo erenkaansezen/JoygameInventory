@@ -40,12 +40,10 @@
             <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#fileUploadForm">
                 <i class="fas fa-plus"></i> Personel Ata
             </button>
-
             <!-- Personel Seçimi Formu -->
             <div id="fileUploadForm" class="collapse mt-3">
-                <form  asp-action="NewAssigmentLicence" method="post">
+                <form id="newAssignmentForm" asp-action="NewAssigmentLicence" method="post">
                     <input name="Id" type="hidden" value="@Model.Id" />
-
 
                     <!-- Personel Seçimi -->
                     <div class="form-group">
@@ -59,31 +57,34 @@
                         </select>
                     </div>
 
-                    <button class="btn btn-dark zımmetAdd">Atama Yap</button>
+                    <button type="button" class="btn btn-dark zımmetAdd">Atama Yap</button>
                 </form>
+            </div>
 
-                <script>
-                    $(document).ready(function () {
-                        $('.zımmetAdd').click(function () {
-                            var row = $(this).closest('card');  // Satırın kendisini al
+            <script>
+                $(document).ready(function () {
+                    $('.zımmetAdd').click(function () {
+                        var form = $('#newAssignmentForm');  // Formu alıyoruz
+                        var formData = new FormData(form[0]);  // Formu FormData objesine çeviriyoruz
 
-                            var form = $('#fileUploadForm');  // Formu alıyoruz
-                    var formData = new FormData(form[0]);  // Formu FormData objesine çeviriyoruz
-                    $.ajax({
-                        url: '@Url.Action("NewAssigmentLicence", "LicenceManagement")',
-                        type: 'POST',
-                        data: formData,
-                        processData: false,  // Bu, jQuery'nin veri işleme yapmasını engeller
-                        contentType: false,  // İçerik tipi otomatik olarak belirlenir
-                        function (response) {
-                            row.location.reload();
-                            alert('Zimmet başarıyla yüklendi!');
-                        },
-                    });
-
+                        $.ajax({
+                            url: '@Url.Action("NewAssigmentLicence", "LicenceManagement")', // URL'yi doğru şekilde al
+                            type: 'POST',
+                            data: formData,
+                            processData: false,  // Bu, jQuery'nin veri işleme yapmasını engeller
+                            contentType: false,  // İçerik tipi otomatik olarak belirlenir
+                            success: function (response) {
+                                alert('Zimmet başarıyla yüklendi!');
+                                location.reload();  // Sayfayı yeniden yükler
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Bir hata oluştu: ' + error);
+                            }
                         });
                     });
-                </script>
+                });
+            </script>
+
             </div>
         </div>
     </div>

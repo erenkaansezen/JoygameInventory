@@ -87,18 +87,69 @@
                             <td>@ServiceDetails.MaintenanceDescription</td>
                             <td>@ServiceDetails.CreatedAt.ToString("dd-MM-yyyy")</td>
                             <td class="text-end">
-                                <!-- Align buttons to the right -->
-                                <form asp-action="MaintenanceHistory" method="post" onsubmit="return confirm('Servis Tamamlandımı ?')" style="display: inline;">
+                                <!-- Servisi Tamamla Formu -->
+                                <form id="completeServiceForm_@ServiceDetails.Id" asp-action="MaintenanceHistory" method="post" style="display: inline;">
                                     <input type="hidden" value="@ServiceDetails.Id" name="id">
-                                    <button type="submit" class="btn btn-danger btn-custom">Servisi Tamamla</button>
+                                    <button type="button" class="btn btn-danger btn-custom completeServiceButton" data-id="@ServiceDetails.Id">Servisi Tamamla</button>
                                 </form>
-                                <form asp-action="MaintenanceDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+
+                                <!-- Servis Kaydını Sil Formu -->
+                                <form id="deleteServiceForm_@ServiceDetails.Id" asp-action="MaintenanceDelete" method="post" style="display: inline;">
                                     <input type="hidden" value="@ServiceDetails.Id" name="id">
-                                    <button type="submit" class="btn btn-danger btn-custom">Servis Kaydını Sil</button>
+                                    <button type="button" class="btn btn-danger btn-custom deleteServiceButton" data-id="@ServiceDetails.Id">Servis Kaydını Sil</button>
                                 </form>
                             </td>
                         </tr>
                     }
+
+                    <script>
+                        $(document).ready(function () {
+                            // "Servisi Tamamla" butonunun tıklanma olayını dinliyoruz
+                            $('.completeServiceButton').click(function () {
+                                var serviceId = $(this).data('id');  // Butondan id'yi alıyoruz
+                                if (confirm('Servis Tamamlandımı?')) {
+                                    var form = $('#completeServiceForm_' + serviceId);  // İlgili formu alıyoruz
+                                    var formData = form.serialize();  // Form verilerini serialize ediyoruz
+
+                                    $.ajax({
+                                        url: form.attr('action'),  // Formun action URL'sini alıyoruz
+                                        type: form.attr('method'),  // Formun method'ünü alıyoruz
+                                        data: formData,  // Form verilerini gönderiyoruz
+                                        success: function (response) {
+                                            alert('Servis başarıyla tamamlandı!');
+                                            location.reload();  // Sayfayı yeniden yüklüyoruz
+                                        },
+                                        error: function (xhr, status, error) {
+                                            alert('Bir hata oluştu: ' + error);
+                                        }
+                                    });
+                                }
+                            });
+
+                            // "Servis Kaydını Sil" butonunun tıklanma olayını dinliyoruz
+                            $('.deleteServiceButton').click(function () {
+                                var serviceId = $(this).data('id');  // Butondan id'yi alıyoruz
+                                if (confirm('Emin misiniz?')) {
+                                    var form = $('#deleteServiceForm_' + serviceId);  // İlgili formu alıyoruz
+                                    var formData = form.serialize();  // Form verilerini serialize ediyoruz
+
+                                    $.ajax({
+                                        url: form.attr('action'),  // Formun action URL'sini alıyoruz
+                                        type: form.attr('method'),  // Formun method'ünü alıyoruz
+                                        data: formData,  // Form verilerini gönderiyoruz
+                                        success: function (response) {
+                                            alert('Servis kaydı başarıyla silindi!');
+                                            location.reload();  // Sayfayı yeniden yüklüyoruz
+                                        },
+                                        error: function (xhr, status, error) {
+                                            alert('Bir hata oluştu: ' + error);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+
                 </tbody>
             </table>
         </div>

@@ -50,7 +50,8 @@ namespace JoygameInventory.Web.Controllers
             var staff = await _productservice.GetIdProductAsync(id);
             if (staff != null)
             {
-
+                var maintenance = await _maintenanceservice.GetProductServiceAsync(staff.ProductBarkod);
+                var maintenanceHistory = await _maintenanceservice.GetProductServiceHistoryAsync(staff.ProductBarkod);
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
                 var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
@@ -70,6 +71,8 @@ namespace JoygameInventory.Web.Controllers
                     JoyStaffs = joystaff,
                     AssigmentHistorys = assignmentHistorys,
                     Categories = category,
+                    MaintenanceHistorys = maintenanceHistory,
+                    Maintenance = maintenance,
 
 
 

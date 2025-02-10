@@ -20,6 +20,38 @@ namespace JoygameInventory.Business.Services
             // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Maintenance.ToListAsync();
         }
+        public async Task<Maintenance> GetProductServiceAsync(string ProductBarkod)
+        {
+            try
+            {
+                var inventoryAssignment = await _context.Maintenance
+                    .Where(ia => ia.ProductBarkod == ProductBarkod)
+                    .FirstOrDefaultAsync();
+
+                if (inventoryAssignment == null)
+                {
+                    // Loglama veya hata mesajı ekleyebilirsiniz
+                    Console.WriteLine($"No maintenance record found for ProductBarkod: {ProductBarkod}");
+                }
+
+                return inventoryAssignment;
+            }
+            catch (Exception ex)
+            {
+                // Hata loglaması
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<MaintenanceHistory>> GetProductServiceHistoryAsync(string ProductBarkod)
+        {
+            var inventoryAssignments = await _context.MaintenanceHistory
+                .Where(ia => ia.ProductBarkod == ProductBarkod)  // ProductBarkod'a göre filtreleme
+                .ToListAsync();
+
+            return inventoryAssignments;
+        }
 
         public async Task<IEnumerable<Maintenance>> SearchMaintenanceService(string searchTerm)
         {
