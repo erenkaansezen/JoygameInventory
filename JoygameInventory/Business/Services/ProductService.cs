@@ -80,12 +80,20 @@ namespace JoygameInventory.Business.Services
         }
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Categories.ToListAsync();
+        }
+        public async Task<IEnumerable<ProductCategory>> GetProductCategoryAsync(int categoryId)
+        {
+            var inventoryAssignments = await _context.ProductCategories
+                .Include(ia => ia.Category)
+                .Include(ia => ia.Product)  // Envanterin ait olduğu ürünü de dahil et
+                .Where(ia => ia.ProductId == categoryId)  // Ürüne ait zimmetli envanterleri al
+                .ToListAsync();
+
+            return inventoryAssignments;
         }
         public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.ProductCategories.ToListAsync();
         }
         public async Task AddProductCategory(ProductCategory productCategory)
@@ -126,6 +134,17 @@ namespace JoygameInventory.Business.Services
         public async Task<bool> ProductBarkodUnique(string barkod)
         {
             return !await _context.Products.AnyAsync(s => s.ProductBarkod == barkod);
+        }
+
+        public Product GetCategoryById(int id)
+        {
+            // Veritabanından ürün bilgilerini ve ilişkili ProductCategory verilerini alıyoruz
+            var product = _context.Products
+                                  .Include(p => p.ProductCategories)  // ProductCategories ilişkisini dahil ediyoruz
+                                  .ThenInclude(pc => pc.Category)    // Kategori bilgilerini de dahil ediyoruz
+                                  .FirstOrDefault(p => p.Id == id);  // Verilen id ile ürünü buluyoruz
+
+            return product;
         }
     }
 }

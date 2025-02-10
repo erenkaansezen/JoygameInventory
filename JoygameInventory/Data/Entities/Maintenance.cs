@@ -10,6 +10,9 @@ namespace JoygameInventory.Data.Entities
         public string MaintenanceDescription { get; set; } // Servis açıklaması
         public DateTime CreatedAt { get; set; } // Servis oluşturulma tarihi
 
+        public string? ServiceTitle { get; set; }
+
+        public string? ServiceAdress { get; set; }
 
         // Hangi ürüne ait olduğunu belirtiyoruz
         public string ProductBarkod { get; set; }

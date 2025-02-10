@@ -33,11 +33,11 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="ProductBarkod" class="form-label">Ürün Barkodu</label>
-                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" />
+                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" required />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="ProductName" class="form-label">Ürün Adı</label>
-                    <input asp-for="ProductName" id="ProductName" class="form-control" value="@Model.ProductName" />
+                    <input asp-for="ProductName" id="ProductName" class="form-control" value="@Model.ProductName" required />
                 </div>
             </div>
             <div class="row">
@@ -47,9 +47,32 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="SerialNumber" class="form-label">Seri Numarası</label>
-                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" />
+                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" required />
                 </div>
             </div>
+
+            @if (Model.ProductCategory.FirstOrDefault(p => p.CategoryId == 1 || p.CategoryId == 2) != null)
+            {
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="Ram" class="form-label">Ram<span class="text-danger">*</span></label>
+                        <input asp-for="Ram" id="Ram" class="form-control" type="number" value="@Model.Ram" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="Storage" class="form-label">Disk Boyutu <span class="text-danger">*</span></label>
+                        <input asp-for="Storage" id="Storage" class="form-control" value="@Model.Storage" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="Processor" class="form-label">İşlemci <span class="text-danger">*</span></label>
+                        <input asp-for="Processor" id="Processor" class="form-control" value="@Model.Processor" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="GraphicsCard" class="form-label">Ekran Kartı <span class="text-danger">*</span></label>
+                        <input asp-for="GraphicsCard" id="GraphicsCard" class="form-control" value="@Model.GraphicsCard" required />
+                    </div>
+                </div>
+            }
+
         </section>        
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalas">
                 Servis Kaydı Oluştur
@@ -203,6 +226,8 @@
                 {
                     <li class="list-group-item">
                         <strong>@item.MaintenanceDescription</strong><br />
+                        <span class="text-muted">Servis Sağlayan Marka: @item.ServiceTitle</span><br />
+                        <span class="text-muted">Servis Sağlayan Adresi: @item.ServiceAdress</span><br />
                         <span class="text-muted">Servis Başlangıç: @item.CreatedAt.ToString("dd-MM-yyyy")</span><br />
                         <span class="text-muted">Servis Bitiş: @item.EndDate.ToString("dd-MM-yyyy")</span>
                     </li>
@@ -223,15 +248,19 @@
             <div class="modal-body">
 
                 <form asp-controller="Maintenance" asp-action="MaintenanceCreate" method="post">
-                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" />
+                    <input name="ProductBarkod" type="hidden" value="@Model.ProductBarkod" />
 
                     <div class="mb-3">
                         <label asp-for="MaintenanceDescription">Servis Açıklaması</label>
                         <input asp-for="MaintenanceDescription" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label asp-for="MaintenanceCreated" class="control-label">Lisans Başlangıç Tarihi</label>
-                        <input asp-for="MaintenanceCreated" class="form-control" type="date" />
+                        <label asp-for="ServiceTitle" class="control-label">Servis Sağlayan Marka</label>
+                        <input asp-for="ServiceTitle" class="form-control"  />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ServiceAdress" class="control-label">Servis Sağlayan Adresi</label>
+                        <input asp-for="ServiceAdress" class="form-control" />
                     </div>
 
                     <br />

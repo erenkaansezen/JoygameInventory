@@ -11,6 +11,10 @@ namespace JoygameInventory.Data.Entities
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
 
+        public string ProductBrand { get; set; } = string.Empty;
+        public string ProductModel { get; set; } = string.Empty;
+
+
         public string ProductBarkod { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
@@ -19,6 +23,10 @@ namespace JoygameInventory.Data.Entities
 
         public string? Status { get; set; }
 
+        public int Ram { get; set; } 
+        public string Storage { get; set; } = string.Empty;
+        public string Processor { get; set; } = string.Empty;
+        public string GraphicsCard { get; set; } = string.Empty;
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<Category> Categories { get; set; }
 

@@ -21,10 +21,16 @@ public class ProductEditViewModel
 
         [Required(ErrorMessage = "Seri numarası gereklidir.")]
         public string? SerialNumber { get; set; } = string.Empty;
-
+        public string ProductBrand { get; set; } = string.Empty;
+        public string ProductModel { get; set; } = string.Empty;
         public DateTime ProductAddDate { get; set; }
 
         public string? Status { get; set; } = null!;
+        public int Ram { get; set; }
+        public string Storage { get; set; } = string.Empty;
+        public string Processor { get; set; } = string.Empty;
+        public string GraphicsCard { get; set; } = string.Empty;
+
 
         public int UserId { get; set; }
 
@@ -34,9 +40,10 @@ public class ProductEditViewModel
         public int SelectedCategoryId { get; set; }
 
         public int MaintenanceId { get; set; } // Maintenance ID
-        public string MaintenanceDescription { get; set; } // Servis açıklaması
-        public DateTime MaintenanceCreated { get; set; } // Servis oluşturulma tarihi
-        public DateTime? MaintenanceEndDate { get; set; } // Servisin bitiş tarihi
+        public string? MaintenanceDescription { get; set; } // Servis açıklaması
+        public string? ServiceTitle { get; set; }
+
+        public string? ServiceAdress { get; set; }
 
         public List<JoyStaff> JoyStaffs { get; set; }
 

@@ -49,7 +49,9 @@ namespace JoygameInventory.Web.Controllers
                 var maintenance = new Maintenance
                 {
                     ProductBarkod = model.ProductBarkod,
-                    CreatedAt = model.MaintenanceCreated,
+                    ServiceAdress = model.ServiceAdress,
+                    ServiceTitle = model.ServiceTitle,
+                    CreatedAt = DateTime.Now,
                     MaintenanceDescription = model.MaintenanceDescription
                 };
                 var result = await _maintenanceservice.CreateMaintenance(maintenance);
@@ -80,6 +82,8 @@ namespace JoygameInventory.Web.Controllers
                 var history = new MaintenanceHistory
                 {
                     ProductBarkod = maintenance.ProductBarkod,
+                    ServiceAdress = maintenance.ServiceAdress,
+                    ServiceTitle = maintenance.ServiceTitle,
                     MaintenanceDescription = maintenance.MaintenanceDescription,
                     CreatedAt = maintenance.CreatedAt,
                     EndDate = DateTime.Now

@@ -53,9 +53,10 @@ namespace JoygameInventory.Web.Controllers
                 var maintenance = await _maintenanceservice.GetProductServiceAsync(staff.ProductBarkod);
                 var maintenanceHistory = await _maintenanceservice.GetProductServiceHistoryAsync(staff.ProductBarkod);
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
+                var productcategory = await _productservice.GetProductCategoryAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
                 var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
-                var category = await _assigmentservice.GetAllStaffsAsync();
+                var category = await _productservice.GetAllCategoriesAsync();
 
                 var joystaff = await _staffmanager.GetAllStaffsAsync();
                 var model = new ProductEditViewModel
@@ -66,6 +67,12 @@ namespace JoygameInventory.Web.Controllers
                     Description = staff.Description,
                     SerialNumber = staff.SerialNumber,
                     ProductAddDate = staff.ProductAddDate,
+                    ProductBrand = staff.ProductBrand,
+                    ProductModel = staff.ProductModel,
+                    Ram = staff.Ram,
+                    Processor = staff.Processor,
+                    GraphicsCard = staff.GraphicsCard,
+                    Storage= staff.Storage,
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
                     JoyStaffs = joystaff,
@@ -73,6 +80,7 @@ namespace JoygameInventory.Web.Controllers
                     Categories = category,
                     MaintenanceHistorys = maintenanceHistory,
                     Maintenance = maintenance,
+                    ProductCategory = productcategory,
 
 
 
@@ -115,8 +123,14 @@ namespace JoygameInventory.Web.Controllers
             product.ProductName = model.ProductName;
             product.SerialNumber = model.SerialNumber;
             product.ProductBarkod = model.ProductBarkod;
+            product.ProductBrand = model.ProductBrand;
+            product.ProductModel = model.ProductModel;
             product.Description = model.Description;
             product.ProductAddDate = DateTime.Now;
+            product.Storage = model.Storage;
+            product.Ram = model.Ram;
+            product.Processor = model.Processor;
+            product.GraphicsCard = model.GraphicsCard;
 
             // Mevcut atama kaydını alıyoruz
             var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
@@ -233,7 +247,10 @@ namespace JoygameInventory.Web.Controllers
                 ProductBarkod = model.ProductBarkod,
                 Description = model.Description,
                 SerialNumber = model.SerialNumber,
-                Categories = model.Categories
+                Categories = model.Categories,
+                ProductBrand = model.ProductBrand,
+                ProductModel = model.ProductModel
+
             };
 
 

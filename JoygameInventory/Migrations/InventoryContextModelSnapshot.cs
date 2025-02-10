@@ -126,7 +126,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7702),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1839),
                             PreviusAssigmenId = 3,
                             ProductId = 1,
                             UserId = 1
@@ -134,7 +134,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7704),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1842),
                             PreviusAssigmenId = 3,
                             ProductId = 2,
                             UserId = 2
@@ -142,7 +142,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7705),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1844),
                             PreviusAssigmenId = 3,
                             ProductId = 3,
                             UserId = 1
@@ -150,7 +150,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7707),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1845),
                             PreviusAssigmenId = 3,
                             ProductId = 4,
                             UserId = 2
@@ -158,7 +158,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 5,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7708),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1846),
                             PreviusAssigmenId = 3,
                             ProductId = 5,
                             UserId = 3
@@ -166,7 +166,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 6,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7709),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1847),
                             PreviusAssigmenId = 3,
                             ProductId = 16,
                             UserId = 4
@@ -174,7 +174,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 7,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7710),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1848),
                             PreviusAssigmenId = 3,
                             ProductId = 18,
                             UserId = 5
@@ -182,7 +182,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 8,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7711),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1849),
                             PreviusAssigmenId = 3,
                             ProductId = 19,
                             UserId = 6
@@ -190,7 +190,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 9,
-                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7713),
+                            AssignmentDate = new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1850),
                             PreviusAssigmenId = 3,
                             ProductId = 20,
                             UserId = 6
@@ -430,14 +430,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2bf1e8f-fea7-462e-8538-0e8e74936f09",
+                            ConcurrencyStamp = "8b20b2dc-437a-4ec1-804f-d7e24bd9186c",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cc8b275d-9add-4dac-9035-2cc5b5e116f0",
+                            SecurityStamp = "d5ec0f9b-b63a-4758-90db-0b22beeed911",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -445,14 +445,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b153e5d9-ad40-4b26-8ac4-bf3d4de2369e",
+                            ConcurrencyStamp = "b3981152-e49a-452e-935b-4fec7b3f85c2",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "52469f0d-7931-469b-966e-50dfedaec039",
+                            SecurityStamp = "c21fe6c8-258d-4643-8459-87094cc2daa5",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -460,14 +460,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5afada7a-fea9-45b5-bfe0-0ccd9a478fe4",
+                            ConcurrencyStamp = "6489ad98-d554-452b-a2d3-868a6d09c1a6",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f6c67d2f-c90e-4f51-87c4-35a3cb3fdefb",
+                            SecurityStamp = "8add0af0-ed6b-4bc9-8346-35b3a0732072",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });
@@ -622,6 +622,12 @@ namespace JoygameInventory.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ServiceAdress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceTitle")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductBarkod")
@@ -666,6 +672,14 @@ namespace JoygameInventory.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ServiceAdress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceTitle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductBarkod");
@@ -683,6 +697,14 @@ namespace JoygameInventory.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("GraphicsCard")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Processor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("ProductAddDate")
                         .HasColumnType("TEXT");
 
@@ -690,9 +712,20 @@ namespace JoygameInventory.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ProductBrand")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductModel")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Ram")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
@@ -702,6 +735,10 @@ namespace JoygameInventory.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
                         .HasDefaultValue("Depoda");
+
+                    b.Property<string>("Storage")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -716,82 +753,136 @@ namespace JoygameInventory.Migrations
                         {
                             Id = 1,
                             Description = "High-performance laptop",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB054",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Laptop1",
-                            SerialNumber = "3872-5930-4832"
+                            Ram = 0,
+                            SerialNumber = "3872-5930-4832",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 2,
                             Description = "Wireless mouse",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB060",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Ekipman1",
-                            SerialNumber = "3840294-9F5A3C2D"
+                            Ram = 0,
+                            SerialNumber = "3840294-9F5A3C2D",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 3,
                             Description = "Mechanical keyboard",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB024",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Ekipman2",
-                            SerialNumber = "A2B3-5829-20250111"
+                            Ram = 0,
+                            SerialNumber = "A2B3-5829-20250111",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 4,
                             Description = "27-inch 4K monitor",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB095",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Ekipman3",
-                            SerialNumber = "WLG-384029-2024"
+                            Ram = 0,
+                            SerialNumber = "WLG-384029-2024",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 5,
                             Description = "Noise-cancelling over-ear headphones",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB101",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Ekipman4",
-                            SerialNumber = "HDP-230904"
+                            Ram = 0,
+                            SerialNumber = "HDP-230904",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 16,
                             Description = "2TB external hard drive",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB260",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Desktop1",
-                            SerialNumber = "EHDD-098723"
+                            Ram = 0,
+                            SerialNumber = "EHDD-098723",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 18,
                             Description = "Foldable electric scooter",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB280",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Desktop2",
-                            SerialNumber = "ES-129845"
+                            Ram = 0,
+                            SerialNumber = "ES-129845",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 19,
                             Description = "4K camera drone with flight stabilization",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB295",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Donanım1",
-                            SerialNumber = "DRN-589301"
+                            Ram = 0,
+                            SerialNumber = "DRN-589301",
+                            Storage = ""
                         },
                         new
                         {
                             Id = 20,
                             Description = "Portable mini projector",
+                            GraphicsCard = "",
+                            Processor = "",
                             ProductAddDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductBarkod = "JGNB310",
+                            ProductBrand = "",
+                            ProductModel = "",
                             ProductName = "Donanım2",
-                            SerialNumber = "PRJ-765123"
+                            Ram = 0,
+                            SerialNumber = "PRJ-765123",
+                            Storage = ""
                         });
                 });
 
