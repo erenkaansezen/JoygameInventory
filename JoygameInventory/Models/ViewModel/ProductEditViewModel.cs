@@ -33,6 +33,10 @@ public class ProductEditViewModel
         [Range(1, int.MaxValue, ErrorMessage = "Geçerli bir kategori seçin.")]
         public int SelectedCategoryId { get; set; }
 
+        public int MaintenanceId { get; set; } // Maintenance ID
+        public string MaintenanceDescription { get; set; } // Servis açıklaması
+        public DateTime MaintenanceCreated { get; set; } // Servis oluşturulma tarihi
+        public DateTime? MaintenanceEndDate { get; set; } // Servisin bitiş tarihi
 
         public List<JoyStaff> JoyStaffs { get; set; }
 
@@ -41,6 +45,7 @@ public class ProductEditViewModel
 
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
         public IEnumerable<AssigmentHistory>? AssigmentHistorys { get; set; }
+        public IEnumerable<MaintenanceHistory>? MaintenanceHistorys { get; set; }
 
         public IEnumerable<ProductCategory> ProductCategory { get; set; } = new List<ProductCategory>();
     }

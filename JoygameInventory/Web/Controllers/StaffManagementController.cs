@@ -15,16 +15,14 @@ namespace JoygameInventory.Web.Controllers
         public ProductService _productservice;
         public RoleManager<JoyRole> _rolemanager;
         public AssigmentService _assigmentservice;
-        public ServerService _serverservice;
         public TeamService _teamservice;
         public LicenceService _licenceservice;
 
-        public StaffManagementController(ProductService productservice,AssigmentService assigmentservice, JoyStaffService staffmanager, ServerService serverservice, TeamService teamservice, LicenceService licenceservice)
+        public StaffManagementController(ProductService productservice,AssigmentService assigmentservice, JoyStaffService staffmanager,TeamService teamservice, LicenceService licenceservice)
         {
             _productservice = productservice;
             _assigmentservice = assigmentservice;
             _staffmanager = staffmanager;
-            _serverservice = serverservice;
             _teamservice = teamservice;
             _licenceservice = licenceservice;
         }

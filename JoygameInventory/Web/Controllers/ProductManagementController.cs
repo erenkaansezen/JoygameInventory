@@ -1,6 +1,5 @@
 ﻿using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Entities;
-using JoygameInventory.Models.Model;
 using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +50,7 @@ namespace JoygameInventory.Web.Controllers
             var staff = await _productservice.GetIdProductAsync(id);
             if (staff != null)
             {
+
                 var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
                 var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
                 var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
@@ -70,6 +70,7 @@ namespace JoygameInventory.Web.Controllers
                     JoyStaffs = joystaff,
                     AssigmentHistorys = assignmentHistorys,
                     Categories = category,
+
 
 
 

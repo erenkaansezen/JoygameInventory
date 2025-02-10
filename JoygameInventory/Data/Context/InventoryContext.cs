@@ -24,6 +24,7 @@ namespace JoygameInventory.Data.Context
         public DbSet<Licence> Licence => Set<Licence>();
 
         public DbSet<Maintenance> Maintenance => Set<Maintenance>();
+        public DbSet<MaintenanceHistory> MaintenanceHistory => Set<MaintenanceHistory>();
 
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<JoyStaff> JoyStaffs => Set<JoyStaff>();
@@ -177,6 +178,18 @@ namespace JoygameInventory.Data.Context
 
                 entity.HasOne(pc => pc.Product)
                       .WithMany(p => p.Maintenances)
+                      .HasForeignKey(pc => pc.ProductBarkod)
+                      .HasPrincipalKey(p => p.ProductBarkod);
+                entity.HasIndex(s => s.ProductBarkod)
+                      .IsUnique();
+
+            });
+            modelBuilder.Entity<MaintenanceHistory>(entity =>
+            {
+                entity.HasKey(ia => ia.Id);
+
+                entity.HasOne(pc => pc.Product)
+                      .WithMany(p => p.MaintenanceHistory)
                       .HasForeignKey(pc => pc.ProductBarkod)
                       .HasPrincipalKey(p => p.ProductBarkod);
 

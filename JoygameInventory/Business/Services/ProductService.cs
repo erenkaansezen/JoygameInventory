@@ -16,23 +16,34 @@ namespace JoygameInventory.Business.Services
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             var products = _context.Products
-                .Include(p => p.InventoryAssigments)  
-                .ThenInclude(ia => ia.User)  
+                .Include(p => p.InventoryAssigments)
+                    .ThenInclude(ia => ia.User)
                 .ToList();
+
             foreach (var product in products)
             {
-                if (product.InventoryAssigments == null || !product.InventoryAssigments.Any())
+                // Eğer ürünün barkodu Maintenance tablosunda varsa
+                var maintenance = await _context.Maintenance
+                    .FirstOrDefaultAsync(m => m.ProductBarkod == product.ProductBarkod);
+
+                // Barkod bulunduyse ve servisteyse durumu "Servis" olarak ayarla
+                if (maintenance != null)
+                {
+                    product.Status = "Servis";
+                }
+                else if (product.InventoryAssigments == null || !product.InventoryAssigments.Any())
                 {
                     product.Status = "Depoda";
                 }
                 else
                 {
-                    product.Status = "Zimmetli";  
+                    product.Status = "Zimmetli";
                 }
             }
 
             return products;
         }
+
         public async Task<Product> GetIdProductAsync(int id)
         {
             return await _context.Products.FirstOrDefaultAsync(s => s.Id == id);

@@ -36,32 +36,69 @@ namespace JoygameInventory.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MaintenanceCreate(MaintenanceViewModel model)
+        public async Task<IActionResult> MaintenanceCreate(ProductEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            var MaintenanceList = await _maintenanceservice.GetAllServiceAsync();
+            if (!await _maintenanceservice.IsProductBarkodUnique(model.ProductBarkod))
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    // Hata mesajlarını loglayın veya görsel olarak ekrana yazdırın
-                    Console.WriteLine(error.ErrorMessage);
-                }
+                TempData["ErrorMessage"] = $"{model.ProductBarkod} ürüne ait devam eden servis var, lütfen kontrol sağlayınız.";
+                return RedirectToAction("MaintenanceList");
             }
-            if (ModelState.IsValid)
+            if (model.ProductBarkod != null)
             {
                 var maintenance = new Maintenance
                 {
-                   
-                    ProductBarkod = model.SelectedProductBarkod,
+                    ProductBarkod = model.ProductBarkod,
                     CreatedAt = model.MaintenanceCreated,
                     MaintenanceDescription = model.MaintenanceDescription
                 };
                 var result = await _maintenanceservice.CreateMaintenance(maintenance);
                 if (result)
                 {
+                    TempData["SuccessMessage"] = $"{model.ProductBarkod} ürünün başarıyla servis kaydı oluşturuldu";
                     return RedirectToAction("MaintenanceList");
                 }
             }
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MaintenanceDelete(int id)
+        {
+
+            await _maintenanceservice.DeleteMaintenanceAsync(id);
+            return RedirectToAction("MaintenanceList");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MaintenanceHistory(int id)
+        {
+            var maintenance = await _maintenanceservice.GetMaintenanceByIdAsync(id);
+            if (maintenance != null)
+            {
+                var history = new MaintenanceHistory
+                {
+                    ProductBarkod = maintenance.ProductBarkod,
+                    MaintenanceDescription = maintenance.MaintenanceDescription,
+                    CreatedAt = maintenance.CreatedAt,
+                    EndDate = DateTime.Now
+
+                };
+
+                var result = await _maintenanceservice.MaintenanceHistoryAdd(history);
+
+                if (result)
+                {
+                    TempData["SuccessMessage"] = $"{maintenance.ProductBarkod} Ürünün servis durumu tamamlanmıştır.";
+                    await _maintenanceservice.DeleteMaintenanceAsync(id);
+                    return RedirectToAction("MaintenanceList");
+                }
+
+                return View(maintenance);
+            }
+            return RedirectToAction("MaintenanceList");
+        }
+
     }
 }

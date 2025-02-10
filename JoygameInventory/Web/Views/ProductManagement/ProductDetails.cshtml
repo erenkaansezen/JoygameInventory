@@ -51,7 +51,13 @@
                 </div>
             </div>
         </section>
-
+        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalas">
+            Servis Kaydı Oluştur
+        </button>
+        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#previousAssignmentsModalasasdasd">
+            Servis Geçmişi
+        </button>
+        <br />
         <br />
         <!-- Mevcut Atamalar -->
         <section class="mb-5">
@@ -184,8 +190,58 @@
 </div>
 
 
+<div class="modal fade" id="previousAssignmentsModalas" tabindex="-1" aria-labelledby="previousAssignmentsModalasasdasd" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previousAssignmentsModalLabels">@Model.ProductBarkod Servis Kayıtı Oluştur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
+                @foreach (var item in Model.MaintenanceHistorys)
+                {
+                    <li class="list-group-item">
+                        <strong>@item.MaintenanceDescription</strong><br />
+                        <span class="text-muted">Başlangıç : @item.CreatedAt.ToString("yyyy-MM-dd") Bitiş: @item.EndDate.ToString("yyyy-MM-dd")</span>
+                    </li>
+                }
 
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="modal fade" id="previousAssignmentsModalas" tabindex="-1" aria-labelledby="previousAssignmentsModalLabels" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previousAssignmentsModalLabels">@Model.ProductBarkod Servis Kayıtı Oluştur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-controller="Maintenance" asp-action="MaintenanceCreate" method="post">
+                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" />
+
+                    <div class="mb-3">
+                        <label asp-for="MaintenanceDescription">Servis Açıklaması</label>
+                        <input asp-for="MaintenanceDescription" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="MaintenanceCreated" class="control-label">Lisans Başlangıç Tarihi</label>
+                        <input asp-for="MaintenanceCreated" class="form-control" type="date" />
+                    </div>
+
+                    <br />
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<br />
 
 
 <!-- Özelleştirilmiş Stil -->

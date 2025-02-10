@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
@@ -32,6 +33,29 @@ namespace JoygameInventory.Business.Services
             return await query.ToListAsync();
         }
 
+        public async Task<Maintenance> GetMaintenanceByIdAsync(int id)
+        {
+            // Veritabanında belirtilen id'ye sahip bakımı buluyoruz.
+            var maintenance = await _context.Maintenance
+                                            .FirstOrDefaultAsync(m => m.Id == id);
+
+            return maintenance;
+        }
+
+        public async Task<bool> MaintenanceHistoryAdd(MaintenanceHistory maintenance)
+        {
+            try
+            {
+                // Servisi veritabanına ekle
+                _context.MaintenanceHistory.Add(maintenance);
+                await _context.SaveChangesAsync();
+                return true;  // Başarılı
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public async Task<bool> CreateMaintenance(Maintenance maintenance)
         {
             try
@@ -41,11 +65,27 @@ namespace JoygameInventory.Business.Services
                 await _context.SaveChangesAsync();
                 return true;  // Başarılı
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Hata durumunda false döner
                 return false;
             }
         }
+        public async Task DeleteMaintenanceAsync(int id)
+        {
+            var deleteMaintenance = await _context.Maintenance.FindAsync(id);
+            if (deleteMaintenance != null)
+            {
+                _context.Maintenance.Remove(deleteMaintenance);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> IsProductBarkodUnique(string ProductBarkod)
+        {
+            return !await _context.Maintenance.AnyAsync(s => s.ProductBarkod == ProductBarkod);
+        }
+
+
+
     }
 }

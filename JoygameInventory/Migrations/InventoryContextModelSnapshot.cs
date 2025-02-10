@@ -126,7 +126,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7765),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7702),
                             PreviusAssigmenId = 3,
                             ProductId = 1,
                             UserId = 1
@@ -134,7 +134,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7767),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7704),
                             PreviusAssigmenId = 3,
                             ProductId = 2,
                             UserId = 2
@@ -142,7 +142,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7769),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7705),
                             PreviusAssigmenId = 3,
                             ProductId = 3,
                             UserId = 1
@@ -150,7 +150,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7770),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7707),
                             PreviusAssigmenId = 3,
                             ProductId = 4,
                             UserId = 2
@@ -158,7 +158,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 5,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7771),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7708),
                             PreviusAssigmenId = 3,
                             ProductId = 5,
                             UserId = 3
@@ -166,7 +166,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 6,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7772),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7709),
                             PreviusAssigmenId = 3,
                             ProductId = 16,
                             UserId = 4
@@ -174,7 +174,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 7,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7773),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7710),
                             PreviusAssigmenId = 3,
                             ProductId = 18,
                             UserId = 5
@@ -182,7 +182,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 8,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7775),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7711),
                             PreviusAssigmenId = 3,
                             ProductId = 19,
                             UserId = 6
@@ -190,7 +190,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 9,
-                            AssignmentDate = new DateTime(2025, 2, 9, 20, 51, 11, 675, DateTimeKind.Utc).AddTicks(7776),
+                            AssignmentDate = new DateTime(2025, 2, 10, 0, 54, 38, 827, DateTimeKind.Utc).AddTicks(7713),
                             PreviusAssigmenId = 3,
                             ProductId = 20,
                             UserId = 6
@@ -430,14 +430,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9839a12-0a43-45f3-a315-948b05c5a414",
+                            ConcurrencyStamp = "d2bf1e8f-fea7-462e-8538-0e8e74936f09",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4adb8488-b640-408a-82c3-23b498d4fefd",
+                            SecurityStamp = "cc8b275d-9add-4dac-9035-2cc5b5e116f0",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -445,14 +445,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e1951f52-d09d-4718-8bff-dbbabd45706e",
+                            ConcurrencyStamp = "b153e5d9-ad40-4b26-8ac4-bf3d4de2369e",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7135aed2-62ce-484e-807f-be3b7c87dab0",
+                            SecurityStamp = "52469f0d-7931-469b-966e-50dfedaec039",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -460,14 +460,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d9105a79-c5bd-40d0-a6bf-f12ba59fdce1",
+                            ConcurrencyStamp = "5afada7a-fea9-45b5-bfe0-0ccd9a478fe4",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "afa542e5-adff-4561-862a-c36363b3a345",
+                            SecurityStamp = "f6c67d2f-c90e-4f51-87c4-35a3cb3fdefb",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });
@@ -614,9 +614,6 @@ namespace JoygameInventory.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("MaintenanceDescription")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -627,7 +624,8 @@ namespace JoygameInventory.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductBarkod");
+                    b.HasIndex("ProductBarkod")
+                        .IsUnique();
 
                     b.ToTable("Maintenance");
 
@@ -646,6 +644,33 @@ namespace JoygameInventory.Migrations
                             MaintenanceDescription = "Ekipman1",
                             ProductBarkod = "JGNB060"
                         });
+                });
+
+            modelBuilder.Entity("JoygameInventory.Data.Entities.MaintenanceHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MaintenanceDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductBarkod")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductBarkod");
+
+                    b.ToTable("MaintenanceHistory");
                 });
 
             modelBuilder.Entity("JoygameInventory.Data.Entities.Product", b =>
@@ -844,254 +869,6 @@ namespace JoygameInventory.Migrations
                             Id = 9,
                             CategoryId = 4,
                             ProductId = 20
-                        });
-                });
-
-            modelBuilder.Entity("JoygameInventory.Data.Entities.Servers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("BackupStatus")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CPU")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateInstalled")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("HostName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MACAddress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NetworkInterface")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OperatingSystem")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PowerStatus")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RAM")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SerialNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ServerName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Storage")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Servers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BackupStatus = "Completed",
-                            CPU = "Intel Xeon E5-2670",
-                            DateInstalled = new DateTime(2020, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server001",
-                            IPAddress = "192.168.1.10",
-                            Location = "Data Center A",
-                            MACAddress = "00:1A:2B:3C:4D:5E",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Windows Server 2019",
-                            PowerStatus = "On",
-                            RAM = 32,
-                            SerialNumber = "SN123456789",
-                            ServerName = "Server001",
-                            Status = "Active",
-                            Storage = 1024
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BackupStatus = "Pending",
-                            CPU = "AMD Ryzen 9 5950X",
-                            DateInstalled = new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server002",
-                            IPAddress = "192.168.1.11",
-                            Location = "Data Center B",
-                            MACAddress = "00:1A:2B:3C:4D:5F",
-                            NetworkInterface = "WiFi",
-                            OperatingSystem = "Linux Ubuntu 20.04",
-                            PowerStatus = "Off",
-                            RAM = 64,
-                            SerialNumber = "SN987654321",
-                            ServerName = "Server002",
-                            Status = "Inactive",
-                            Storage = 2048
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BackupStatus = "Not Completed",
-                            CPU = "Intel Core i7-9700K",
-                            DateInstalled = new DateTime(2022, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server003",
-                            IPAddress = "192.168.1.12",
-                            Location = "Data Center C",
-                            MACAddress = "00:1A:2B:3C:4D:60",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Windows Server 2016",
-                            PowerStatus = "On",
-                            RAM = 16,
-                            SerialNumber = "SN246813579",
-                            ServerName = "Server003",
-                            Status = "Active",
-                            Storage = 512
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BackupStatus = "Completed",
-                            CPU = "Intel Xeon Gold 6248",
-                            DateInstalled = new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server004",
-                            IPAddress = "192.168.1.13",
-                            Location = "Data Center D",
-                            MACAddress = "00:1A:2B:3C:4D:61",
-                            NetworkInterface = "Fiber",
-                            OperatingSystem = "Windows Server 2022",
-                            PowerStatus = "On",
-                            RAM = 128,
-                            SerialNumber = "SN654987321",
-                            ServerName = "Server004",
-                            Status = "Active",
-                            Storage = 4096
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BackupStatus = "In Progress",
-                            CPU = "AMD EPYC 7742",
-                            DateInstalled = new DateTime(2022, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server005",
-                            IPAddress = "192.168.1.14",
-                            Location = "Data Center E",
-                            MACAddress = "00:1A:2B:3C:4D:62",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Linux CentOS 8",
-                            PowerStatus = "On",
-                            RAM = 256,
-                            SerialNumber = "SN9876543210",
-                            ServerName = "Server005",
-                            Status = "Active",
-                            Storage = 8192
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BackupStatus = "Completed",
-                            CPU = "Intel Core i5-8500",
-                            DateInstalled = new DateTime(2021, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server006",
-                            IPAddress = "192.168.1.15",
-                            Location = "Data Center F",
-                            MACAddress = "00:1A:2B:3C:4D:63",
-                            NetworkInterface = "WiFi",
-                            OperatingSystem = "Windows Server 2012",
-                            PowerStatus = "Off",
-                            RAM = 8,
-                            SerialNumber = "SN345678901",
-                            ServerName = "Server006",
-                            Status = "Inactive",
-                            Storage = 256
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BackupStatus = "Completed",
-                            CPU = "Intel Core i9-9900K",
-                            DateInstalled = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server007",
-                            IPAddress = "192.168.1.16",
-                            Location = "Data Center G",
-                            MACAddress = "00:1A:2B:3C:4D:64",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Linux Debian 10",
-                            PowerStatus = "On",
-                            RAM = 64,
-                            SerialNumber = "SN789456123",
-                            ServerName = "Server007",
-                            Status = "Active",
-                            Storage = 2048
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BackupStatus = "Pending",
-                            CPU = "Intel Xeon E3-1230",
-                            DateInstalled = new DateTime(2020, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server008",
-                            IPAddress = "192.168.1.17",
-                            Location = "Data Center H",
-                            MACAddress = "00:1A:2B:3C:4D:65",
-                            NetworkInterface = "WiFi",
-                            OperatingSystem = "Windows Server 2016",
-                            PowerStatus = "Off",
-                            RAM = 16,
-                            SerialNumber = "SN963852741",
-                            ServerName = "Server008",
-                            Status = "Inactive",
-                            Storage = 512
-                        },
-                        new
-                        {
-                            Id = 9,
-                            BackupStatus = "Not Completed",
-                            CPU = "AMD Ryzen 5 3600",
-                            DateInstalled = new DateTime(2022, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server009",
-                            IPAddress = "192.168.1.18",
-                            Location = "Data Center I",
-                            MACAddress = "00:1A:2B:3C:4D:66",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Linux Ubuntu 18.04",
-                            PowerStatus = "On",
-                            RAM = 16,
-                            SerialNumber = "SN852741963",
-                            ServerName = "Server009",
-                            Status = "Active",
-                            Storage = 1024
-                        },
-                        new
-                        {
-                            Id = 10,
-                            BackupStatus = "Completed",
-                            CPU = "Intel Core i7-10700K",
-                            DateInstalled = new DateTime(2021, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HostName = "server010",
-                            IPAddress = "192.168.1.19",
-                            Location = "Data Center J",
-                            MACAddress = "00:1A:2B:3C:4D:67",
-                            NetworkInterface = "Ethernet",
-                            OperatingSystem = "Windows Server 2019",
-                            PowerStatus = "On",
-                            RAM = 32,
-                            SerialNumber = "SN1029384756",
-                            ServerName = "Server010",
-                            Status = "Active",
-                            Storage = 2048
                         });
                 });
 
@@ -1418,6 +1195,18 @@ namespace JoygameInventory.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("JoygameInventory.Data.Entities.MaintenanceHistory", b =>
+                {
+                    b.HasOne("JoygameInventory.Data.Entities.Product", "Product")
+                        .WithMany("MaintenanceHistory")
+                        .HasForeignKey("ProductBarkod")
+                        .HasPrincipalKey("ProductBarkod")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("JoygameInventory.Data.Entities.ProductCategory", b =>
                 {
                     b.HasOne("JoygameInventory.Data.Entities.Category", "Category")
@@ -1538,6 +1327,8 @@ namespace JoygameInventory.Migrations
                     b.Navigation("AssigmentHistorys");
 
                     b.Navigation("InventoryAssigments");
+
+                    b.Navigation("MaintenanceHistory");
 
                     b.Navigation("Maintenances");
 

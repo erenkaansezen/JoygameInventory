@@ -45,10 +45,7 @@
     </h2>
     <hr />
     <div class="row">
-        <div class="col-md-6">
-            <a asp-action="MaintenanceCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Servis Kaydı Ekle</a>
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <form asp-action="MaintenanceList" method="get">
                 <div class="input-group mb-3">
                     <input type="text" name="searchTerm" class="form-control" placeholder="Ürün Barkodu ile ara" />
@@ -84,16 +81,18 @@
                 <tbody>
                     @foreach (var ServiceDetails in Model)
                     {
-                        <tr>
+                        <tr style="text-align">
                             <td>@ServiceDetails.Id</td>
                             <td>@ServiceDetails.ProductBarkod</td>
                             <td>@ServiceDetails.MaintenanceDescription</td>
                             <td>@ServiceDetails.CreatedAt.ToString("dd-MM-yyyy")</td>
                             <td class="text-end">
                                 <!-- Align buttons to the right -->
-                                <a asp-action="MaintenanceDetails" asp-route-id="@ServiceDetails.Id" class="btn btn-outline-dark btn-custom">Servisi Tamamla</a>
-
-                                <form asp-controller="Maintenance" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                <form asp-action="MaintenanceHistory" method="post" onsubmit="return confirm('Servis Tamamlandımı ?')" style="display: inline;">
+                                    <input type="hidden" value="@ServiceDetails.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Servisi Tamamla</button>
+                                </form>
+                                <form asp-action="MaintenanceDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
                                     <input type="hidden" value="@ServiceDetails.Id" name="id">
                                     <button type="submit" class="btn btn-danger btn-custom">Servis Kaydını Sil</button>
                                 </form>
