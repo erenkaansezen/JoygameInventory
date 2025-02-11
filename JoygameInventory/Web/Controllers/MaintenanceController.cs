@@ -17,21 +17,17 @@ namespace JoygameInventory.Web.Controllers
         }
         public async Task<IActionResult> MaintenanceList(string searchTerm)
         {
-            // Arama terimi varsa, arama sonuçlarını alıyoruz
             var Maintenances = await _maintenanceservice.SearchMaintenanceService(searchTerm);
 
 
-            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
                 Maintenances = await _maintenanceservice.GetAllServiceAsync();
             }
 
-            // Arama terimi ViewBag içinde gönderiliyor
             ViewBag.SearchTerm = searchTerm;
 
 
-            // Arama sonuçlarını view'a gönderiyoruz
             return View(Maintenances);
         }
 

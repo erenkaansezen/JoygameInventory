@@ -16,16 +16,12 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> CategoryList(string searchTerm)
         {
-            // Arama terimi varsa, arama sonuçlarını alıyoruz
             var categories = await _categoryservice.SearchCategory(searchTerm);
-            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
                 categories = await _categoryservice.GetAllCategoriesAsync();
             }
-            // Arama terimi ViewBag içinde gönderiliyor
             ViewBag.SearchTerm = searchTerm;
-            // Arama sonuçlarını view'a gönderiyoruz
             return View(categories);
         }
         [HttpGet]

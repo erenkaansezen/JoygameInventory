@@ -28,16 +28,14 @@ namespace JoygameInventory.Web.Controllers
         {            // İlk olarak tüm ürünleri alıyoruz
             var joyproducts = await _productservice.GetAllProductsAsync();
 
-            // Eğer arama terimi varsa, arama sonuçlarına göre filtreleme yapıyoruz
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                joyproducts = await _productservice.SearchProduct(searchTerm); // Kategoriye göre filtreleme
+                joyproducts = await _productservice.SearchProduct(searchTerm); 
             }
 
-            // Eğer kategori seçilmişse, kategoriye göre filtreleme yapıyoruz
             if (!string.IsNullOrEmpty(category))
             {
-                joyproducts = await _productservice.GetProductsByCategoryAsync(category); // Kategoriye göre filtreleme
+                joyproducts = await _productservice.GetProductsByCategoryAsync(category); 
             }
 
 
@@ -119,7 +117,6 @@ namespace JoygameInventory.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Ürün bilgilerini güncelleme
             product.ProductName = model.ProductName;
             product.SerialNumber = model.SerialNumber;
             product.ProductBarkod = model.ProductBarkod;
@@ -132,7 +129,6 @@ namespace JoygameInventory.Web.Controllers
             product.Processor = model.Processor;
             product.GraphicsCard = model.GraphicsCard;
 
-            // Mevcut atama kaydını alıyoruz
             var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
 
             if (currentAssignments != null && currentAssignments.Any())
@@ -141,22 +137,18 @@ namespace JoygameInventory.Web.Controllers
 
                 if (currentAssignment != null)
                 {
-                    // Kullanıcı değişmişse
                     if (currentAssignment.UserId != model.SelectedUserId && model.SelectedUserId != null)
                     {
-                        // Önceki kullanıcıyı AssignmentHistory tablosuna kaydediyoruz
                         var assignmentHistory = new AssigmentHistory
                         {
                             ProductId = currentAssignment.ProductId,
-                            UserId = currentAssignment.UserId,  // Eski kullanıcı ID'si
+                            UserId = currentAssignment.UserId,  
                             AssignmentDate = DateTime.Now
                         };
                         await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);
 
-                        // Önceki kullanıcıyı PreviusAssigmenId'ye kaydediyoruz
                         currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
 
-                        // Yeni kullanıcıyı atıyoruz
                         if (model.SelectedUserId != null)
                         {
                             currentAssignment.UserId = model.SelectedUserId.Value;
@@ -164,21 +156,19 @@ namespace JoygameInventory.Web.Controllers
 
                         currentAssignment.AssignmentDate = DateTime.Now;
 
-                        //Yeni kullanıcıya e-posta gönderimi
                         var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
                         if (newUser != null)
                         {
                             var toEmailAddress = newUser.Email;
                             var subject = "Yeni Ürün Ataması";
                             var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
-                            var attachmentPaths = new List<string>();  // Boş bir liste oluşturuluyor
+                            var attachmentPaths = new List<string>(); 
                             await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                         }
                         await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
                     }
                     else
                     {
-                        // Kullanıcı değişmemişse sadece ürünü güncelliyoruz
                         await _productservice.UpdateProductAsync(product);
                     }
 
@@ -186,28 +176,25 @@ namespace JoygameInventory.Web.Controllers
                     return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
             }
-            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0) // Atama kaydı yoksa ve kullanıcı seçildiyse
+            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0) 
             {
-                // Yeni bir atama kaydı oluşturuyoruz
                 var newAssignment = new InventoryAssigment
                 {
                     ProductId = product.Id,
-                    UserId = model.SelectedUserId.Value,  // Seçilen kullanıcı
+                    UserId = model.SelectedUserId.Value,  
                     AssignmentDate = DateTime.Now,
-                    PreviusAssigmenId = null,  // null yapılıyor
+                    PreviusAssigmenId = null,  
                 };
 
-                // Yeni atamayı kaydediyoruz
                 await _assigmentservice.AddAssignmentAsync(newAssignment);
 
-                // Yeni kullanıcıya e-posta gönderiyoruz
                 var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
                 if (newUser != null)
                 {
                     var toEmailAddress = newUser.Email;
                     var subject = "Yeni Ürün Ataması";
                     var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
-                    var attachmentPaths = new List<string>();  // Boş bir liste oluşturuluyor
+                    var attachmentPaths = new List<string>();  
                     await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                 }
 
@@ -215,7 +202,6 @@ namespace JoygameInventory.Web.Controllers
                 return RedirectToAction("ProductDetails", new { id = model.Id });
             }
 
-            // Ürün bilgilerini güncelliyoruz (yeni atama olmadıysa)
             await _productservice.UpdateProductAsync(product);
             TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
@@ -227,20 +213,17 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductCreate(ProductEditViewModel model)
         {
-            // Barkodun benzersiz olup olmadığını kontrol ediyoruz
             if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = "Girdiğiniz barkod numarası başka ürüne ait";
                 return View("ProductCreate", model);
             }
 
-            // Kategori seçilmediği durum için hata mesajı ekliyoruz
             if (model.SelectedCategoryId <= 0)
             {
                 TempData["ErrorMessage"] = "Lütfen Kategori Seçiniz";
                 return RedirectToAction("ProductCreate", model);
             }
-            // Ürün nesnesini oluşturuyoruz
             var product = new Product
             {
                 ProductName = model.ProductName,
@@ -255,19 +238,16 @@ namespace JoygameInventory.Web.Controllers
 
 
 
-            // Ürünü kaydetmeye başlıyoruz
             var result = await _productservice.CreateProduct(product);
 
-            if (result) // Eğer ürün başarılı bir şekilde kaydedildiyse
+            if (result) 
             {
-                // Ürün kaydedildikten sonra ProductCategory tablosuna ilişkilendirme ekliyoruz
                 var productCategory = new ProductCategory
                 {
                     ProductId = product.Id, // Ürün ID'si
                     CategoryId = model.SelectedCategoryId // Seçilen kategori ID'si
                 };
 
-                // ProductCategory kaydını ekliyoruz
                 await _productservice.AddProductCategory(productCategory);
 
                 TempData["SuccessMessage"] = "Ürün başarıyla oluşturuldu ve kategoriyle ilişkilendirildi!";

@@ -9,7 +9,6 @@ namespace JoygameInventory.Business.Services
 
         private readonly InventoryContext _context;
 
-        // Constructor ile context'i alıyoruz
         public LicenceService(InventoryContext context)
         {
             _context = context;
@@ -17,7 +16,6 @@ namespace JoygameInventory.Business.Services
 
         public async Task<List<Licence>> GetAllLicencesAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Licence.ToListAsync();
         }
         public async Task<IEnumerable<Licence>> SearchLicence(string searchTerm)
@@ -39,15 +37,14 @@ namespace JoygameInventory.Business.Services
         }
         public async Task<Licence> GetLicenceByIdAsync(int id)
         {
-            // Veritabanından staff'ı ID ile arıyoruz
             return  _context.Licence.FirstOrDefault(s => s.Id == id);
         }
         public async Task<List<LicenceUser>> GetLicenceUserAssignmentsAsync(int userId)
         {
             var licenceusers = await _context.LicenceUser
                 .Include(ia => ia.Licence)
-                .Include(ia => ia.staff)  // Envanterin ait olduğu ürünü de dahil et
-                .Where(ia => ia.LicenceId == userId)  // Kullanıcıya ait zimmetli envanterleri al
+                .Include(ia => ia.staff)  
+                .Where(ia => ia.LicenceId == userId)  
                 .ToListAsync();
 
             return licenceusers;
@@ -56,8 +53,8 @@ namespace JoygameInventory.Business.Services
         {
             var licenceusers = await _context.LicenceUser
                 .Include(ia => ia.Licence)
-                .Include(ia => ia.staff)  // Envanterin ait olduğu ürünü de dahil et
-                .Where(ia => ia.StaffId == userId)  // Kullanıcıya ait zimmetli envanterleri al
+                .Include(ia => ia.staff)  
+                .Where(ia => ia.StaffId == userId) 
                 .ToListAsync();
 
             return licenceusers;
@@ -81,7 +78,6 @@ namespace JoygameInventory.Business.Services
 
         public async Task AddAssignmentAsync(Licence licence, JoyStaff staff)
         {
-            // Lisansı ve staff'ı ilişkilendir
             var assignment = new LicenceUser
             {
                 LicenceId = licence.Id,

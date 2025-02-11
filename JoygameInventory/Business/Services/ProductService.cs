@@ -22,11 +22,9 @@ namespace JoygameInventory.Business.Services
 
             foreach (var product in products)
             {
-                // Eğer ürünün barkodu Maintenance tablosunda varsa
                 var maintenance = await _context.Maintenance
                     .FirstOrDefaultAsync(m => m.ProductBarkod == product.ProductBarkod);
 
-                // Barkod bulunduyse ve servisteyse durumu "Servis" olarak ayarla
                 if (maintenance != null)
                 {
                     product.Status = "Servis";
@@ -86,8 +84,8 @@ namespace JoygameInventory.Business.Services
         {
             var inventoryAssignments = await _context.ProductCategories
                 .Include(ia => ia.Category)
-                .Include(ia => ia.Product)  // Envanterin ait olduğu ürünü de dahil et
-                .Where(ia => ia.ProductId == categoryId)  // Ürüne ait zimmetli envanterleri al
+                .Include(ia => ia.Product)  
+                .Where(ia => ia.ProductId == categoryId)  
                 .ToListAsync();
 
             return inventoryAssignments;

@@ -18,7 +18,6 @@ namespace JoygameInventory.Components
 
         public IViewComponentResult Invoke(string viewName)
         {
-            // Eğer viewName null veya boşsa, varsayılan olarak "default" kullan
             viewName = string.IsNullOrEmpty(viewName) ? "Default" : viewName;
 
             // ViewBag.SelectedCategory'yi RouteData'dan al

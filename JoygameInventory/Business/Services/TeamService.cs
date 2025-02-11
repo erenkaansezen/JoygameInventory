@@ -8,7 +8,6 @@ namespace JoygameInventory.Business.Services
     {
         private readonly InventoryContext _context;
 
-        // Constructor ile context'i alıyoruz
         public TeamService(InventoryContext context)
         {
             _context = context;
@@ -18,8 +17,8 @@ namespace JoygameInventory.Business.Services
         {
             var usersTeam = await _context.userTeam
                 .Include(ia => ia.Team)
-                .Include(ia => ia.Staff)  // Envanterin ait olduğu ürünü de dahil et
-                .Where(ia => ia.StaffId == userId)  // Kullanıcıya ait zimmetli envanterleri al
+                .Include(ia => ia.Staff)  
+                .Where(ia => ia.StaffId == userId)  
                 .ToListAsync();
 
             return usersTeam;
@@ -28,8 +27,8 @@ namespace JoygameInventory.Business.Services
         {
             var usersTeam = await _context.userTeam
                 .Include(ia => ia.Team)
-                .Include(ia => ia.Staff)  // Envanterin ait olduğu ürünü de dahil et
-                .Where(ia => ia.TeamId == userId)  // Kullanıcıya ait zimmetli envanterleri al
+                .Include(ia => ia.Staff)  
+                .Where(ia => ia.TeamId == userId)  
                 .ToListAsync();
 
             return usersTeam;
@@ -37,17 +36,14 @@ namespace JoygameInventory.Business.Services
 
         public async Task<List<Team>> GetAllTeamsAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Teams.ToListAsync();
         }
         public async Task<UserTeam> GetUserTeamByIdAsync(int id)
         {
-            // Veritabanından staff'ı ID ile arıyoruz
             return await _context.userTeam.FirstOrDefaultAsync(s => s.Id == id);
         }
         public async Task<Team> GetTeamByIdAsync(int id)
         {
-            // Veritabanından staff'ı ID ile arıyoruz
             return await _context.Teams.FirstOrDefaultAsync(s => s.Id == id);
         }
         public async Task<bool> IsTeamUnique(string teamName)

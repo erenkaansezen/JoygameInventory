@@ -22,21 +22,17 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> LicenceList(string searchTerm)
         {
-            // Arama terimi varsa, arama sonuçlarını alıyoruz
             var licences = await _licenceservice.SearchLicence(searchTerm);
 
 
-            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
                 licences = await _licenceservice.GetAllLicencesAsync();
             }
 
-            // Arama terimi ViewBag içinde gönderiliyor
             ViewBag.SearchTerm = searchTerm;
 
 
-            // Arama sonuçlarını view'a gönderiyoruz
             return View(licences);
         }
         [HttpGet]

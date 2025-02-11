@@ -10,23 +10,18 @@ namespace JoygameInventory.Business.Services
     {
         private readonly InventoryContext _context;
 
-        // Constructor ile context'i alıyoruz
         public JoyStaffService(InventoryContext context)
         {
             _context = context;
         }
 
-        // Tüm staff'leri listelemek için bir metod
         public async Task<List<JoyStaff>> GetAllStaffsAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.JoyStaffs.ToListAsync();
         }
 
-        // Tek bir staff'ı ID'ye göre getiren bir metod
         public async Task<JoyStaff> GetStaffByIdAsync(int id)
         {
-            // Veritabanından staff'ı ID ile arıyoruz
             return await _context.JoyStaffs.FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -71,16 +66,13 @@ namespace JoygameInventory.Business.Services
             return await query.ToListAsync();
         }
 
-        //JoyUser
         public async Task<bool> PanelIsEmailUnique(string email)
         {
-            // Eğer e-posta boşsa, true döndür (boş e-posta adresi zaten geçersizdir)
             if (string.IsNullOrEmpty(email))
             {
                 return true;
             }
 
-            // E-posta zaten veritabanında mevcut mu?
             return !await _context.JoyUsers.AnyAsync(s => s.Email == email);
         }
         public async Task<IEnumerable<JoyUser>> SearchPanelStaff(string searchTerm)

@@ -9,7 +9,6 @@ namespace JoygameInventory.Business.Services
     {
         private readonly InventoryContext _context;
 
-        // Constructor ile context'i alıyoruz
         public MaintenanceService(InventoryContext context)
         {
             _context = context;
@@ -17,7 +16,6 @@ namespace JoygameInventory.Business.Services
 
         public async Task<List<Maintenance>> GetAllServiceAsync()
         {
-            // Veritabanından tüm staff'leri asenkron şekilde çekiyoruz
             return await _context.Maintenance.ToListAsync();
         }
         public async Task<Maintenance> GetProductServiceAsync(string ProductBarkod)
@@ -30,7 +28,6 @@ namespace JoygameInventory.Business.Services
 
                 if (inventoryAssignment == null)
                 {
-                    // Loglama veya hata mesajı ekleyebilirsiniz
                     Console.WriteLine($"No maintenance record found for ProductBarkod: {ProductBarkod}");
                 }
 
@@ -38,7 +35,6 @@ namespace JoygameInventory.Business.Services
             }
             catch (Exception ex)
             {
-                // Hata loglaması
                 Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
@@ -47,7 +43,7 @@ namespace JoygameInventory.Business.Services
         public async Task<IEnumerable<MaintenanceHistory>> GetProductServiceHistoryAsync(string ProductBarkod)
         {
             var inventoryAssignments = await _context.MaintenanceHistory
-                .Where(ia => ia.ProductBarkod == ProductBarkod)  // ProductBarkod'a göre filtreleme
+                .Where(ia => ia.ProductBarkod == ProductBarkod)  
                 .ToListAsync();
 
             return inventoryAssignments;
@@ -67,7 +63,6 @@ namespace JoygameInventory.Business.Services
 
         public async Task<Maintenance> GetMaintenanceByIdAsync(int id)
         {
-            // Veritabanında belirtilen id'ye sahip bakımı buluyoruz.
             var maintenance = await _context.Maintenance
                                             .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -78,10 +73,9 @@ namespace JoygameInventory.Business.Services
         {
             try
             {
-                // Servisi veritabanına ekle
                 _context.MaintenanceHistory.Add(maintenance);
                 await _context.SaveChangesAsync();
-                return true;  // Başarılı
+                return true;  
             }
             catch (Exception ex)
             {
@@ -92,10 +86,9 @@ namespace JoygameInventory.Business.Services
         {
             try
             {
-                // Servisi veritabanına ekle
                 _context.Maintenance.Add(maintenance);
                 await _context.SaveChangesAsync();
-                return true;  // Başarılı
+                return true; 
             }
             catch (Exception ex)
             {
