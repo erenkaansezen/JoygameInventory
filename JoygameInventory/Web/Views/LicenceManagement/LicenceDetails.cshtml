@@ -13,6 +13,9 @@
 
 <form asp-action="LicenceDetails" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
+    <a  asp-action="LicenceList" class="btn btn-dark">Geriye Dön</a>
+    <br />
+    <br />
     <div class="mb-3">
         <label asp-for="LicenceName">Lisans Adı</label>
         <input asp-for="LicenceName" class="form-control" />
@@ -60,7 +63,38 @@
                     <button type="button" class="btn btn-dark zımmetAdd">Atama Yap</button>
                 </form>
             </div>
+            <br />
+            <br />
 
+            @if (Model.LicenceUser != null && Model.LicenceUser.Any())
+            {
+                <table class="table">
+                    <tbody>
+                        @foreach (var item in Model.LicenceUser)
+                        {
+                            <tr>
+                                <td>@item.staff.Name @item.staff.Surname</td>
+                                <td>
+                                    <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
+                                </td>
+                                <td>
+                                    <form asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                        <input type="hidden" name="licenceId" value="@item.Licence.Id" />
+                                        <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger btn-custom">Atamayı Kaldır</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Bu Lisansa Ait Kullanıcı Ataması Bulunmamaktadır</p>
+            }
             <script>
                 $(document).ready(function () {
                     $('.zımmetAdd').click(function () {
@@ -91,35 +125,7 @@
 </div>
 
         <br />
-            @if (Model.LicenceUser != null && Model.LicenceUser.Any())
-            {
-                <table class="table">
-                    <tbody>
-                        @foreach (var item in Model.LicenceUser)
-                        {
-                            <tr>
-                                <td>@item.staff.Name @item.staff.Surname</td>
-                                <td>
-                                    <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
-                                </td>
-                                <td>
-                                    <form  asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
-                                        <input type="hidden" name="userId" value="@item.staff.Id" />
-                                        <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger btn-custom">Atamayı Kaldır</button>
-                                    </form>
-                                </td>
-                            </tr>
 
-                        }
-
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p>Bu Lisansa Ait Kullanıcı Ataması Bulunmamaktadır</p>
-            }
             </div>
 
     </div>

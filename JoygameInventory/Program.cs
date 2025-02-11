@@ -1,3 +1,4 @@
+using JoygameInventory.Business.Interface;
 using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IJoyStaffService,JoyStaffService>();
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<ILicenceService,LicenceService>();
 builder.Services.AddScoped<IMaintenanceService,MaintenanceService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));

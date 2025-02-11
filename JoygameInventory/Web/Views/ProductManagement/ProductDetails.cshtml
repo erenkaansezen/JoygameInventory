@@ -23,7 +23,7 @@
     }
     <form asp-action="ProductDetails" method="post">
         <input name="Id" type="hidden" value="@Model.Id" />
-        <a asp-controller="Management" asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
+        <a asp-controller="ProductManagement" asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
         <br />
         <br />
 
@@ -36,8 +36,32 @@
                     <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" required />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="ProductName" class="form-label">Ürün Adı</label>
-                    <input asp-for="ProductName" id="ProductName" class="form-control" value="@Model.ProductName" required />
+                    <label asp-for="SelectedCategoryId" class="form-label">Ürün Kategorisi</label>
+                    <select asp-for="SelectedCategoryId" class="form-control">
+                        @foreach (var category in Model.ProductCategory)
+                        {
+                            <option value="@category.Id">
+                              @category.Category.Name
+                            </option>
+                        }
+                        @foreach (var category in Model.Categories.Where(c => !Model.ProductCategory.Any(pc => pc.CategoryId == c.Id)))
+                        {
+                            <option value="@category.Id">
+                                @category.Name
+                            </option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="ProductBrand" class="form-label">Ürün Markası</label>
+                    <input asp-for="ProductBrand" id="ProductBrand" class="form-control" value="@Model.ProductBrand" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="ProductModel" class="form-label">Ürün Modeli</label>
+                    <input asp-for="ProductModel" id="ProductModel" class="form-control" value="@Model.ProductModel" required />
                 </div>
             </div>
             <div class="row">

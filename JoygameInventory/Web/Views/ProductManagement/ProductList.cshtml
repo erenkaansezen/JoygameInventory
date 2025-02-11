@@ -16,10 +16,6 @@
             padding: 15px; /* Kolonlar arasındaki boşluğu artırmak için */
         }
 
-            /* Sadece Açıklama kolonunun hizalamasını sola yap */
-            .table td.description {
-                text-align: left; /* Açıklama kolonundaki verileri sola hizala */
-            }
 
         .btn-custom {
             padding: 8px 12px;
@@ -79,9 +75,9 @@
                     <tr>
                         <th></th>
                         <th>Ürün Barkodu</th>
-                        <th>Ürün Adı</th>
-                        <th>Açıklama</th>
-                        <th>Teslim Durumu</th>
+                        <th>Ürün Markası</th>
+                        <th>Ürün Modeli</th>
+                        <th>Durumu</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,8 +86,8 @@
                         <tr>
                             <th>@product.Id</th>
                             <td>@product.ProductBarkod</td>
-                            <td>@product.ProductName</td>
-                            <td class="description">@product.Description</td> <!-- Açıklama kolonuna özel class ekledik -->
+                            <td>@product.ProductBrand</td>
+                            <td>@product.ProductModel</td>
                             <td>@product.Status</td>
 
                             <td>

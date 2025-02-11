@@ -146,14 +146,14 @@ namespace JoygameInventory.Web.Controllers
                 }
 
         [HttpPost]
-        public async Task<IActionResult> LicenceAssigmentDelete(int LicenceAssigmentId, int userId)
+        public async Task<IActionResult> LicenceAssigmentDelete(int LicenceAssigmentId, int licenceId, LicenceEditViewModel model)
         {
-            var staff = await _staffmanager.GetStaffByIdAsync(userId);
             var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
+            var licence = await _licenceservice.GetLicenceByIdAsync(licenceId);
 
             await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
 
-            return RedirectToAction("LicenceDetails", new { id = userId });
+            return RedirectToAction("LicenceDetails", new { id = licenceId });
         }
         
         [HttpPost]

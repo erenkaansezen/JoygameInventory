@@ -14,7 +14,9 @@
 }
 <form asp-action="StaffRegister" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-
+    <a asp-action="StaffList" class="btn btn-dark">Geriye Dön</a>
+    <br />
+    <br />
     <!-- Kullanıcı Adı ve Email -->
     <div class="mb-3">
         <label asp-for="Name"></label>

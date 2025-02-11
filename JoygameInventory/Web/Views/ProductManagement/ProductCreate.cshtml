@@ -19,7 +19,7 @@
         <!-- Hidden input for Id -->
         <input asp-for="Id" type="hidden" />
 
-        <a asp-controller="Management" asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
+        <a asp-action="ProductList" class="btn btn-dark">Geriye Dön</a>
         <br />
         <br />
 
@@ -33,15 +33,15 @@
                     <span asp-validation-for="ProductBarkod" class="text-danger"></span> 
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label asp-for="ProductName" class="form-label">Ürün Adı</label>
-                    <input asp-for="ProductName" class="form-control" />
+                    <label asp-for="ProductBrand" class="form-label">Ürün Markası</label>
+                    <input asp-for="ProductBrand" class="form-control" />
                     <span asp-validation-for="ProductName" class="text-danger"></span> 
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Description" class="form-label">Açıklama</label>
-                    <input asp-for="Description" class="form-control" />
+                    <label asp-for="ProductModel" class="form-label">Ürün modeli</label>
+                    <input asp-for="ProductModel" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span> 
                 </div>
                 <div class="col-md-6 mb-3">

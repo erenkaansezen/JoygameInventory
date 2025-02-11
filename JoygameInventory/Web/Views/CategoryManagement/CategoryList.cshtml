@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Category>
+@{
+    Layout = "_Layout";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+
+    <style>
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-custom {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .btn-edit {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .btn-view {
+            background-color: #5bc0de;
+            color: white;
+        }
+    </style>
+</head>
+
+<!-- Sayfa Başlığı -->
+<div class="container">
+    <h2 class="my-4">
+        | Kategori Listesi
+    </h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <a asp-action="CategoryCreate" class="btn btn-outline-success btn-custom ms-2 w-100">Yeni Kategori Ekle</a>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="CategoryList" method="get">
+                <div class="input-group mb-3">
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Kategori İsmi ile ara" />
+                    <button class="btn btn-outline-secondary" type="submit">Ara</button>
+                </div>
+            </form>
+        </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <!-- Kullanıcılar Tablosu -->
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Kategori Adı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model)
+                    {
+                        <tr>
+                            <td>@category.Id</td>
+                            <td>@category.Name</td>
+                            <td class="text-end">
+                                <!-- Align buttons to the right -->
+                                <a asp-action="CategoryDetails" asp-route-id="@category.Id" class="btn btn-outline-dark btn-custom">Kategori Detayı</a>
+
+                                <form id="deleteForm" asp-action="CategoryDelete" method="post" style="display: inline;">
+                                    <input type="hidden" value="@category.Id" name="id">
+                                    <button type="button" class="btn btn-danger btn-custom" id="deleteButton">Kategoriyi Sil</button>
+                                </form>
+
+
+
+                            </td>
+                        </tr>
+                    }
+                    <script>
+                        $(document).ready(function () {
+                            // Silme butonuna tıklama olayını ekliyoruz
+                            $(document).on('click', '#deleteButton', function () {
+                                // Silme işlemi için onay alıyoruz
+                                if (confirm('Emin misiniz?')) {
+                                    var form = $(this).closest('form');  // Butona en yakın formu alıyoruz
+                                    var formData = form.serialize();  // Form verilerini serialize ediyoruz
+
+                                    $.ajax({
+                                        url: form.attr('action'),  // Formun action URL'sini alıyoruz
+                                        type: form.attr('method'),  // Formun method'ünü alıyoruz
+                                        data: formData,  // Form verilerini gönderiyoruz
+                                        success: function (response) {
+                                            alert('Kategori başarıyla silindi!');
+                                            location.reload();  // Sayfayı yeniden yüklüyoruz
+                                        },
+                                        error: function (xhr, status, error) {
+                                            alert('Bir hata oluştu: ' + error);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap ve jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+</html>
