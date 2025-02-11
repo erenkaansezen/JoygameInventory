@@ -21,8 +21,10 @@ public class TokenStorage
             if (_token == null || DateTime.UtcNow.AddSeconds(60) > _token.ExpireDate) // Token süresi bitmişse, yenile
             {
                 _token = GetTokenAsync().Result; // Yeni token al
+                _token.ExpireDate = DateTime.Now;
+                return _token.ServiceTicket;
             }
-            return _token?.ServiceTicket;
+            return _token.ServiceTicket;
         }
     }
 
