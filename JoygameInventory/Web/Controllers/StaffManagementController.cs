@@ -14,14 +14,18 @@ namespace JoygameInventory.Web.Controllers
         private readonly IAssigmentService _assigmentservice;
         private readonly ITeamService _teamservice;
         private readonly ILicenceService _licenceservice;
+        private readonly EmailService _emailService;
 
-        public StaffManagementController(IProductService productservice, IAssigmentService assigmentservice, IJoyStaffService staffmanager, ITeamService teamservice, ILicenceService licenceservice)
+
+        public StaffManagementController(IProductService productservice, IAssigmentService assigmentservice, IJoyStaffService staffmanager, ITeamService teamservice, ILicenceService licenceservice,EmailService emailService)
         {
             _productservice = productservice;
             _assigmentservice = assigmentservice;
             _staffmanager = staffmanager;
             _teamservice = teamservice;
             _licenceservice = licenceservice;
+            _emailService = emailService;
+
         }
 
 
@@ -88,7 +92,7 @@ namespace JoygameInventory.Web.Controllers
             {
                 Team = teams
             };
-            return View("StaffManagement/StaffRegister", model);
+            return View("StaffRegister", model);
         }
         
         [HttpGet]
@@ -288,6 +292,24 @@ namespace JoygameInventory.Web.Controllers
             var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
 
             await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
+            if (assigment.LicenceUser != null)
+            {
+                var toEmailAddress = staff.Email;
+                var subject = "Lisans Atamasının Kaldırılması Hakkında";
+                var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                          $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                          $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                          $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                          $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                          $"<p>Merhaba <strong>{staff.Name}</strong>,</p>" +
+                          $"<p>Aşağıda bilgileri belirtilen lisansın ataması sizden kaldırılmıştır</p>" +
+                          $"<p><strong>Lisans :</strong> {assigment.LicenceName}</p>"+                          
+                          $"<p>Teşekkürler</p>" +
+                          $"<p>İyi Çalışmalar</p>" +
+                          $"</div></body></html>";
+                var attachmentPaths = new List<string>();
+                await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+            }
             return RedirectToAction("StaffDetails", new { id = userId });
         }
 
@@ -297,6 +319,7 @@ namespace JoygameInventory.Web.Controllers
             // Kullanıcıyı veritabanından alıyoruz
             var staff = await _staffmanager.GetStaffByIdAsync(userId);
             var assigment = await _assigmentservice.GetAssignmentByIdAsync(inventoryAssigmentId);
+            var product = await _productservice.GetIdProductAsync(assigment.ProductId);
 
             if (assigment != null)
             {
@@ -311,8 +334,28 @@ namespace JoygameInventory.Web.Controllers
 
 
                 };
-
+    
                 await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  
+            }
+
+            if (assigment.UserId != null)
+            {
+                var toEmailAddress = staff.Email;
+                var subject = "Zimmetin Kaldırılması Hakkında";
+                var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                          $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                          $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                          $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                          $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                          $"<p>Merhaba <strong>{staff.Name}</strong>,</p>" +
+                          $"<p>Aşağıda bilgileri belirtilen ürünün zimmeti sizden kaldırılmıştır</p>" +
+                          $"<p><strong>Ürün :</strong> {product.ProductBrand} {product.ProductModel}</p>" +
+                          $"<p><strong>Envanter Barkodu :</strong> {product.ProductBarkod}</p>" +
+                          $"<p>Teşekkürler</p>" +
+                          $"<p>İyi Çalışmalar</p>" +
+                          $"</div></body></html>";
+                var attachmentPaths = new List<string>();
+                await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
             }
 
             await _assigmentservice.DeleteAssignmentAsync(inventoryAssigmentId);
