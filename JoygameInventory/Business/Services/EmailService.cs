@@ -65,12 +65,11 @@ public class EmailService
             var emailRequest = new RelatedDigitalEmailRequest
             {
                 FromAddress = _emailSettings.CurrentValue.FromAddress,
+                ReplyAddress = _emailSettings.CurrentValue.FromAddress,
                 FromName = _emailSettings.CurrentValue.FromName,
-                Subject = subject,
-                HtmlBody = body,
-                Charset = "iso-8859-9",  // Karakter seti
-                PostType = "post",
-                KeyId = "123456",
+                Subject = body,
+                HtmlBody = subject,
+                Charset = "UTF-8",  // Karakter seti
                 ToName = to,
                 ToEmailAddress = to,
             };

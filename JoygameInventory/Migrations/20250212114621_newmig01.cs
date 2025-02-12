@@ -450,9 +450,9 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "8b20b2dc-437a-4ec1-804f-d7e24bd9186c", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "d5ec0f9b-b63a-4758-90db-0b22beeed911", false, "eren_sezen" },
-                    { "2", 0, "b3981152-e49a-452e-935b-4fec7b3f85c2", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "c21fe6c8-258d-4643-8459-87094cc2daa5", false, "osman_benlice" },
-                    { "3", 0, "6489ad98-d554-452b-a2d3-868a6d09c1a6", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "8add0af0-ed6b-4bc9-8346-35b3a0732072", false, "onur.unlu" }
+                    { "1", 0, "abd528fb-0a2f-4a21-8892-dfe182c0b03f", "eren.sezen@joygame.com", false, "Eren", "Sezen", false, null, null, null, null, null, false, "5afa5d71-9e0f-44eb-bf1f-491c88f007fd", false, "eren_sezen" },
+                    { "2", 0, "dae66b93-cd1e-472a-94fd-449dc6933136", "osman.benlice@joygame.com", false, "Jane", "Doe", false, null, null, null, null, null, false, "2528af84-9c3b-4e31-88b5-9f48b3b34dc8", false, "osman_benlice" },
+                    { "3", 0, "fd195a90-39a4-40ad-93fb-2711a99033cf", "onur.unlu@joygame.com", false, "Onur", "Ünlü", false, null, null, null, null, null, false, "6badeaa7-2cb7-4346-9678-e87c784c0a0c", false, "onur.unlu" }
                 });
 
             migrationBuilder.InsertData(
@@ -480,7 +480,8 @@ namespace JoygameInventory.Migrations
                     { 7, null, "mehmet.bayar@joygame.com", "Mehmet", "555-0107", "Bayar" },
                     { 8, null, "hasan.sahin@joygame.com", "Hasan", "555-0108", "Şahin" },
                     { 9, null, "zeynep.kucuk@joygame.com", "Zeynep", "555-0109", "Küçük" },
-                    { 10, null, "yusuf.bozkurt@joygame.com", "Yusuf", "555-0110", "Bozkurt" }
+                    { 10, null, "yusuf.bozkurt@joygame.com", "Yusuf", "555-0110", "Bozkurt" },
+                    { 11, null, "cihad.yilmazer@madbytegames.com", "Cihad", "555-0110", "Yılmazer" }
                 });
 
             migrationBuilder.InsertData(
@@ -536,15 +537,15 @@ namespace JoygameInventory.Migrations
                 columns: new[] { "Id", "AssignmentDate", "PreviusAssigmenId", "ProductId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1839), 3, 1, 1 },
-                    { 2, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1842), 3, 2, 2 },
-                    { 3, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1844), 3, 3, 1 },
-                    { 4, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1845), 3, 4, 2 },
-                    { 5, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1846), 3, 5, 3 },
-                    { 6, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1847), 3, 16, 4 },
-                    { 7, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1848), 3, 18, 5 },
-                    { 8, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1849), 3, 19, 6 },
-                    { 9, new DateTime(2025, 2, 10, 11, 8, 25, 179, DateTimeKind.Utc).AddTicks(1850), 3, 20, 6 }
+                    { 1, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5073), 3, 1, 1 },
+                    { 2, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5075), 3, 2, 2 },
+                    { 3, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5076), 3, 3, 1 },
+                    { 4, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5078), 3, 4, 2 },
+                    { 5, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5083), 3, 5, 3 },
+                    { 6, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5085), 3, 16, 4 },
+                    { 7, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5086), 3, 18, 5 },
+                    { 8, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5087), 3, 19, 6 },
+                    { 9, new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5089), 3, 20, 6 }
                 });
 
             migrationBuilder.InsertData(

@@ -111,6 +111,7 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
+            
             var product = await _productservice.GetIdProductAsync(model.Id);
             if (product == null)
             {
@@ -161,7 +162,20 @@ namespace JoygameInventory.Web.Controllers
                         {
                             var toEmailAddress = newUser.Email;
                             var subject = "Yeni Ürün Ataması";
-                            var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
+                            var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                                      $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                                       $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                               $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                                       $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                                      $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                                      $"<p>Size yeni bir ürün ataması yapılmıştır.</p>" +
+                                      $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                                      $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+
+
+                              $"<p>Teşekkürler</p>" +
+                              $"<p>İyi Çalışmalar</p>" +
+                              $"</div></body></html>";
                             var attachmentPaths = new List<string>(); 
                             await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                         }
@@ -187,14 +201,28 @@ namespace JoygameInventory.Web.Controllers
                 };
 
                 await _assigmentservice.AddAssignmentAsync(newAssignment);
-
+                
                 var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
                 if (newUser != null)
                 {
                     var toEmailAddress = newUser.Email;
                     var subject = "Yeni Ürün Ataması";
-                    var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'><div style='margin: 20px; background-color: white; padding: 20px;'><p>Merhaba <strong>{newUser.Name}</strong>,</p><p>Size yeni bir ürün ataması yapılmıştır.</p><p><strong>Ürün Adı:</strong> {product.ProductName}</p><p>Teşekkürler.</p></div></body></html>";
-                    var attachmentPaths = new List<string>();  
+                    var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                              $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                               $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                       $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                               $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                              $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                              $"<p>Size yeni bir ürün ataması yapılmıştır.</p>" +
+                              $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                              $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+
+                              $"<p>Teşekkürler</p>" +
+                              $"<p>İyi Çalışmalar</p>" +
+
+                              $"</div></body></html>";
+
+                    var attachmentPaths = new List<string>();
                     await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                 }
 

@@ -312,7 +312,9 @@ namespace JoygameInventory.Data.Context
             new JoyStaff { Id = 7, Email = "mehmet.bayar@joygame.com", Name = "Mehmet", Surname = "Bayar", PhoneNumber = "555-0107" },
             new JoyStaff { Id = 8, Email = "hasan.sahin@joygame.com", Name = "Hasan", Surname = "Şahin", PhoneNumber = "555-0108" },
             new JoyStaff { Id = 9, Email = "zeynep.kucuk@joygame.com", Name = "Zeynep", Surname = "Küçük", PhoneNumber = "555-0109" },
-            new JoyStaff { Id = 10, Email = "yusuf.bozkurt@joygame.com", Name = "Yusuf", Surname = "Bozkurt", PhoneNumber = "555-0110" }
+            new JoyStaff { Id = 10, Email = "yusuf.bozkurt@joygame.com", Name = "Yusuf", Surname = "Bozkurt", PhoneNumber = "555-0110" },
+            new JoyStaff { Id = 11, Email = "cihad.yilmazer@madbytegames.com", Name = "Cihad", Surname = "Yılmazer", PhoneNumber = "555-0110" }
+
             );
 
 

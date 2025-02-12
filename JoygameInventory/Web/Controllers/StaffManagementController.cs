@@ -311,7 +311,8 @@ namespace JoygameInventory.Web.Controllers
 
 
                 };
-                await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  // AssignmentHistory kaydını ekliyoruz
+
+                await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  
             }
 
             await _assigmentservice.DeleteAssignmentAsync(inventoryAssigmentId);
