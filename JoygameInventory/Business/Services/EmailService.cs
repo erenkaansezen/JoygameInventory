@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using JoygameInventory.Models.Model;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 public class EmailService
 {
@@ -63,8 +64,13 @@ public class EmailService
             // E-posta gönderim isteği oluştur
             var emailRequest = new RelatedDigitalEmailRequest
             {
+                FromAddress = _emailSettings.CurrentValue.FromAddress,
+                FromName = _emailSettings.CurrentValue.FromName,
                 Subject = subject,
                 HtmlBody = body,
+                Charset = "iso-8859-9",  // Karakter seti
+                PostType = "post",
+                KeyId = "123456",
                 ToName = to,
                 ToEmailAddress = to,
             };
@@ -90,6 +96,9 @@ public class EmailService
                 .WithHeader("Authorization", token)
                 .PostJsonAsync(emailRequest)
                 .ReceiveJson<RelatedDigitalEmailResponse>();
+
+            _logger.LogInformation($"API Cevabı: {JsonConvert.SerializeObject(response)}");
+
 
             if (response.Success)
             {
