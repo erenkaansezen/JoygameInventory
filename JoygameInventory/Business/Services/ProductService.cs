@@ -167,6 +167,18 @@ namespace JoygameInventory.Business.Services
             }
         }
 
+        public async Task<int?> GetCurrentCategoryIdAsync(int productId)
+        {
+            var currentCategoryId = await _context.ProductCategories
+                .Where(pc => pc.ProductId == productId)
+                .Select(pc => pc.CategoryId)
+                .FirstOrDefaultAsync();
+
+            return currentCategoryId;
+        }
+
+
+
 
     }
 }

@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using JoygameInventory.Models.ViewModel;
 using JoygameInventory.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<JoyUser> _usermanager;
@@ -19,15 +21,21 @@ namespace JoygameInventory.Web.Controllers
             _signInManager = signInManager;
             _staffmanager = staffmanager;
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            {
+                TempData["ErrorMessage"] = "Lütfen Gerekli Alanları Doldurunuz";
+                return RedirectToAction("Login");
+            }
             var usermail = await _usermanager.FindByEmailAsync(model.Email);
             if (usermail != null)
             {
@@ -40,7 +48,8 @@ namespace JoygameInventory.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Email Ve Şifre bilgini tam doldurunuz");
+                TempData["ErrorMessage"] = "Hatalı Giriş, Bilgilerinizi Kontrol Ediniz!";
+                return RedirectToAction("Login", model);
             }
             return View(model);
         }
@@ -94,7 +103,7 @@ namespace JoygameInventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UserRegister()
         {
-            return View("UserManagement/UserRegister");
+            return View("UserRegister");
 
         }
 
@@ -114,10 +123,8 @@ namespace JoygameInventory.Web.Controllers
                     if (existingUser != null)
                     {
                         ModelState.Clear(); // Tüm hataları temizle
-
-                        // E-posta zaten başka bir kullanıcıya ait
-                        ModelState.AddModelError("Email", "Bu e-posta adresi başka bir kullanıcıya ait.");
-                        return View(model);
+                        TempData["ErrorMessage"] = "Bu e-posta sistemde başka kullanıcıya kayıtlı!";
+                        return RedirectToAction("UserDetails", model);
                     }
                 }
                 user.UserName = model.UserName;
@@ -133,8 +140,8 @@ namespace JoygameInventory.Web.Controllers
                     // Şifre ve şifre onayı eşleşiyor mu kontrol et
                     if (model.Password != model.ConfirmPassword)
                     {
-                        ModelState.AddModelError("ConfirmPassword", "Parolalar eşleşmiyor.");
-                        return View(model); // Eşleşmiyorsa hatayı döndürüyoruz
+                        TempData["ErrorMessage"] = "Parolalar eşleşmiyor!";
+                        return RedirectToAction("UserDetails", model);
                     }
 
                     // Şifreyi değiştirme
@@ -191,8 +198,8 @@ namespace JoygameInventory.Web.Controllers
 
             if (!await _staffmanager.PanelIsEmailUnique(model.Email))
             {
-                ModelState.AddModelError("Email", "Bu Kullanıcı Kayıtlı.");
-                return View("UserManagement/UserRegister", model);
+                TempData["ErrorMessage"] = "Bu mail sistemde kayıtlı!";
+                return RedirectToAction("UserRegister", model);
             }
             if (!string.IsNullOrEmpty(model.Password))
             {
@@ -205,24 +212,14 @@ namespace JoygameInventory.Web.Controllers
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                        TempData["ErrorMessage"] = "Kullanıcı Kayıt Edilirken Hatayla karşılaşıldı";
+                        return RedirectToAction("UserRegister", model);
+                    
                 }
-            }
-            else
-            {
-                if (!ModelState.IsValid)
-                {
-                    // Eğer model geçerli değilse, hata mesajları görünür olacak şekilde formu tekrar göster.
-                    return View("UserManagement/UserRegister", model);
-                }
-                // Şifre boşsa bir hata mesajı ekleyebiliriz
-                ModelState.AddModelError("Password", "Parola gereklidir.");
             }
 
-            return View("UserManagement/UserRegister", model);
+
+            return View("UserRegister", model);
         }
 
         [HttpPost]
@@ -231,8 +228,10 @@ namespace JoygameInventory.Web.Controllers
             var user = await _usermanager.FindByIdAsync(id);
             if (user != null)
             {
+
                 await _usermanager.DeleteAsync(user);
             }
+
             return RedirectToAction("UserList");
         }
     }

@@ -44,7 +44,7 @@
         <hr />
         <div class="row">
             <div class="col-md-6">
-                <a asp-controller="Management" asp-action="StaffRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
+                <a asp-action="StaffRegister" class="btn btn-outline-success btn-custom ms-2 w-100">Kullanıcı Ekle</a>
             </div>
             <div class="col-md-6">
                 <form asp-action="StaffList" method="get">
@@ -90,10 +90,9 @@
                             <td>@users.Email</td>
                             <td>
                                 <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@users.Id" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
-
-                                <form class="d-inline" asp-controller="StaffManagement" asp-action="StaffDelete" method="post">
-                                    <input type="hidden" name="id" value="@users.Id">
-                                    <button type="button" class="btn btn-danger btn-custom deleteStaff" data-id="@users.Id">Kullanıcıyı Sil</button>
+                                <form asp-controller="StaffManagement" asp-action="StaffDelete" method="post" onsubmit="return confirm('emin misiniz')" style="display: inline;">
+                                    <input type="hidden" value="@users.Id" name="id">
+                                    <button type="submit" class="btn btn-danger btn-custom">Kullanıcıyı Sil</button>
                                 </form>
                             </td>
                         </tr>
@@ -103,37 +102,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap ve jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            // 'Kullanıcıyı Sil' butonuna tıklama olayını dinliyoruz
-            $('.deleteStaff').click(function (e) {
-                e.preventDefault();  // Default form submit işlemini engelliyoruz
 
-                var button = $(this);  // Butonu alıyoruz
-                var form = button.closest('form');  // Formu alıyoruz
-                var row = button.closest('tr');  // Satırın kendisini alıyoruz
-
-                if (confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
-                    // AJAX isteği
-                    $.ajax({
-                        url: form.attr('action'),  // Formun action değerini alıyoruz
-                        type: form.attr('method'),  // Formun method türünü alıyoruz (POST)
-                        data: form.serialize(),  // Form verilerini alıyoruz
-                        success: function (response) {
-                            row.remove();  // Başarıyla silindiğinde satırı kaldır
-                            alert('Kullanıcı başarıyla kaldırıldı!');
-                        },
-                        error: function () {
-                            alert('Bir hata oluştu, lütfen tekrar deneyin.');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>

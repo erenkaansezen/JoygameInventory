@@ -1,11 +1,15 @@
-﻿using JoygameInventory.Business.Services;
+﻿using JoygameInventory.Business.Interface;
+using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class ProductManagementController : Controller
     {
         private readonly IProductService _productservice;
@@ -99,7 +103,7 @@ namespace JoygameInventory.Web.Controllers
         public async Task<IActionResult> ProductCreate()
         {
             var productcategory = await _productservice.GetAllProductCategoriesAsync();
-            var category = await _assigmentservice.GetAllStaffsAsync();
+            var category = await _productservice.GetAllCategoriesAsync();
             var model = new ProductEditViewModel
             {
                 Categories = category
@@ -112,11 +116,17 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
-            
+            var currentCategoryId = await _productservice.GetCurrentCategoryIdAsync(model.Id);
             var product = await _productservice.GetIdProductAsync(model.Id);
             if (product == null)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["ErrorMessage"] = "Ürünü kaydederken bir hata oluştu!";
+                return RedirectToAction("ProductDetails", model);
+            }
+            if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
+            {
+                TempData["ErrorMessage"] = $"{model.ProductBarkod} bu barkod başka ürün için kullanımda";
+                return RedirectToAction("ProductDetails", model);
             }
 
             product.ProductName = model.ProductName;
@@ -132,7 +142,7 @@ namespace JoygameInventory.Web.Controllers
             product.GraphicsCard = model.GraphicsCard;
             product.Categories = model.Categories;
 
-
+            await _productservice.UpdateProductCategoryAsync(model.Id, model.SelectedCategoryId);
 
             var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
 
@@ -250,7 +260,7 @@ namespace JoygameInventory.Web.Controllers
             if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = "Girdiğiniz barkod numarası başka ürüne ait";
-                return View("ProductCreate", model);
+                return RedirectToAction("ProductCreate", model);
             }
 
             if (model.SelectedCategoryId <= 0)

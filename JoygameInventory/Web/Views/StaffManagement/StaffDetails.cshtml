@@ -169,32 +169,6 @@
                         <button class="btn btn-dark zımmetAdd">Yükle</button>
                     </form>
                 </div>
-                <script>
-                    $(document).ready(function () {
-                        $('.zımmetAdd').click(function () {
-                            var row = $(this).closest('tr');  // Satırın kendisini al
-
-                            var form = $('#fileUploadForm');  // Formu alıyoruz
-
-                            // AJAX isteği
-                            $.ajax({
-                                url: '@Url.Action("AddZimmetDocument", "StaffManagement")',
-                                type: form.attr('method'),  // Formun method türünü alıyoruz
-                                data: form.serialize(),  // Form verilerini alıyoruz
-                                success: function (response) {
-                                    row.reload();  // Başarıyla silindiğinde satırı kaldır
-                                    alert('Zimmet başarıyla yüklendi!');
-
-                                    // Başarılı olduğunda, tbody'yi güncellenmiş haliyle almak için
-                                     window.location.reload();  // Sayfa yenilenir
-
-                                    // İsteğe bağlı: Başarı mesajı gösterebiliriz
-                                },
-                            });
-                        });
-                    });
-                </script>
-
             </div>
         }
 
@@ -258,12 +232,6 @@
                                         });
                                     });
                                 </script>
-
-
-
-
-
-
                                 </td>
 
                             </tr>

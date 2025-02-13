@@ -1,10 +1,13 @@
 ﻿using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class MaintenanceController : Controller
     {
         private readonly IMaintenanceService _maintenanceservice;

@@ -6,11 +6,17 @@
 <br />
 <h3> | Yeni Panel Kullanıcısı Ekle </h3>
 <hr />
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<a asp-action="UserList" class="btn btn-dark">Geriye Dön</a>
 
 <form asp-action="UserRegister" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
-    <!-- Kullanıcı Adı ve Email -->
     <div class="mb-3">
         <label asp-for="UserName"></label>
         <input asp-for="UserName" class="form-control" />

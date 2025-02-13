@@ -1,11 +1,14 @@
 ﻿using JoygameInventory.Business.Interface;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class CategoryManagementController : Controller
     {
         private readonly ICategoryService _categoryservice;

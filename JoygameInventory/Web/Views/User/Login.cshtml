@@ -29,7 +29,14 @@
     }
 
 </style>
+
 <div class="container">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <h2 class="text-center">
         <img src="~/img/Joygamelogo.jpg" width="200px" height="200px" />
         

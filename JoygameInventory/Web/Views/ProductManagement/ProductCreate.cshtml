@@ -2,17 +2,17 @@
 @{
     Layout = "_Layout";  // Varsayılan olarak yeni layout'u kullan
 }
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
+
 <div class="container my-5">
     <h2 class="my-4 text-center">
-        <img src="~/img/Joygamelogo2.png" style="max-width: 150px; height: auto" alt="Logo">
         | Envanter Ekleme 
-    </h2>        
+    </h2> 
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <hr />
 
     <form asp-action="ProductCreate" method="post">

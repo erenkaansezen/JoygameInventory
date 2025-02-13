@@ -27,6 +27,9 @@ namespace JoygameInventory.Business.Services
         // Yeni bir takım ekle
         Task<bool> AddTeam(Team Team);
 
+        Task TeamUpdateAsync(Team team);
+
+
         // Kullanıcı takımını güncelle
         Task UpdateTeamAsync(UserTeam userteams);
 

@@ -1,10 +1,13 @@
 ﻿using JoygameInventory.Business.Services;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class TeamManagementController : Controller
     {
         private readonly ITeamService _teamservice;
@@ -108,6 +111,39 @@ namespace JoygameInventory.Web.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> TeamDetails(TeamEditViewModel model)
+        {
+            if (model.TeamName == null)
+            {
+                TempData["ErrorMessage"] = "Lütfen Gerekli Alanları Doldurunuz";
+                return View(model);
+            }
+            if (!await _teamservice.IsTeamUnique(model.TeamName))
+                {
+                    TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
+                    return View(model);
+                }
+
+                var teamToUpdate = await _teamservice.GetTeamByIdAsync(model.Id);
+
+                if (teamToUpdate != null)
+                {
+
+                    teamToUpdate.TeamName = model.TeamName;
+
+
+                    await _teamservice.TeamUpdateAsync(teamToUpdate);
+
+                    return RedirectToAction("TeamDetails", new { id = model.Id });
+                }
+                TempData["ErrorMessage"] = "Team not found!";
+                return RedirectToAction("Index", "Home");
+        }
+
+            // If model is invalid, redisplay the form with validation errors
+        
+
 
         [HttpPost]
         public async Task<IActionResult> TeamDelete(int id)

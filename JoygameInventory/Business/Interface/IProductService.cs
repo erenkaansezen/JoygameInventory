@@ -46,6 +46,8 @@ namespace JoygameInventory.Business.Services
         // Kategoriye ait ürünü al
         Product GetCategoryById(int id);
 
+        Task<int?> GetCurrentCategoryIdAsync(int productId);
+
         Task UpdateProductCategoryAsync(int productId, int selectedCategoryId);
 
     }

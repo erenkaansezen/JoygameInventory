@@ -2,11 +2,14 @@
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class StaffManagementController : Controller
     {
         private readonly IJoyStaffService _staffmanager;
@@ -234,7 +237,7 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> StaffDelete(int id)
         {
-            _staffmanager.DeleteStaffAsync(id);
+            await _staffmanager.DeleteStaffAsync(id);
             return RedirectToAction("StaffList");
         }
         [HttpPost]

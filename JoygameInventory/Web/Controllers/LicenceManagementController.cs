@@ -5,9 +5,12 @@ using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JoygameInventory.Web.Controllers
 {
+    [Authorize]
+
     public class LicenceManagementController : Controller
     {
         private readonly ILicenceService _licenceservice;
