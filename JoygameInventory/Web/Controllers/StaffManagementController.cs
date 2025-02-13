@@ -288,28 +288,29 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LicenceUserAssigmentDelete(int LicenceAssigmentId, int userId)
         {
+            var assigment = await _licenceservice.GetAssignmentByIdAsync(LicenceAssigmentId);
             var staff = await _staffmanager.GetStaffByIdAsync(userId);
-            var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
-
-            await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
-            if (assigment.LicenceUser != null)
+            var licence = await _licenceservice.GetLicenceByIdAsync(assigment.LicenceId);
+            if (staff != null)
             {
                 var toEmailAddress = staff.Email;
                 var subject = "Lisans Atamasının Kaldırılması Hakkında";
                 var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
-                          $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                          $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
                           $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
                           $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
                           $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
                           $"<p>Merhaba <strong>{staff.Name}</strong>,</p>" +
                           $"<p>Aşağıda bilgileri belirtilen lisansın ataması sizden kaldırılmıştır</p>" +
-                          $"<p><strong>Lisans :</strong> {assigment.LicenceName}</p>"+                          
+                          $"<p><strong>Lisans :</strong> {licence.LicenceName}</p>" +
                           $"<p>Teşekkürler</p>" +
                           $"<p>İyi Çalışmalar</p>" +
                           $"</div></body></html>";
                 var attachmentPaths = new List<string>();
                 await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
             }
+            await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
+
             return RedirectToAction("StaffDetails", new { id = userId });
         }
 

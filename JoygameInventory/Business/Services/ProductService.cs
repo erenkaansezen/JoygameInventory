@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace JoygameInventory.Business.Services
@@ -144,5 +145,28 @@ namespace JoygameInventory.Business.Services
 
             return product;
         }
+        public async Task UpdateProductCategoryAsync(ProductCategory product, int newCategoryId)
+        {
+                product.CategoryId = newCategoryId;
+                _context.ProductCategories.Update(product);
+                await _context.SaveChangesAsync();
+        }
+        public async Task UpdateProductCategoryAsync(int productId, int selectedCategoryId)
+        {
+            // Ürünü alıyoruz
+            var productCategory = await _context.ProductCategories
+                .FirstOrDefaultAsync(pc => pc.ProductId == productId); // Burada ProductId ile ilişkilendiriyoruz
+
+            if (productCategory != null)
+            {
+                // Kategoriyi güncelliyoruz
+                productCategory.CategoryId = selectedCategoryId;
+
+                // Değişiklikleri kaydediyoruz
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
     }
 }

@@ -50,6 +50,7 @@ public class ProductEditViewModel
    
         public List<Category> Categories { get; set; } 
 
+
         public IEnumerable<InventoryAssigment>? InventoryAssigments { get; set; }
         public IEnumerable<AssigmentHistory>? AssigmentHistorys { get; set; }
         public Maintenance Maintenance { get; set; }

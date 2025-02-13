@@ -2,6 +2,7 @@
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace JoygameInventory.Web.Controllers
 {
@@ -129,6 +130,9 @@ namespace JoygameInventory.Web.Controllers
             product.Ram = model.Ram;
             product.Processor = model.Processor;
             product.GraphicsCard = model.GraphicsCard;
+            product.Categories = model.Categories;
+
+
 
             var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
 
@@ -163,19 +167,19 @@ namespace JoygameInventory.Web.Controllers
                             var toEmailAddress = newUser.Email;
                             var subject = "Yeni Ürün Ataması";
                             var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
-                                      $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                                       $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
                                        $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
-                               $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                                       $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
                                        $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
-                                      $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
-                                      $"<p>Size yeni bir ürün ataması yapılmıştır.</p>" +
-                                      $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
-                                      $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+                                       $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                                       $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
+                                       $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                                       $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
 
 
-                              $"<p>Teşekkürler</p>" +
-                              $"<p>İyi Çalışmalar</p>" +
-                              $"</div></body></html>";
+                                      $"<p>Teşekkürler</p>" +
+                                      $"<p>İyi Çalışmalar</p>" +
+                                      $"</div></body></html>";
                             var attachmentPaths = new List<string>(); 
                             await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                         }
@@ -208,18 +212,18 @@ namespace JoygameInventory.Web.Controllers
                     var toEmailAddress = newUser.Email;
                     var subject = "Yeni Ürün Ataması";
                     var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
-                              $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
+                               $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
                                $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
-                       $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                               $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
                                $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
-                              $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
-                              $"<p>Size yeni bir ürün ataması yapılmıştır.</p>" +
-                              $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
-                              $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+                               $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                               $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
+                               $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                               $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+
 
                               $"<p>Teşekkürler</p>" +
                               $"<p>İyi Çalışmalar</p>" +
-
                               $"</div></body></html>";
 
                     var attachmentPaths = new List<string>();
@@ -229,6 +233,8 @@ namespace JoygameInventory.Web.Controllers
                 TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
                 return RedirectToAction("ProductDetails", new { id = model.Id });
             }
+
+
 
             await _productservice.UpdateProductAsync(product);
             TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
@@ -276,6 +282,24 @@ namespace JoygameInventory.Web.Controllers
                     CategoryId = model.SelectedCategoryId // Seçilen kategori ID'si
                 };
 
+                    var toEmailAddress = "itsupport@joygame.com";
+                    var subject = "Envantere Yeni Ürün Eklendi!";
+                    var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                               $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
+                               $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                               $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                               $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                               $"<p>Merhaba</p>" +
+                               $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
+                               $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                               $"<p><strong>Ürünün Seri Numarası :</strong> {model.SerialNumber}</p>" +
+                               $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+                               $"<p>Teşekkürler</p>" +
+                               $"<p>İyi Çalışmalar</p>" +
+                               $"</div></body></html>";
+                var attachmentPaths = new List<string>();
+                    await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                
                 await _productservice.AddProductCategory(productCategory);
 
                 TempData["SuccessMessage"] = "Ürün başarıyla oluşturuldu ve kategoriyle ilişkilendirildi!";
@@ -291,7 +315,26 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProductDelete(int id)
         {
+            var product = await _productservice.GetIdProductAsync(id);
             await _productservice.DeleteProductAsync(id);
+
+            var toEmailAddress = "itsupport@joygame.com";
+            var subject = "Envanterden Ürün Çıkarılması Hakkında";
+            var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                       $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
+                       $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                       $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                       $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                       $"<p>Merhaba</p>" +
+                       $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
+                       $"<p><strong>Ürün :</strong> {product.ProductBrand} {product.ProductModel}</p>" +
+                       $"<p><strong>Ürünün Seri Numarası :</strong> {product.SerialNumber}</p>" +
+                       $"<p><strong>Envanter Barkodu :</strong> {product.ProductBarkod}</p>" +
+                       $"<p>Teşekkürler</p>" +
+                       $"<p>İyi Çalışmalar</p>" +
+                       $"</div></body></html>";
+            var attachmentPaths = new List<string>();
+            await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
             return RedirectToAction("ProductList", "ProductManagement");
         }
 

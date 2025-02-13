@@ -1,4 +1,5 @@
 ﻿using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,5 +45,8 @@ namespace JoygameInventory.Business.Services
 
         // Kategoriye ait ürünü al
         Product GetCategoryById(int id);
+
+        Task UpdateProductCategoryAsync(int productId, int selectedCategoryId);
+
     }
 }
