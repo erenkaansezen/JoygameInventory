@@ -78,7 +78,7 @@
                                     <a asp-controller="StaffManagement" asp-action="StaffDetails" asp-route-id="@item.StaffId" class="btn btn-outline-dark btn-custom">Personel Detayı</a>
                                 </td>
                                 <td>
-                                    <form asp-action="LicenceAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
+                                    <form asp-controller="StaffManagement" asp-action="LicenceUserAssigmentDelete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline;">
                                         <input type="hidden" name="licenceId" value="@item.Licence.Id" />
                                         <input type="hidden" name="LicenceAssigmentId" value="@item.Id" />
                                         <button type="submit" class="btn btn-danger btn-custom">Atamayı Kaldır</button>
