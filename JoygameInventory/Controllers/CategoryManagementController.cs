@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace JoygameInventory.Web.Controllers
+namespace JoygameInventory.Controllers
 {
     [Authorize]
     public class CategoryManagementController : Controller

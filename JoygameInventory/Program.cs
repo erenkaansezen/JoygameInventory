@@ -10,8 +10,8 @@ using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IProductService,ProductService>(); // ProductService eklenmiþ
-builder.Services.AddScoped<IAssigmentService,AssigmentService>(); // AssigmentService eklenmiþ
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAssigmentService,AssigmentService>(); 
 builder.Services.AddScoped<IJoyStaffService,JoyStaffService>();
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<ILicenceService,LicenceService>();
@@ -19,38 +19,20 @@ builder.Services.AddScoped<IMaintenanceService,MaintenanceService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
+//Email servisi için gerekli ayarlarý yapýlandýrýyoruz
 builder.Services.Configure<RelatedDigitalEmailSettings>(builder.Configuration.GetSection("RelatedDigitalEmailSettings"));
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddTransient<EmailService>();// EmailService eklenmiþ
+builder.Services.AddTransient<EmailService>();
 builder.Services.AddSingleton<TokenStorage>();
 
-
-
-builder.Services.AddSingleton<IAsyncPolicy>(Policy
-    .Handle<Exception>()  // Hangi tür hatalarýn tekrar deneneceðini belirliyoruz
-    .WaitAndRetryAsync(5, // 5 kez yeniden dene
-        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) // Her denemede bekleme süresi artýyor (2, 4, 8, 16, 32 saniye)
-    ));
-
-
-
-builder.Services.AddControllersWithViews()
-    .AddRazorOptions(options =>
-    {
-        // Varsayýlan view yollarýný temizliyoruz.
-        options.ViewLocationFormats.Clear();
-
-        // Özelleþtirilmiþ view yollarýný ekliyoruz.
-        options.ViewLocationFormats.Add("/Web/Views/{1}/{0}.cshtml"); // Controller ve view ismiyle eþleþen view'lar
-        options.ViewLocationFormats.Add("/Web/Views/Shared/{0}.cshtml");  // Shared view'lar
-    });
-
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<InventoryContext>(options =>
     options.UseSqlite(builder.Configuration["ConnectionStrings:Dbconnection"]));
 
+
+// Kullanýcý Identity ayarlarýný yapýlandýrýyoruz
 builder.Services.AddIdentity<JoyUser, JoyRole>(options =>
 {
-    // Kullanýcý oturum açma süresi
     options.SignIn.RequireConfirmedAccount = false;  // E-posta onayý zorunlu deðilse
 })
 .AddEntityFrameworkStores<InventoryContext>()
@@ -70,13 +52,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

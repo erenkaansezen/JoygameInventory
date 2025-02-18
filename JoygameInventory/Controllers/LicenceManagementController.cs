@@ -7,7 +7,7 @@ using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace JoygameInventory.Web.Controllers
+namespace JoygameInventory.Controllers
 {
     [Authorize]
     public class LicenceManagementController : Controller

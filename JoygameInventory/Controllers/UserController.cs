@@ -5,7 +5,7 @@ using JoygameInventory.Models.ViewModel;
 using JoygameInventory.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 
-namespace JoygameInventory.Web.Controllers
+namespace JoygameInventory.Controllers
 {
     [Authorize]
     public class UserController : Controller

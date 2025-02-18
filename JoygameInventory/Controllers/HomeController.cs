@@ -2,7 +2,7 @@ using System.Diagnostics;
 using JoygameInventory.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JoygameInventory.Web.Controllers
+namespace JoygameInventory.Controllers
 {
     public class HomeController : Controller
     {

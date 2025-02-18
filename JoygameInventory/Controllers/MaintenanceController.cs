@@ -4,7 +4,7 @@ using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JoygameInventory.Web.Controllers
+namespace JoygameInventory.Controllers
 {
     [Authorize]
     public class MaintenanceController : Controller
