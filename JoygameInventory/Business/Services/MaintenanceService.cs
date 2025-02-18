@@ -18,17 +18,17 @@ namespace JoygameInventory.Business.Services
         {
             return await _context.Maintenance.ToListAsync();
         }
-        public async Task<Maintenance> GetProductServiceAsync(string ProductBarkod)
+        public async Task<Maintenance> GetProductServiceAsync(string productBarkod)
         {
             try
             {
                 var inventoryAssignment = await _context.Maintenance
-                    .Where(ia => ia.ProductBarkod == ProductBarkod)
+                    .Where(ia => ia.ProductBarkod == productBarkod)
                     .FirstOrDefaultAsync();
 
                 if (inventoryAssignment == null)
                 {
-                    Console.WriteLine($"No maintenance record found for ProductBarkod: {ProductBarkod}");
+                    Console.WriteLine($"No maintenance record found for ProductBarkod: {productBarkod}");
                 }
 
                 return inventoryAssignment;
@@ -40,10 +40,10 @@ namespace JoygameInventory.Business.Services
             }
         }
 
-        public async Task<IEnumerable<MaintenanceHistory>> GetProductServiceHistoryAsync(string ProductBarkod)
+        public async Task<IEnumerable<MaintenanceHistory>> GetProductServiceHistoryAsync(string productBarkod)
         {
             var inventoryAssignments = await _context.MaintenanceHistory
-                .Where(ia => ia.ProductBarkod == ProductBarkod)  
+                .Where(ia => ia.ProductBarkod == productBarkod)  
                 .ToListAsync();
 
             return inventoryAssignments;
@@ -105,9 +105,9 @@ namespace JoygameInventory.Business.Services
             }
         }
 
-        public async Task<bool> IsProductBarkodUnique(string ProductBarkod)
+        public async Task<bool> IsProductBarkodUnique(string productBarkod)
         {
-            return !await _context.Maintenance.AnyAsync(s => s.ProductBarkod == ProductBarkod);
+            return !await _context.Maintenance.AnyAsync(s => s.ProductBarkod == productBarkod);
         }
 
 

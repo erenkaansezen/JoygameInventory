@@ -12,56 +12,50 @@ namespace JoygameInventory.Web.Controllers
 
     public class StaffManagementController : Controller
     {
-        private readonly IJoyStaffService _staffmanager;
-        private readonly IProductService _productservice;
-        private readonly IAssigmentService _assigmentservice;
-        private readonly ITeamService _teamservice;
-        private readonly ILicenceService _licenceservice;
+        private readonly IJoyStaffService _staffManager;
+        private readonly IProductService _productService;
+        private readonly IAssigmentService _assigmentService;
+        private readonly ITeamService _teamService;
+        private readonly ILicenceService _licenceService;
         private readonly EmailService _emailService;
 
 
-        public StaffManagementController(IProductService productservice, IAssigmentService assigmentservice, IJoyStaffService staffmanager, ITeamService teamservice, ILicenceService licenceservice,EmailService emailService)
+        public StaffManagementController(IProductService productService, IAssigmentService assigmentService, IJoyStaffService staffManager, ITeamService teamService, ILicenceService licenceService, EmailService emailService)
         {
-            _productservice = productservice;
-            _assigmentservice = assigmentservice;
-            _staffmanager = staffmanager;
-            _teamservice = teamservice;
-            _licenceservice = licenceservice;
+            _productService = productService;
+            _assigmentService = assigmentService;
+            _staffManager = staffManager;
+            _teamService = teamService;
+            _licenceService = licenceService;
             _emailService = emailService;
-
         }
 
 
         [HttpGet]
         public async Task<IActionResult> StaffList(string searchTerm)
         {
-            // Arama terimi varsa, arama sonuçlarını alıyoruz
-            var joyStaffs = await _staffmanager.SearchStaff(searchTerm);
+            var joyStaffs = await _staffManager.SearchStaff(searchTerm);
 
-
-            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
-                joyStaffs = await _staffmanager.GetAllStaffsAsync();
+                joyStaffs = await _staffManager.GetAllStaffsAsync();
             }
 
-            // Arama terimi ViewBag içinde gönderiliyor
             ViewBag.SearchTerm = searchTerm;
 
-            // Arama sonuçlarını view'a gönderiyoruz
             return View(joyStaffs);
         }
 
         [HttpGet]
         public async Task<IActionResult> StaffDetails(int id)
         {
-            var staff = await _staffmanager.GetStaffByIdAsync(id);
+            var staff = await _staffManager.GetStaffByIdAsync(id);
             if (staff != null)
             {
-                var inventoryAssignments = await _assigmentservice.GetUserAssignmentsAsync(staff.Id);
-                var userteams = await _teamservice.GetUserAssignmentsAsync(staff.Id);
-                var userlicenses = await _licenceservice.GetUserLicenceAssignmentsAsync(staff.Id);
-                var teams = await _teamservice.GetAllTeamsAsync();
+                var inventoryAssignments = await _assigmentService.GetUserAssignmentsAsync(staff.Id);
+                var userTeams = await _teamService.GetUserAssignmentsAsync(staff.Id);
+                var userLicences = await _licenceService.GetUserLicenceAssignmentsAsync(staff.Id);
+                var teams = await _teamService.GetAllTeamsAsync();
 
                 var model = new StaffEditViewModel
                 {
@@ -72,32 +66,27 @@ namespace JoygameInventory.Web.Controllers
                     PhoneNumber = staff.PhoneNumber,
                     Document = staff.Document,
                     InventoryAssigments = inventoryAssignments,
-                    UserTeam = userteams,
+                    UserTeam = userTeams,
                     Team = teams,
-                    LicencesUser = userlicenses
-
+                    LicencesUser = userLicences
                 };
 
                 return View(model);
-
-
-
             }
             return RedirectToAction("Index", "Home");
-
         }
 
         [HttpGet]
         public async Task<IActionResult> StaffRegister()
         {
-            var teams = await _teamservice.GetAllTeamsAsync();
+            var teams = await _teamService.GetAllTeamsAsync();
             var model = new StaffEditViewModel
             {
                 Team = teams
             };
             return View("StaffRegister", model);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> ViewZimmetDocument(string documentName)
         {
@@ -105,16 +94,13 @@ namespace JoygameInventory.Web.Controllers
             {
                 documentName = documentName?.Trim();
 
-
-                // Kullanıcıdan gelen belge adını alıyoruz (belge adının tam yolu ve uzantısı ile birlikte)
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents", documentName);
 
                 if (!System.IO.File.Exists(filePath))
                 {
-                    return NotFound(); // Dosya bulunamazsa 404 döner
+                    return NotFound();
                 }
 
-                // Dosyayı okuyup tarayıcıda görüntülenebilmesi için gönderiyoruz
                 var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
                 return File(fileBytes, "application/pdf");
             }
@@ -122,48 +108,37 @@ namespace JoygameInventory.Web.Controllers
             {
                 return NotFound();
             }
-
         }
 
 
         [HttpPost]
         public async Task<IActionResult> StaffDetails(StaffEditViewModel model)
         {
-            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id);
+            var staffs = await _staffManager.GetStaffByIdAsync(model.Id);
             if (staffs != null)
             {
-
                 staffs.Name = model.Name;
                 staffs.Surname = model.Surname;
                 staffs.Email = model.Email;
                 staffs.PhoneNumber = model.PhoneNumber;
 
-                var usersteam = await _teamservice.GetUserAssignmentsAsync(staffs.Id);
+                var userTeams = await _teamService.GetUserAssignmentsAsync(staffs.Id);
 
-
-                if (usersteam != null && usersteam.Any())
+                if (userTeams != null && userTeams.Any())
                 {
-                    var userteam = usersteam.FirstOrDefault();
+                    var userTeam = userTeams.FirstOrDefault();
                     if (model.SelectedTeamId != null)
                     {
-                        if (userteam.TeamId != model.SelectedTeamId)
+                        if (userTeam.TeamId != model.SelectedTeamId)
                         {
-                            userteam.TeamId = model.SelectedTeamId;
-
-
+                            userTeam.TeamId = model.SelectedTeamId;
                         }
 
-                        await _teamservice.UpdateTeamAsync(userteam);
-
+                        await _teamService.UpdateTeamAsync(userTeam);
                     }
-
-
-
                 }
 
-                bool updateSuccess = await _staffmanager.UpdateStaffAsync(staffs);
-
-
+                bool updateSuccess = await _staffManager.UpdateStaffAsync(staffs);
 
                 if (updateSuccess)
                 {
@@ -177,7 +152,6 @@ namespace JoygameInventory.Web.Controllers
                 }
             }
             return View("StaffManagement/StaffCreate");
-
         }
 
         [HttpPost]
@@ -186,9 +160,8 @@ namespace JoygameInventory.Web.Controllers
             if (!ModelState.IsValid)
             {
                 return View("StaffManagement/StaffRegister", model);
-
             }
-            if (!await _staffmanager.IsEmailUnique(model.Email))
+            if (!await _staffManager.IsEmailUnique(model.Email))
             {
                 ModelState.AddModelError("Email", "Bu Kullanıcı Kayıtlı.");
                 return View(model);
@@ -204,22 +177,19 @@ namespace JoygameInventory.Web.Controllers
                 Name = model.Name,
                 Surname = model.Surname,
                 Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-
-
+                PhoneNumber = model.PhoneNumber
             };
-            var result = await _staffmanager.CreateStaff(staff);
+            var result = await _staffManager.CreateStaff(staff);
 
             if (result)
             {
                 var staffTeam = new UserTeam
                 {
-                    StaffId = staff.Id, // Ürün ID'si
-                    TeamId = model.SelectedTeamId // Seçilen kategori ID'si
+                    StaffId = staff.Id,
+                    TeamId = model.SelectedTeamId
                 };
 
-                // ProductCategory kaydını ekliyoruz
-                await _teamservice.AddUserTeam(staffTeam);
+                await _teamService.AddUserTeam(staffTeam);
                 TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
                 return RedirectToAction("StaffDetails", new { id = staff.Id });
             }
@@ -227,82 +197,71 @@ namespace JoygameInventory.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulurken bir hata oluştu.");
                 return View(model);
-
-
             }
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> StaffDelete(int id)
         {
-            await _staffmanager.DeleteStaffAsync(id);
+            await _staffManager.DeleteStaffAsync(id);
             return RedirectToAction("StaffList");
         }
+
         [HttpPost]
         public async Task<IActionResult> AddZimmetDocument(StaffEditViewModel model, IFormFile modelFile)
         {
-            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id); // id'yi almak için model üzerinden kullanabilirsiniz.
+            var staffs = await _staffManager.GetStaffByIdAsync(model.Id);
             if (staffs != null)
             {
-
                 if (modelFile != null)
                 {
-                    // Dosya uzantısını al
                     var extension = Path.GetExtension(modelFile.FileName);
 
-                    // Benzersiz dosya adı oluştur
-                    var DocumentName = $"{model.Name}{model.Surname}{DateTime.Now:dd-MM-yyyy}{extension}";
-                    // Dosyanın kaydedileceği yolu oluştur
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents", DocumentName);
+                    var documentName = $"{model.Name}{model.Surname}{DateTime.Now:dd-MM-yyyy}{extension}";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents", documentName);
 
-                    // Dosyayı belirtilen konuma kaydet
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await modelFile.CopyToAsync(stream);
                     }
 
-                    // Slider modeline görsel adını ata
-                    model.Document = DocumentName;
-
-
+                    model.Document = documentName;
                 }
                 staffs.Document = model.Document;
-                await _staffmanager.UpdateStaffAsync(staffs);
+                await _staffManager.UpdateStaffAsync(staffs);
             }
 
-            return RedirectToAction("StaffDetails", new { id = model.Id }); // Yönlendirme
+            return RedirectToAction("StaffDetails", new { id = model.Id });
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteZimmetDocument(StaffEditViewModel model)
         {
-            var staffs = await _staffmanager.GetStaffByIdAsync(model.Id); // id'yi almak için model üzerinden kullanabilirsiniz.
+            var staffs = await _staffManager.GetStaffByIdAsync(model.Id);
             if (staffs != null)
             {
                 staffs.Document = null;
-                await _staffmanager.UpdateStaffAsync(staffs);
+                await _staffManager.UpdateStaffAsync(staffs);
             }
 
-            return RedirectToAction("StaffDetails", new { id = model.Id }); // Yönlendirme
+            return RedirectToAction("StaffDetails", new { id = model.Id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> LicenceUserAssigmentDelete(int LicenceAssigmentId, int userId)
+        public async Task<IActionResult> LicenceUserAssigmentDelete(int licenceAssigmentId, int userId)
         {
-            var assigment = await _licenceservice.GetAssignmentByIdAsync(LicenceAssigmentId);
-            var staff = await _staffmanager.GetStaffByIdAsync(userId);
-            var licence = await _licenceservice.GetLicenceByIdAsync(assigment.LicenceId);
+            var assigment = await _licenceService.GetAssignmentByIdAsync(licenceAssigmentId);
+            var staff = await _staffManager.GetStaffByIdAsync(userId);
+            var licence = await _licenceService.GetLicenceByIdAsync(assigment.LicenceId);
             if (staff != null)
             {
                 var toEmailAddress = staff.Email;
                 var subject = "Lisans Atamasının Kaldırılması Hakkında";
                 var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
                           $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
-                          $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                          $"<p style='text-align: center;'>" +
                           $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                          $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                          $"</p>" +
                           $"<p>Merhaba <strong>{staff.Name}</strong>,</p>" +
                           $"<p>Aşağıda bilgileri belirtilen lisansın ataması sizden kaldırılmıştır</p>" +
                           $"<p><strong>Lisans :</strong> {licence.LicenceName}</p>" +
@@ -312,7 +271,7 @@ namespace JoygameInventory.Web.Controllers
                 var attachmentPaths = new List<string>();
                 await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
             }
-            await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
+            await _licenceService.DeleteLicenceAssigmentAsync(licenceAssigmentId);
 
             return RedirectToAction("StaffDetails", new { id = userId });
         }
@@ -320,26 +279,20 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AssigmentDelete(int userId, int inventoryAssigmentId)
         {
-            // Kullanıcıyı veritabanından alıyoruz
-            var staff = await _staffmanager.GetStaffByIdAsync(userId);
-            var assigment = await _assigmentservice.GetAssignmentByIdAsync(inventoryAssigmentId);
-            var product = await _productservice.GetIdProductAsync(assigment.ProductId);
+            var staff = await _staffManager.GetStaffByIdAsync(userId);
+            var assigment = await _assigmentService.GetAssignmentByIdAsync(inventoryAssigmentId);
+            var product = await _productService.GetIdProductAsync(assigment.ProductId);
 
             if (assigment != null)
             {
-
-                // AssigmentHistory kaydını oluşturuyoruz
                 var assignmentHistory = new AssigmentHistory
                 {
-
                     ProductId = assigment.ProductId,
                     UserId = userId,
                     AssignmentDate = DateTime.Now,
-
-
                 };
-    
-                await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);  
+
+                await _assigmentService.AddAssignmentHistoryAsync(assignmentHistory);
             }
 
             if (assigment.UserId != null)
@@ -348,9 +301,9 @@ namespace JoygameInventory.Web.Controllers
                 var subject = "Zimmetin Kaldırılması Hakkında";
                 var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
                           $"<div style='margin: 20px; background-color: white; padding: 20px;'>" +
-                          $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                          $"<p style='text-align: center;'>" +
                           $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                          $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                          $"</p>" +
                           $"<p>Merhaba <strong>{staff.Name}</strong>,</p>" +
                           $"<p>Aşağıda bilgileri belirtilen ürünün zimmeti sizden kaldırılmıştır</p>" +
                           $"<p><strong>Ürün :</strong> {product.ProductBrand} {product.ProductModel}</p>" +
@@ -362,7 +315,7 @@ namespace JoygameInventory.Web.Controllers
                 await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
             }
 
-            await _assigmentservice.DeleteAssignmentAsync(inventoryAssigmentId);
+            await _assigmentService.DeleteAssignmentAsync(inventoryAssigmentId);
             return Json(new { success = true, message = "Veriler başarıyla gönderildi." });
         }
     }

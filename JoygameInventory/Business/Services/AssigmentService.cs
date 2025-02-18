@@ -18,8 +18,8 @@ namespace JoygameInventory.Business.Services
         {
             var inventoryAssignments = await _context.InventoryAssigments
                 .Include(ia => ia.Product)
-                .Include(ia => ia.User)  
-                .Where(ia => ia.UserId == userId) 
+                .Include(ia => ia.User)
+                .Where(ia => ia.UserId == userId)
                 .ToListAsync();
 
             return inventoryAssignments;
@@ -30,12 +30,13 @@ namespace JoygameInventory.Business.Services
         {
             var inventoryAssignments = await _context.InventoryAssigments
                 .Include(ia => ia.Product)
-                .Include(ia => ia.User)  
-                .Where(ia => ia.ProductId == productId) 
+                .Include(ia => ia.User)
+                .Where(ia => ia.ProductId == productId)
                 .ToListAsync();
 
             return inventoryAssignments;
         }
+
         public async Task<List<Category>> GetAllStaffsAsync()
         {
             return await _context.Categories.ToListAsync();
@@ -49,13 +50,12 @@ namespace JoygameInventory.Business.Services
             return inventoryAssignments;
         }
 
-
         public async Task<List<InventoryAssigment>> GetPreviousAssignmentsAsync(int productId)
         {
             var previousAssignments = await _context.InventoryAssigments
-                .Where(pa => pa.ProductId == productId && pa.PreviusAssigmenId != 0) 
+                .Where(pa => pa.ProductId == productId && pa.PreviousAssigmenId != 0)
                 .OrderByDescending(pa => pa.AssignmentDate)
-                .ToListAsync();  
+                .ToListAsync();
 
             return previousAssignments;
         }
@@ -64,11 +64,10 @@ namespace JoygameInventory.Business.Services
         {
             var previousUser = await _context.JoyStaffs
                 .Where(user => user.Id == previousUserId)
-                .FirstOrDefaultAsync();  
+                .FirstOrDefaultAsync();
 
             return previousUser;
         }
-
 
         public async Task UpdateAssigmentAsync(InventoryAssigment assignment)
         {
@@ -80,8 +79,6 @@ namespace JoygameInventory.Business.Services
             var existingAssignment = await _context.InventoryAssigments
                 .FirstOrDefaultAsync(a => a.Id == assignment.Id);
 
-
-
             existingAssignment.UserId = assignment.UserId;
             existingAssignment.AssignmentDate = assignment.AssignmentDate;
 
@@ -91,13 +88,10 @@ namespace JoygameInventory.Business.Services
 
         public async Task AddAssignmentAsync(InventoryAssigment newAssignment)
         {
-
-                _context.InventoryAssigments.Add(newAssignment);
-
-                await _context.SaveChangesAsync();
-            
-
+            _context.InventoryAssigments.Add(newAssignment);
+            await _context.SaveChangesAsync();
         }
+
         public async Task DeleteAssignmentAsync(int id)
         {
             var deleteAssigment = await _context.InventoryAssigments.FindAsync(id);
@@ -107,7 +101,6 @@ namespace JoygameInventory.Business.Services
                 await _context.SaveChangesAsync();
             }
         }
-
 
         public async Task AddAssignmentHistoryAsync(AssigmentHistory assignmentHistory)
         {

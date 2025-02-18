@@ -59,12 +59,12 @@ public class CategoryService : ICategoryService
                              .Where(c => c.Name.Contains(searchTerm))
                              .ToListAsync();
     }
-    public async Task<IEnumerable<ProductCategory>> GetCategoryProductsAsync(int categoryıd)
+    public async Task<IEnumerable<ProductCategory>> GetCategoryProductsAsync(int categoryId)
     {
         var inventoryAssignments = await _context.ProductCategories
             .Include(ia => ia.Category)
             .Include(ia => ia.Product)  
-            .Where(ia => ia.CategoryId == categoryıd) 
+            .Where(ia => ia.CategoryId == categoryId) 
             .ToListAsync();
 
         return inventoryAssignments;

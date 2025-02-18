@@ -59,10 +59,10 @@ namespace JoygameInventory.Business.Services
 
             return licenceusers;
         }
-        public async Task<LicenceUser> GetAssignmentByIdAsync(int LicenceAssigmentId)
+        public async Task<LicenceUser> GetAssignmentByIdAsync(int licenceAssigmentId)
         {
             var licenceAssigment = await _context.LicenceUser
-                .Where(a => a.Id == LicenceAssigmentId)
+                .Where(a => a.Id == licenceAssigmentId)
                 .FirstOrDefaultAsync();
             return licenceAssigment;
         }

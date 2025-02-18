@@ -62,9 +62,9 @@ namespace JoygameInventory.Business.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTeamAsync(UserTeam userteams)// staffdetails üzerinden çalışır
+        public async Task UpdateTeamAsync(UserTeam userTeams)// staffdetails üzerinden çalışır
         {
-            _context.userTeam.Update(userteams);
+            _context.userTeam.Update(userTeams);
             await _context.SaveChangesAsync();
         }
         public async Task AddUserTeam(UserTeam staffTeam)

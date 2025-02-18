@@ -10,43 +10,40 @@ using Microsoft.AspNetCore.Authorization;
 namespace JoygameInventory.Web.Controllers
 {
     [Authorize]
-
     public class LicenceManagementController : Controller
     {
-        private readonly ILicenceService _licenceservice;
-        private readonly IJoyStaffService _staffmanager;
+        private readonly ILicenceService _licenceService;
+        private readonly IJoyStaffService _staffManager;
 
-        public LicenceManagementController(ILicenceService licenceservice, IJoyStaffService staffmanager)
+        public LicenceManagementController(ILicenceService licenceService, IJoyStaffService staffManager)
         {
-            _licenceservice = licenceservice;
-            _staffmanager = staffmanager;
+            _licenceService = licenceService;
+            _staffManager = staffManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> LicenceList(string searchTerm)
         {
-            var licences = await _licenceservice.SearchLicence(searchTerm);
-
+            var licences = await _licenceService.SearchLicence(searchTerm);
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                licences = await _licenceservice.GetAllLicencesAsync();
+                licences = await _licenceService.GetAllLicencesAsync();
             }
 
             ViewBag.SearchTerm = searchTerm;
-
-
             return View(licences);
         }
+
         [HttpGet]
         public async Task<IActionResult> LicenceDetails(int id)
         {
-            var licence = await _licenceservice.GetLicenceByIdAsync(id);
-            var joystaff = await _staffmanager.GetAllStaffsAsync();
+            var licence = await _licenceService.GetLicenceByIdAsync(id);
+            var joyStaff = await _staffManager.GetAllStaffsAsync();
 
             if (licence != null)
             {
-                var licenceusers = await _licenceservice.GetLicenceUserAssignmentsAsync(licence.Id);
+                var licenceUsers = await _licenceService.GetLicenceUserAssignmentsAsync(licence.Id);
 
                 var model = new LicenceEditViewModel
                 {
@@ -54,53 +51,46 @@ namespace JoygameInventory.Web.Controllers
                     LicenceName = licence.LicenceName,
                     LicenceActiveDate = licence.LicenceActiveDate,
                     LicenceEndDate = licence.LicenceEndDate,
-                    LicenceUser = licenceusers,
-                    JoyStaffs = joystaff
+                    LicenceUser = licenceUsers,
+                    JoyStaffs = joyStaff
                 };
 
-
                 return View(model);
-
-
-
             }
             return RedirectToAction("Index", "Home");
-
         }
+
         [HttpGet]
-        public async Task<IActionResult> LicenceCreate()
+        public IActionResult LicenceCreate()
         {
             return View();
         }
 
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> LicenceCreate(LicenceEditViewModel model)
         {
-
-            if (!await _licenceservice.IsLicenceUnique(model.LicenceName))
+            if (!await _licenceService.IsLicenceUnique(model.LicenceName))
             {
                 TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
                 return View(model);
             }
+
             if (model.LicenceActiveDate == null && model.LicenceEndDate == null)
             {
                 TempData["ErrorMessage"] = "Lütfen belirtilen alanları tam doldurunuz";
                 return View(model);
             }
+
             if (!string.IsNullOrEmpty(model.LicenceName))
             {
-
                 var licence = new Licence
                 {
                     LicenceName = model.LicenceName,
                     LicenceActiveDate = model.LicenceActiveDate,
                     LicenceEndDate = model.LicenceEndDate
                 };
-                var result = await _licenceservice.AddLicence(licence);
+
+                var result = await _licenceService.AddLicence(licence);
                 if (result)
                 {
                     TempData["SuccessMessage"] = "Lisans başarıyla oluşturuldu!";
@@ -117,48 +107,47 @@ namespace JoygameInventory.Web.Controllers
                 TempData["ErrorMessage"] = "Belirtilen alanı doldurunuz";
                 return View(model);
             }
-
         }
 
-                [HttpPost]
-                public async Task<IActionResult> NewAssigmentLicence(LicenceEditViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> NewAssignmentLicence(LicenceEditViewModel model)
+        {
+            var licence = await _licenceService.GetLicenceByIdAsync(model.Id);
+            var joyStaff = await _staffManager.GetAllStaffsAsync();
+
+            if (licence != null)
+            {
+                model.JoyStaffs = joyStaff;
+
+                if (model.SelectedStaffId.HasValue)
                 {
-                    var licence = await _licenceservice.GetLicenceByIdAsync(model.Id);
-                    var joyStaff = await _staffmanager.GetAllStaffsAsync();
+                    var selectedStaff = joyStaff.FirstOrDefault(staff => staff.Id == model.SelectedStaffId.Value);
 
-                    if (licence != null)
+                    if (selectedStaff != null)
                     {
-                        model.JoyStaffs = joyStaff;
-
-                        if (model.SelectedStaffId.HasValue)
-                        {
-                            var selectedStaff = joyStaff.FirstOrDefault(staff => staff.Id == model.SelectedStaffId.Value);
-
-                            if (selectedStaff != null)
-                            {
-                                await _licenceservice.AddAssignmentAsync(licence, selectedStaff);
-                            }
-                        }
+                        await _licenceService.AddAssignmentAsync(licence, selectedStaff);
                     }
-
-                    return RedirectToAction("LicenceDetails", new { id = model.Id });
                 }
+            }
+
+            return RedirectToAction("LicenceDetails", new { id = model.Id });
+        }
 
         [HttpPost]
-        public async Task<IActionResult> LicenceAssigmentDelete(int LicenceAssigmentId, int licenceId, LicenceEditViewModel model)
+        public async Task<IActionResult> LicenceAssignmentDelete(int licenceAssignmentId, int licenceId, LicenceEditViewModel model)
         {
-            var assigment = await _licenceservice.GetLicenceByIdAsync(LicenceAssigmentId);
-            var licence = await _licenceservice.GetLicenceByIdAsync(licenceId);
+            var assignment = await _licenceService.GetLicenceByIdAsync(licenceAssignmentId);
+            var licence = await _licenceService.GetLicenceByIdAsync(licenceId);
 
-            await _licenceservice.DeleteLicenceAssigmentAsync(LicenceAssigmentId);
+            await _licenceService.DeleteLicenceAssignmentAsync(licenceAssignmentId);
 
             return RedirectToAction("LicenceDetails", new { id = licenceId });
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> LicenceDelete(int id)
         {
-            await _licenceservice.DeleteLicenceAsync(id);
+            await _licenceService.DeleteLicenceAsync(id);
             return RedirectToAction("LicenceDetails", "Management");
         }
     }

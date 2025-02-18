@@ -7,42 +7,40 @@ using Microsoft.AspNetCore.Mvc;
 namespace JoygameInventory.Web.Controllers
 {
     [Authorize]
-
     public class MaintenanceController : Controller
     {
-        private readonly IMaintenanceService _maintenanceservice;
-        private readonly IProductService _productservice;
+        private readonly IMaintenanceService _maintenanceService;
+        private readonly IProductService _productService;
 
-        public MaintenanceController(IMaintenanceService maintenanceservice, IProductService productservice)
+        public MaintenanceController(IMaintenanceService maintenanceService, IProductService productService)
         {
-            _maintenanceservice = maintenanceservice;
-            _productservice = productservice;
+            _maintenanceService = maintenanceService;
+            _productService = productService;
         }
+
         public async Task<IActionResult> MaintenanceList(string searchTerm)
         {
-            var Maintenances = await _maintenanceservice.SearchMaintenanceService(searchTerm);
-
+            var maintenances = await _maintenanceService.SearchMaintenanceService(searchTerm);
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                Maintenances = await _maintenanceservice.GetAllServiceAsync();
+                maintenances = await _maintenanceService.GetAllServiceAsync();
             }
 
             ViewBag.SearchTerm = searchTerm;
-
-
-            return View(Maintenances);
+            return View(maintenances);
         }
 
         [HttpPost]
         public async Task<IActionResult> MaintenanceCreate(ProductEditViewModel model)
         {
-            var MaintenanceList = await _maintenanceservice.GetAllServiceAsync();
-            if (!await _maintenanceservice.IsProductBarkodUnique(model.ProductBarkod))
+            var maintenanceList = await _maintenanceService.GetAllServiceAsync();
+            if (!await _maintenanceService.IsProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = $"{model.ProductBarkod} ürüne ait devam eden servis var, lütfen kontrol sağlayınız.";
                 return RedirectToAction("MaintenanceList");
             }
+
             if (model.ProductBarkod != null)
             {
                 var maintenance = new Maintenance
@@ -53,7 +51,8 @@ namespace JoygameInventory.Web.Controllers
                     CreatedAt = DateTime.Now,
                     MaintenanceDescription = model.MaintenanceDescription
                 };
-                var result = await _maintenanceservice.CreateMaintenance(maintenance);
+
+                var result = await _maintenanceService.CreateMaintenance(maintenance);
                 if (result)
                 {
                     TempData["SuccessMessage"] = $"{model.ProductBarkod} ürünün başarıyla servis kaydı oluşturuldu";
@@ -66,16 +65,14 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> MaintenanceDelete(int id)
         {
-
-            await _maintenanceservice.DeleteMaintenanceAsync(id);
+            await _maintenanceService.DeleteMaintenanceAsync(id);
             return RedirectToAction("MaintenanceList");
-
         }
 
         [HttpPost]
         public async Task<IActionResult> MaintenanceHistory(int id)
         {
-            var maintenance = await _maintenanceservice.GetMaintenanceByIdAsync(id);
+            var maintenance = await _maintenanceService.GetMaintenanceByIdAsync(id);
             if (maintenance != null)
             {
                 var history = new MaintenanceHistory
@@ -86,15 +83,14 @@ namespace JoygameInventory.Web.Controllers
                     MaintenanceDescription = maintenance.MaintenanceDescription,
                     CreatedAt = maintenance.CreatedAt,
                     EndDate = DateTime.Now
-
                 };
 
-                var result = await _maintenanceservice.MaintenanceHistoryAdd(history);
+                var result = await _maintenanceService.MaintenanceHistoryAdd(history);
 
                 if (result)
                 {
                     TempData["SuccessMessage"] = $"{maintenance.ProductBarkod} Ürünün servis durumu tamamlanmıştır.";
-                    await _maintenanceservice.DeleteMaintenanceAsync(id);
+                    await _maintenanceService.DeleteMaintenanceAsync(id);
                     return RedirectToAction("MaintenanceList");
                 }
 
@@ -102,6 +98,5 @@ namespace JoygameInventory.Web.Controllers
             }
             return RedirectToAction("MaintenanceList");
         }
-
     }
 }

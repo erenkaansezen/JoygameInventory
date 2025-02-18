@@ -7,66 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 namespace JoygameInventory.Web.Controllers
 {
     [Authorize]
-
     public class TeamManagementController : Controller
     {
-        private readonly ITeamService _teamservice;
-        private readonly IJoyStaffService _staffmanager;
-        public TeamManagementController(ITeamService teamservice, IJoyStaffService staffmanager)
+        private readonly ITeamService _teamService;
+        private readonly IJoyStaffService _staffManager;
+
+        public TeamManagementController(ITeamService teamService, IJoyStaffService staffManager)
         {
-            _teamservice = teamservice;
-            _staffmanager = staffmanager;
+            _teamService = teamService;
+            _staffManager = staffManager;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> TeamList(string searchTerm)
         {
-            // Arama terimi varsa, arama sonuçlarını alıyoruz
-            var teams = await _teamservice.SearchTeam(searchTerm);
+            var teams = await _teamService.SearchTeam(searchTerm);
 
-
-            // Eğer arama yapılmamışsa tüm staff'ı alıyoruz
             if (string.IsNullOrEmpty(searchTerm))
             {
-                teams = await _teamservice.GetAllTeamsAsync();
+                teams = await _teamService.GetAllTeamsAsync();
             }
 
-            // Arama terimi ViewBag içinde gönderiliyor
             ViewBag.SearchTerm = searchTerm;
 
-
-            // Arama sonuçlarını view'a gönderiyoruz
             return View(teams);
         }
 
         [HttpGet]
         public async Task<IActionResult> TeamDetails(int id)
         {
-            var teams = await _teamservice.GetTeamByIdAsync(id);
-
-
-
-
+            var teams = await _teamService.GetTeamByIdAsync(id);
 
             if (teams != null)
             {
-                var userteams = await _teamservice.GetTeamUserAssignmentsAsync(teams.Id);
+                var userTeams = await _teamService.GetTeamUserAssignmentsAsync(teams.Id);
 
                 var model = new TeamEditViewModel
                 {
                     Id = teams.Id,
                     TeamName = teams.TeamName,
-                    Teams = userteams,
+                    Teams = userTeams,
                 };
 
-
                 return View(model);
-
-
-
             }
             return RedirectToAction("Index", "Home");
-
         }
 
         [HttpGet]
@@ -78,8 +63,7 @@ namespace JoygameInventory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> TeamCreate(TeamEditViewModel model)
         {
-
-            if (!await _teamservice.IsTeamUnique(model.TeamName))
+            if (!await _teamService.IsTeamUnique(model.TeamName))
             {
                 TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
                 return View(model);
@@ -87,12 +71,11 @@ namespace JoygameInventory.Web.Controllers
 
             if (!string.IsNullOrEmpty(model.TeamName))
             {
-
                 var teams = new Team
                 {
                     TeamName = model.TeamName,
                 };
-                var result = await _teamservice.AddTeam(teams);
+                var result = await _teamService.AddTeam(teams);
                 if (result)
                 {
                     TempData["SuccessMessage"] = "Kullanıcı başarıyla oluşturuldu!";
@@ -109,8 +92,8 @@ namespace JoygameInventory.Web.Controllers
                 TempData["ErrorMessage"] = "Lütfen Belirtilen alanı doldurunuz";
                 return View(model);
             }
-
         }
+
         [HttpPost]
         public async Task<IActionResult> TeamDetails(TeamEditViewModel model)
         {
@@ -119,38 +102,33 @@ namespace JoygameInventory.Web.Controllers
                 TempData["ErrorMessage"] = "Lütfen Gerekli Alanları Doldurunuz";
                 return View(model);
             }
-            if (!await _teamservice.IsTeamUnique(model.TeamName))
-                {
-                    TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
-                    return View(model);
-                }
 
-                var teamToUpdate = await _teamservice.GetTeamByIdAsync(model.Id);
+            if (!await _teamService.IsTeamUnique(model.TeamName))
+            {
+                TempData["ErrorMessage"] = "Bu ünvana sahip başka takım var!";
+                return View(model);
+            }
 
-                if (teamToUpdate != null)
-                {
+            var teamToUpdate = await _teamService.GetTeamByIdAsync(model.Id);
 
-                    teamToUpdate.TeamName = model.TeamName;
+            if (teamToUpdate != null)
+            {
+                teamToUpdate.TeamName = model.TeamName;
 
+                await _teamService.TeamUpdateAsync(teamToUpdate);
 
-                    await _teamservice.TeamUpdateAsync(teamToUpdate);
+                return RedirectToAction("TeamDetails", new { id = model.Id });
+            }
 
-                    return RedirectToAction("TeamDetails", new { id = model.Id });
-                }
-                TempData["ErrorMessage"] = "Team not found!";
-                return RedirectToAction("Index", "Home");
+            TempData["ErrorMessage"] = "Team not found!";
+            return RedirectToAction("Index", "Home");
         }
-
-            // If model is invalid, redisplay the form with validation errors
-        
-
 
         [HttpPost]
         public async Task<IActionResult> TeamDelete(int id)
         {
-            await _teamservice.DeleteTeamAsync(id);
+            await _teamService.DeleteTeamAsync(id);
             return RedirectToAction("TeamList", "TeamManagement");
         }
-
     }
 }

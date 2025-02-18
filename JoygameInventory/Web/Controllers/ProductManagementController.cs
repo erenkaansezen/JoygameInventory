@@ -12,56 +12,54 @@ namespace JoygameInventory.Web.Controllers
 
     public class ProductManagementController : Controller
     {
-        private readonly IProductService _productservice;
-        private readonly IJoyStaffService _staffmanager;
-        private readonly IAssigmentService _assigmentservice;
+        private readonly IProductService _productService;
+        private readonly IJoyStaffService _staffManager;
+        private readonly IAssigmentService _assigmentService;
         private readonly EmailService _emailService;
-        private readonly IMaintenanceService _maintenanceservice;
+        private readonly IMaintenanceService _maintenanceService;
 
-        public ProductManagementController(IProductService productservice, IJoyStaffService staffmanager, IAssigmentService assigmentService, EmailService emailService, IMaintenanceService maintenanceservice)
+        public ProductManagementController(IProductService productService, IJoyStaffService staffManager, IAssigmentService assigmentService, EmailService emailService, IMaintenanceService maintenanceService)
         {
-            _productservice = productservice;
-            _staffmanager = staffmanager;
-            _assigmentservice = assigmentService;
+            _productService = productService;
+            _staffManager = staffManager;
+            _assigmentService = assigmentService;
             _emailService = emailService;
-            _maintenanceservice = maintenanceservice;
+            _maintenanceService = maintenanceService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> ProductList(string category, string searchTerm)
-        {            // İlk olarak tüm ürünleri alıyoruz
-            var joyproducts = await _productservice.GetAllProductsAsync();
+        {
+            var joyProducts = await _productService.GetAllProductsAsync();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                joyproducts = await _productservice.SearchProduct(searchTerm); 
+                joyProducts = await _productService.SearchProduct(searchTerm);
             }
 
             if (!string.IsNullOrEmpty(category))
             {
-                joyproducts = await _productservice.GetProductsByCategoryAsync(category); 
+                joyProducts = await _productService.GetProductsByCategoryAsync(category);
             }
 
-
-            return View(joyproducts);
+            return View(joyProducts);
         }
 
         [HttpGet]
         public async Task<IActionResult> ProductDetails(int id)
         {
-            var staff = await _productservice.GetIdProductAsync(id);
+            var staff = await _productService.GetIdProductAsync(id);
             if (staff != null)
             {
-                var maintenance = await _maintenanceservice.GetProductServiceAsync(staff.ProductBarkod);
-                var maintenanceHistory = await _maintenanceservice.GetProductServiceHistoryAsync(staff.ProductBarkod);
-                var inventoryAssignments = await _assigmentservice.GetProductAssignmentsAsync(staff.Id);
-                var productcategory = await _productservice.GetProductCategoryAsync(staff.Id);
-                var previousAssignments = await _assigmentservice.GetPreviousAssignmentsAsync(staff.Id);
-                var assignmentHistorys = await _assigmentservice.GetAssignmentHistoryAsync(id);
-                var category = await _productservice.GetAllCategoriesAsync();
+                var maintenance = await _maintenanceService.GetProductServiceAsync(staff.ProductBarkod);
+                var maintenanceHistory = await _maintenanceService.GetProductServiceHistoryAsync(staff.ProductBarkod);
+                var inventoryAssignments = await _assigmentService.GetProductAssignmentsAsync(staff.Id);
+                var productCategory = await _productService.GetProductCategoryAsync(staff.Id);
+                var previousAssignments = await _assigmentService.GetPreviousAssignmentsAsync(staff.Id);
+                var assignmentHistorys = await _assigmentService.GetAssignmentHistoryAsync(id);
+                var category = await _productService.GetAllCategoriesAsync();
 
-                var joystaff = await _staffmanager.GetAllStaffsAsync();
+                var joyStaff = await _staffManager.GetAllStaffsAsync();
                 var model = new ProductEditViewModel
                 {
                     Id = staff.Id,
@@ -75,55 +73,45 @@ namespace JoygameInventory.Web.Controllers
                     Ram = staff.Ram,
                     Processor = staff.Processor,
                     GraphicsCard = staff.GraphicsCard,
-                    Storage= staff.Storage,
+                    Storage = staff.Storage,
                     Status = staff.Status,
                     InventoryAssigments = inventoryAssignments,
-                    JoyStaffs = joystaff,
+                    JoyStaffs = joyStaff,
                     AssigmentHistorys = assignmentHistorys,
                     Categories = category,
                     MaintenanceHistorys = maintenanceHistory,
                     Maintenance = maintenance,
-                    ProductCategory = productcategory,
-
-
-
-
+                    ProductCategory = productCategory,
                 };
 
                 return View(model);
-
-
-
             }
             return RedirectToAction("Index", "Home");
-
         }
 
         [HttpGet]
         public async Task<IActionResult> ProductCreate()
         {
-            var productcategory = await _productservice.GetAllProductCategoriesAsync();
-            var category = await _productservice.GetAllCategoriesAsync();
+            var productCategory = await _productService.GetAllProductCategoriesAsync();
+            var category = await _productService.GetAllCategoriesAsync();
             var model = new ProductEditViewModel
             {
                 Categories = category
             };
             return View(model);
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> ProductDetails(ProductEditViewModel model)
         {
-            var currentCategoryId = await _productservice.GetCurrentCategoryIdAsync(model.Id);
-            var product = await _productservice.GetIdProductAsync(model.Id);
+            var currentCategoryId = await _productService.GetCurrentCategoryIdAsync(model.Id);
+            var product = await _productService.GetIdProductAsync(model.Id);
             if (product == null)
             {
                 TempData["ErrorMessage"] = "Ürünü kaydederken bir hata oluştu!";
                 return RedirectToAction("ProductDetails", model);
             }
-            if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
+            if (!await _productService.ProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = $"{model.ProductBarkod} bu barkod başka ürün için kullanımda";
                 return RedirectToAction("ProductDetails", model);
@@ -142,9 +130,9 @@ namespace JoygameInventory.Web.Controllers
             product.GraphicsCard = model.GraphicsCard;
             product.Categories = model.Categories;
 
-            await _productservice.UpdateProductCategoryAsync(model.Id, model.SelectedCategoryId);
+            await _productService.UpdateProductCategoryAsync(model.Id, model.SelectedCategoryId);
 
-            var currentAssignments = await _assigmentservice.GetProductAssignmentsAsync(product.Id);
+            var currentAssignments = await _assigmentService.GetProductAssignmentsAsync(product.Id);
 
             if (currentAssignments != null && currentAssignments.Any())
             {
@@ -157,10 +145,10 @@ namespace JoygameInventory.Web.Controllers
                         var assignmentHistory = new AssigmentHistory
                         {
                             ProductId = currentAssignment.ProductId,
-                            UserId = currentAssignment.UserId,  
+                            UserId = currentAssignment.UserId,
                             AssignmentDate = DateTime.Now
                         };
-                        await _assigmentservice.AddAssignmentHistoryAsync(assignmentHistory);
+                        await _assigmentService.AddAssignmentHistoryAsync(assignmentHistory);
 
                         currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
 
@@ -171,71 +159,66 @@ namespace JoygameInventory.Web.Controllers
 
                         currentAssignment.AssignmentDate = DateTime.Now;
 
-                        var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                        var newUser = await _staffManager.GetStaffByIdAsync(model.SelectedUserId.Value);
                         if (newUser != null)
                         {
                             var toEmailAddress = newUser.Email;
                             var subject = "Yeni Ürün Ataması";
                             var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
                                        $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
-                                       $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                                       $"<p style='text-align: center;'>" +
                                        $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                                       $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                                       $"</p>" +
                                        $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
                                        $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
                                        $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
                                        $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
-
-
-                                      $"<p>Teşekkürler</p>" +
-                                      $"<p>İyi Çalışmalar</p>" +
-                                      $"</div></body></html>";
-                            var attachmentPaths = new List<string>(); 
+                                       $"<p>Teşekkürler</p>" +
+                                       $"<p>İyi Çalışmalar</p>" +
+                                       $"</div></body></html>";
+                            var attachmentPaths = new List<string>();
                             await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                         }
-                        await _assigmentservice.UpdateAssigmentAsync(currentAssignment);
+                        await _assigmentService.UpdateAssigmentAsync(currentAssignment);
                     }
                     else
                     {
-                        await _productservice.UpdateProductAsync(product);
+                        await _productService.UpdateProductAsync(product);
                     }
 
                     TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
                     return RedirectToAction("ProductDetails", new { id = model.Id });
                 }
             }
-            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0) 
+            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0)
             {
                 var newAssignment = new InventoryAssigment
                 {
                     ProductId = product.Id,
-                    UserId = model.SelectedUserId.Value,  
+                    UserId = model.SelectedUserId.Value,
                     AssignmentDate = DateTime.Now,
-                    PreviusAssigmenId = null,  
+                    PreviusAssigmenId = null,
                 };
 
-                await _assigmentservice.AddAssignmentAsync(newAssignment);
-                
-                var newUser = await _staffmanager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                await _assigmentService.AddAssignmentAsync(newAssignment);
+
+                var newUser = await _staffManager.GetStaffByIdAsync(model.SelectedUserId.Value);
                 if (newUser != null)
                 {
                     var toEmailAddress = newUser.Email;
                     var subject = "Yeni Ürün Ataması";
                     var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
                                $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
-                               $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                               $"<p style='text-align: center;'>" +
                                $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                               $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                               $"</p>" +
                                $"<p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
                                $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
                                $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
                                $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
-
-
-                              $"<p>Teşekkürler</p>" +
-                              $"<p>İyi Çalışmalar</p>" +
-                              $"</div></body></html>";
-
+                               $"<p>Teşekkürler</p>" +
+                               $"<p>İyi Çalışmalar</p>" +
+                               $"</div></body></html>";
                     var attachmentPaths = new List<string>();
                     await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
                 }
@@ -244,20 +227,16 @@ namespace JoygameInventory.Web.Controllers
                 return RedirectToAction("ProductDetails", new { id = model.Id });
             }
 
-
-
-            await _productservice.UpdateProductAsync(product);
+            await _productService.UpdateProductAsync(product);
             TempData["SuccessMessage"] = "Ürün Başarıyla Güncellendi";
 
             return RedirectToAction("ProductDetails", new { id = model.Id });
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> ProductCreate(ProductEditViewModel model)
         {
-            if (!await _productservice.ProductBarkodUnique(model.ProductBarkod))
+            if (!await _productService.ProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = "Girdiğiniz barkod numarası başka ürüne ait";
                 return RedirectToAction("ProductCreate", model);
@@ -268,6 +247,7 @@ namespace JoygameInventory.Web.Controllers
                 TempData["ErrorMessage"] = "Lütfen Kategori Seçiniz";
                 return RedirectToAction("ProductCreate", model);
             }
+
             var product = new Product
             {
                 ProductName = model.ProductName,
@@ -277,40 +257,37 @@ namespace JoygameInventory.Web.Controllers
                 Categories = model.Categories,
                 ProductBrand = model.ProductBrand,
                 ProductModel = model.ProductModel
-
             };
 
+            var result = await _productService.CreateProduct(product);
 
-
-            var result = await _productservice.CreateProduct(product);
-
-            if (result) 
+            if (result)
             {
                 var productCategory = new ProductCategory
                 {
-                    ProductId = product.Id, // Ürün ID'si
-                    CategoryId = model.SelectedCategoryId // Seçilen kategori ID'si
+                    ProductId = product.Id,
+                    CategoryId = model.SelectedCategoryId
                 };
 
-                    var toEmailAddress = "itsupport@joygame.com";
-                    var subject = "Envantere Yeni Ürün Eklendi!";
-                    var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
-                               $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
-                               $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
-                               $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                               $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
-                               $"<p>Merhaba</p>" +
-                               $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
-                               $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
-                               $"<p><strong>Ürünün Seri Numarası :</strong> {model.SerialNumber}</p>" +
-                               $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
-                               $"<p>Teşekkürler</p>" +
-                               $"<p>İyi Çalışmalar</p>" +
-                               $"</div></body></html>";
+                var toEmailAddress = "itsupport@joygame.com";
+                var subject = "Envantere Yeni Ürün Eklendi!";
+                var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                           $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
+                           $"<p style='text-align: center;'>" +
+                           $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                           $"</p>" +
+                           $"<p>Merhaba</p>" +
+                           $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
+                           $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                           $"<p><strong>Ürünün Seri Numarası :</strong> {model.SerialNumber}</p>" +
+                           $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+                           $"<p>Teşekkürler</p>" +
+                           $"<p>İyi Çalışmalar</p>" +
+                           $"</div></body></html>";
                 var attachmentPaths = new List<string>();
-                    await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
-                
-                await _productservice.AddProductCategory(productCategory);
+                await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+
+                await _productService.AddProductCategory(productCategory);
 
                 TempData["SuccessMessage"] = "Ürün başarıyla oluşturuldu ve kategoriyle ilişkilendirildi!";
                 return RedirectToAction("ProductDetails", new { id = product.Id });
@@ -321,20 +298,20 @@ namespace JoygameInventory.Web.Controllers
                 return RedirectToAction("ProductCreate", model);
             }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> ProductDelete(int id)
         {
-            var product = await _productservice.GetIdProductAsync(id);
-            await _productservice.DeleteProductAsync(id);
+            var product = await _productService.GetIdProductAsync(id);
+            await _productService.DeleteProductAsync(id);
 
             var toEmailAddress = "itsupport@joygame.com";
             var subject = "Envanterden Ürün Çıkarılması Hakkında";
             var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
                        $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
-                       $"<p style='text-align: center;'>" +  // Sadece bu satırda text-align: center; kullanarak resmin ortalanmasını sağlıyoruz
+                       $"<p style='text-align: center;'>" +
                        $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
-                       $"</p>" +  // Fotoğrafı bir <p> içine alıp, sadece onu ortalamış olduk.
+                       $"</p>" +
                        $"<p>Merhaba</p>" +
                        $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
                        $"<p><strong>Ürün :</strong> {product.ProductBrand} {product.ProductModel}</p>" +
@@ -345,9 +322,9 @@ namespace JoygameInventory.Web.Controllers
                        $"</div></body></html>";
             var attachmentPaths = new List<string>();
             await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
-            return RedirectToAction("ProductList", "ProductManagement");
+
+            TempData["SuccessMessage"] = "Ürün başarıyla silindi!";
+            return RedirectToAction("ProductList");
         }
-
-
     }
 }
