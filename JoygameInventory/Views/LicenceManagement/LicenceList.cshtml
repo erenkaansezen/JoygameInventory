@@ -51,8 +51,7 @@
         <div class="col-md-6">
             <form asp-action="LicenceList" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Lisans İsmi ile ara" />
-                    <button class="btn btn-outline-secondary" type="submit">Ara</button>
+                    <input type="text" id="searchTerm" name="searchTerm" class="form-control" placeholder="Lisans İsmi ile ara" />
                 </div>
             </form>
         </div>
@@ -72,7 +71,7 @@
 
         <!-- Kullanıcılar Tablosu -->
         <div class="table-container">
-            <table class="table table-striped">
+            <table id="licenceTable" class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -98,6 +97,22 @@
 
                                 <script>
                                     $(document).ready(function () {
+                                    $('#searchTerm').on('keyup', function () {
+                                        var searchTerm = $(this).val().toLowerCase();  // Arama terimini al
+
+                                        // Tablo satırlarını kontrol et
+                                        $('#licenceTable tbody tr').each(function () {
+                                            var row = $(this);  // Her bir satır
+                                            var text = row.text().toLowerCase();  // Satırdaki tüm yazıyı al
+
+                                            // Eğer satırda arama terimi bulunuyorsa, satırı göster
+                                            if (text.indexOf(searchTerm) !== -1) {
+                                                row.show();
+                                            } else {
+                                                row.hide();  // Arama terimi satırda yoksa, satırı gizle
+                                            }
+                                        });
+                                    });
                                         // Silme butonuna tıklama olayını ekliyoruz
                                         $('#deleteButton').click(function () {
                                             // Silme işlemi için onay alıyoruz

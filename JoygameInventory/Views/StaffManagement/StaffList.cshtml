@@ -49,8 +49,7 @@
             <div class="col-md-6">
                 <form asp-action="StaffList" method="get">
                     <div class="input-group mb-3">
-                        <input type="text" name="searchTerm" class="form-control" placeholder="Kullanıcı İsmi Veya Email Adresi ile ara" />
-                        <button class="btn btn-outline-secondary" type="submit">Ara</button>
+                        <input type="text" id="searchTerm" name="searchTerm" class="form-control" placeholder="Kullanıcı İsmi Veya Email Adresi ile ara" />
                     </div>
                 </form>
             </div>
@@ -72,7 +71,7 @@
 
         <!-- Kullanıcılar Tablosu -->
         <div class="table-container">
-            <table class="table table-striped">
+            <table id="staffTable" class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -101,8 +100,22 @@
             </table>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+        $('#searchTerm').on('keyup', function () {
+            var searchTerm = $(this).val().toLowerCase();  
 
-
-
+            $('#staffTable tbody tr').each(function () {
+                var row = $(this);  
+                var text = row.text().toLowerCase();  
+                if (text.indexOf(searchTerm) !== -1) {
+                    row.show();
+                } else {
+                    row.hide(); 
+                }
+            });
+        });
+        });
+    </script>
 </body>
 </html>

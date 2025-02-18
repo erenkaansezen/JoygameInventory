@@ -52,8 +52,7 @@
         <div class="col-md-6">
             <form asp-action="CategoryList" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Kategori İsmi ile ara" />
-                    <button class="btn btn-outline-secondary" type="submit">Ara</button>
+                    <input type="text" id="searchTerm" name="searchTerm" class="form-control" placeholder="Kategori İsmi ile ara" />
                 </div>
             </form>
         </div>
@@ -73,7 +72,7 @@
 
         <!-- Kullanıcılar Tablosu -->
         <div class="table-container">
-            <table class="table table-striped">
+            <table id="categoryTable" class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -102,6 +101,22 @@
                     }
                     <script>
                         $(document).ready(function () {
+                            $('#searchTerm').on('keyup', function () {
+                                var searchTerm = $(this).val().toLowerCase();  // Arama terimini al
+
+                                // Tablo satırlarını kontrol et
+                                $('#categoryTable tbody tr').each(function () {
+                                    var row = $(this);  // Her bir satır
+                                    var text = row.text().toLowerCase();  // Satırdaki tüm yazıyı al
+
+                                    // Eğer satırda arama terimi bulunuyorsa, satırı göster
+                                    if (text.indexOf(searchTerm) !== -1) {
+                                        row.show();
+                                    } else {
+                                        row.hide();  // Arama terimi satırda yoksa, satırı gizle
+                                    }
+                                });
+                            });
                             // Silme butonuna tıklama olayını ekliyoruz
                             $(document).on('click', '#deleteButton', function () {
                                 // Silme işlemi için onay alıyoruz

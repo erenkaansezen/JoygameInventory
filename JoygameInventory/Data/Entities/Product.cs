@@ -32,6 +32,7 @@ namespace JoygameInventory.Data.Entities
 
         public ICollection<InventoryAssigment> InventoryAssigments { get; set; }
         public ICollection<AssigmentHistory> AssigmentHistorys { get; set; }
+
         public ICollection<Maintenance> Maintenances { get; set; } = new List<Maintenance>(); // Servisler koleksiyonu
         public ICollection<MaintenanceHistory> MaintenanceHistory { get; set; } = new List<MaintenanceHistory>(); // Servisler koleksiyonu
 
