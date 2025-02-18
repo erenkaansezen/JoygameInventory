@@ -53,7 +53,7 @@ namespace JoygameInventory.Business.Services
         public async Task<List<InventoryAssigment>> GetPreviousAssignmentsAsync(int productId)
         {
             var previousAssignments = await _context.InventoryAssigments
-                .Where(pa => pa.ProductId == productId && pa.PreviousAssigmenId != 0)
+                .Where(pa => pa.ProductId == productId && pa.PreviusAssigmenId != 0)
                 .OrderByDescending(pa => pa.AssignmentDate)
                 .ToListAsync();
 

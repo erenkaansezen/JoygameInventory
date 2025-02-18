@@ -139,7 +139,7 @@ namespace JoygameInventory.Web.Controllers
             var assignment = await _licenceService.GetLicenceByIdAsync(licenceAssignmentId);
             var licence = await _licenceService.GetLicenceByIdAsync(licenceId);
 
-            await _licenceService.DeleteLicenceAssignmentAsync(licenceAssignmentId);
+            await _licenceService.DeleteLicenceAssigmentAsync(licenceAssignmentId);
 
             return RedirectToAction("LicenceDetails", new { id = licenceId });
         }
