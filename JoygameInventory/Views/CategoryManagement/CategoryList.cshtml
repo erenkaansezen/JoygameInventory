@@ -90,8 +90,9 @@
                                 <a asp-action="CategoryDetails" asp-route-id="@category.Id" class="btn btn-outline-dark btn-custom">Kategori Detayı</a>
 
                                 <form id="deleteForm" asp-action="CategoryDelete" method="post" style="display: inline;">
+                                    @Html.AntiForgeryToken() <!-- CSRF koruma tokeni -->
                                     <input type="hidden" value="@category.Id" name="id">
-                                    <button type="button" class="btn btn-danger btn-custom" id="deleteButton">Kategoriyi Sil</button>
+                                    <button type="button" class="btn btn-danger btn-custom deleteButton">Kategoriyi Sil</button>
                                 </form>
 
 
@@ -118,26 +119,32 @@
                                 });
                             });
                             // Silme butonuna tıklama olayını ekliyoruz
-                            $(document).on('click', '#deleteButton', function () {
-                                // Silme işlemi için onay alıyoruz
-                                if (confirm('Emin misiniz?')) {
-                                    var form = $(this).closest('form');  // Butona en yakın formu alıyoruz
-                                    var formData = form.serialize();  // Form verilerini serialize ediyoruz
+                         $(document).ready(function () {
+                            // Silme butonuna tıklanma olayı
+                            $(document).on('click', '.deleteButton', function () {
+                                var form = $(this).closest('form');  // Butona en yakın formu alıyoruz
+                                var categoryId = form.find('input[name="id"]').val();  // Kategori ID'sini alıyoruz
 
+                                // Silme işlemi için onay penceresi
+                                if (confirm('Emin misiniz?')) {
                                     $.ajax({
-                                        url: form.attr('action'),  // Formun action URL'sini alıyoruz
-                                        type: form.attr('method'),  // Formun method'ünü alıyoruz
-                                        data: formData,  // Form verilerini gönderiyoruz
+                                        url: form.attr('action'),  // Formun action URL'si
+                                        type: 'DELETE',  // HTTP DELETE isteği
+                                        data: {
+                                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),  // Anti-forgery tokeni
+                                            id: categoryId  // Silinecek kategori ID'si
+                                        },
                                         success: function (response) {
                                             alert('Kategori başarıyla silindi!');
-                                            location.reload();  // Sayfayı yeniden yüklüyoruz
+                                            location.reload();  // Sayfayı yeniden yükle
                                         },
                                         error: function (xhr, status, error) {
-                                            alert('Bir hata oluştu: ' + error);
+                                            alert('Bir hata oluştu: ' + error);  // Hata mesajı
                                         }
                                     });
                                 }
                             });
+                        });
                         });
                     </script>
 

@@ -126,8 +126,7 @@
                                                     data: formData,  // Form verilerini gönderiyoruz
                                                     success: function (response) {
                                                         alert('Lisans başarıyla silindi!');
-                                                        location.reload();  // Sayfayı yeniden yüklüyoruz
-                                                    },
+                                                        row.remove();                                                    },
                                                     error: function (xhr, status, error) {
                                                         alert('Bir hata oluştu: ' + error);
                                                     }

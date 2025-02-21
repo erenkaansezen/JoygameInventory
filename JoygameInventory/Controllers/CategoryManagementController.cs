@@ -20,28 +20,16 @@ namespace JoygameInventory.Controllers
         [HttpGet]
         public async Task<IActionResult> CategoryList(string searchTerm)
         {
-            var categories = await _categoryService.SearchCategory(searchTerm);
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                categories = await _categoryService.GetAllCategoriesAsync();
-            }
+            var categories = await _categoryService.GetCategoriesAsync(searchTerm);
             ViewBag.SearchTerm = searchTerm;
+
             return View(categories);
         }
 
         [HttpGet]
         public async Task<IActionResult> CategoryDetails(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            var categoryProducts = await _categoryService.GetCategoryProductsAsync(category.Id);
-
-            var model = new CategoryViewModel
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Url = category.Url,
-                Products = categoryProducts
-            };
+            var model = await _categoryService.GetCategoryDetailsAsync(id);
 
             return View(model);
         }
@@ -49,18 +37,13 @@ namespace JoygameInventory.Controllers
         [HttpPost]
         public async Task<IActionResult> CategoryDetails(CategoryViewModel model)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(model.Id);
-            if (category != null)
+            var result = await _categoryService.UpdateCategory(model);
+            if (result)
             {
-                category.Name = model.Name;
-                category.Url = model.Url;
-                var result = await _categoryService.UpdateCategory(category);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"{model.Name} kategori başarıyla güncellendi";
-                    return RedirectToAction("CategoryList");
-                }
+                TempData["SuccessMessage"] = $"{model.Name} kategori başarıyla güncellendi";
+                return RedirectToAction("CategoryList");
             }
+            TempData["ErrorMessage"] = "Kategori güncellenirken bir hata oluştu";
             return View(model);
         }
 
@@ -73,43 +56,36 @@ namespace JoygameInventory.Controllers
         [HttpPost]
         public async Task<IActionResult> CategoryCreate(CategoryViewModel model)
         {
-            var categoryList = await _categoryService.GetAllCategoriesAsync();
             if (!await _categoryService.IsCateogryUrlUnique(model.Url))
             {
                 TempData["ErrorMessage"] = $"{model.Name} kategori url'si mevcut, lütfen kontrol sağlayınız.";
                 return RedirectToAction("CategoryList");
             }
-            if (model.Name != null)
+            var result = await _categoryService.CreateCategory(model);
+            if (result)
             {
-                var category = new Category
-                {
-                    Name = model.Name,
-                    Url = model.Url,
-                };
-                var result = await _categoryService.CreateCategory(category);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"{model.Name} kategori başarıyla oluşturuldu";
-                    return RedirectToAction("CategoryList");
-                }
+                TempData["SuccessMessage"] = $"{model.Name} kategori başarıyla oluşturuldu";
+                return RedirectToAction("CategoryList");
             }
             return View(model);
         }
-
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> CategoryDelete(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category != null)
+            var result = await _categoryService.DeleteCategory(id);
+
+            if (result)
             {
-                var result = await _categoryService.DeleteCategory(category.Id);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"{category.Name} kategori başarıyla silindi";
-                    return RedirectToAction("CategoryList");
-                }
+                TempData["SuccessMessage"] = "Kategori başarıyla silindi.";
             }
-            return RedirectToAction("CategoryList");
+            else
+            {
+                TempData["ErrorMessage"] = "Silme işlemi sırasında bir hata oluştu veya kategori bulunamadı.";
+            }
+
+            return Json(new { success = result });
         }
+
+
     }
 }

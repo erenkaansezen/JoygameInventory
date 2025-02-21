@@ -1,6 +1,7 @@
 ﻿using JoygameInventory.Business.Interface;
 using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,42 @@ using System.Threading.Tasks;
 
 public class CategoryService : ICategoryService
 {
-    private readonly InventoryContext _context; 
+    private readonly InventoryContext _context;
+
 
     public CategoryService(InventoryContext context)
     {
         _context = context;
-    }
 
+    }
+    public async Task<IEnumerable<Category>> GetCategoriesAsync(string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            return await GetAllCategoriesAsync();  
+        }
+        return await SearchCategory(searchTerm);
+    }
     public async Task<List<Category>> GetAllCategoriesAsync()
     {
         return await _context.Categories.ToListAsync();
     }
+
+    public async Task<CategoryViewModel> GetCategoryDetailsAsync(int id)
+    {
+        var category = await GetCategoryByIdAsync(id);
+        var categoryProducts = await GetCategoryProductsAsync(category.Id);
+        var model = new CategoryViewModel
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Url = category.Url,
+            Products = categoryProducts
+        };
+        return model;
+    }
+
+
 
     public async Task<Category> GetCategoryByIdAsync(int id)
     {
@@ -26,32 +52,46 @@ public class CategoryService : ICategoryService
                              .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<bool> CreateCategory(Category category)
+    public async Task<bool> CreateCategory(CategoryViewModel model)
     {
-        _context.Categories.Add(category);
-        var result = await _context.SaveChangesAsync();
-        return result > 0; 
-    }
-
-    public async Task<bool> UpdateCategory(Category category)
-    {
-        _context.Categories.Update(category);
-        var result = await _context.SaveChangesAsync();
-        return result > 0; 
-    }
-
-    public async Task<bool> DeleteCategory(int id)
-    {
-        var category = await GetCategoryByIdAsync(id);
-        if (category == null)
+        var category = new Category
         {
-            return false;
-        }
-
-        _context.Categories.Remove(category);
-        var result = await _context.SaveChangesAsync();
-        return result > 0; 
+            Name = model.Name,
+            Url = model.Url,
+        };
+        _context.Categories.Add(category);
+        await _context.SaveChangesAsync();
+        return true; 
     }
+
+    public async Task<bool> UpdateCategory(CategoryViewModel model)
+    {
+        var category = await GetCategoryByIdAsync(model.Id);
+        if (category != null)
+        {
+            category.Name = model.Name;
+            category.Url = model.Url;
+
+            _context.Update(category);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> DeleteCategory(int categoryId)
+    {
+        var category = await GetCategoryByIdAsync(categoryId);
+        if (category != null)
+        {
+            _context.Categories.Remove(category); 
+            await _context.SaveChangesAsync(); 
+            return true; 
+        }
+        return false; 
+    }
+
 
     public async Task<List<Category>> SearchCategory(string searchTerm)
     {
