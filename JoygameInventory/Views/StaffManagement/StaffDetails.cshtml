@@ -124,9 +124,9 @@
 
                             // AJAX isteği başlatıyoruz
                             $.ajax({
-                                url: form.attr('action'),  // Formun action değerini alıyoruz
-                                type: form.attr('method'),  // Formun method türünü alıyoruz (POST)
-                                data: form.serialize(),  // Form verilerini alıyoruz
+                                url: form.attr('action'),  
+                                type: form.attr('method'),  
+                                data: form.serialize(), 
                                 success: function (response) {
                                     // Başarılı olduğunda yapılacak işlemler
                                     alert('Zimmet belgesi başarıyla kaldırıldı!');

@@ -1,6 +1,8 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace JoygameInventory.Business.Services
 {
@@ -8,15 +10,43 @@ namespace JoygameInventory.Business.Services
     {
 
         private readonly InventoryContext _context;
+        private readonly IJoyStaffService _staffManager;    
 
-        public LicenceService(InventoryContext context)
+        public LicenceService(InventoryContext context,IJoyStaffService staffManager)
         {
             _context = context;
+            _staffManager = staffManager;
         }
 
         public async Task<List<Licence>> GetAllLicencesAsync()
         {
             return await _context.Licence.ToListAsync();
+        }
+        public async Task<IEnumerable<Licence>> GetLicenceAsync(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await GetAllLicencesAsync();
+            }
+            return await SearchLicence(searchTerm);
+        }
+
+        public async Task<LicenceEditViewModel> GetLicenceDetailsAsync(int id)
+        {
+            var licence = await GetLicenceByIdAsync(id);
+            var joyStaff = await _staffManager.GetAllStaffsAsync();
+            var licenceUsers = await GetLicenceUserAssignmentsAsync(licence.Id);
+
+            var model = new LicenceEditViewModel
+            {
+                Id = licence.Id,
+                LicenceName = licence.LicenceName,
+                LicenceActiveDate = licence.LicenceActiveDate,
+                LicenceEndDate = licence.LicenceEndDate,
+                LicenceUser = licenceUsers,
+                JoyStaffs = joyStaff
+            };
+            return model;
         }
         public async Task<IEnumerable<Licence>> SearchLicence(string searchTerm)
         {
@@ -29,9 +59,16 @@ namespace JoygameInventory.Business.Services
 
             return await query.ToListAsync();
         }
-        public async Task<bool> AddLicence(Licence Licence)
+        public async Task<bool> AddLicence(LicenceEditViewModel model)
         {
-            _context.Licence.Add(Licence);
+
+            var licence = new Licence
+            {
+                LicenceName = model.LicenceName,
+                LicenceActiveDate = model.LicenceActiveDate,
+                LicenceEndDate = model.LicenceEndDate
+            };
+            _context.Licence.Add(licence);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -66,27 +103,53 @@ namespace JoygameInventory.Business.Services
                 .FirstOrDefaultAsync();
             return licenceAssigment;
         }
-        public async Task DeleteLicenceAssigmentAsync(int id)
+        public async Task<bool> DeleteLicenceAssigmentAsync(int licenceAssignmentId)
         {
-            var deleteAssigment = await _context.LicenceUser.FindAsync(id);
-            if (deleteAssigment != null)
+
+            var assignment = await GetAssignmentByIdAsync(licenceAssignmentId);
+            if (assignment != null)
             {
-                _context.LicenceUser.Remove(deleteAssigment);
+                _context.LicenceUser.Remove(assignment);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
-        public async Task AddAssignmentAsync(Licence licence, JoyStaff staff)
+        public async Task<bool> AssignLicenceToStaffAsync(LicenceEditViewModel model)
         {
-            var assignment = new LicenceUser
-            {
-                LicenceId = licence.Id,
-                StaffId = staff.Id,
-            };
+            var licence = await _context.Licence.FindAsync(model.Id);
+            var joyStaff = await _staffManager.GetAllStaffsAsync();
 
-            _context.LicenceUser.Add(assignment);
-            await _context.SaveChangesAsync();
+            if (licence == null)
+            {
+                return false; 
+            }
+
+            model.JoyStaffs = joyStaff;
+
+            if (model.SelectedStaffId.HasValue)
+            {
+                var selectedStaff = joyStaff.FirstOrDefault(staff => staff.Id == model.SelectedStaffId.Value);
+
+                if (selectedStaff != null)
+                {
+                    var assignment = new LicenceUser
+                    {
+                        LicenceId = licence.Id,
+                        StaffId = selectedStaff.Id,
+                    };
+
+                    _context.LicenceUser.Add(assignment);
+                    await _context.SaveChangesAsync();
+
+                    return true; 
+                }
+            }
+
+            return false; // Personel seçilmemişse veya personel bulunamamışsa false dönecek
         }
+
         public async Task DeleteLicenceAsync(int id)
         {
             var deleteLicence = await _context.Licence.FindAsync(id);
