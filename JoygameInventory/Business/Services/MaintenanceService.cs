@@ -1,5 +1,6 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,15 @@ namespace JoygameInventory.Business.Services
         public async Task<List<Maintenance>> GetAllServiceAsync()
         {
             return await _context.Maintenance.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Maintenance>> GetServiceAsync(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await GetAllServiceAsync();
+            }
+            return await SearchMaintenanceService(searchTerm);
         }
         public async Task<Maintenance> GetProductServiceAsync(string productBarkod)
         {
@@ -82,18 +92,28 @@ namespace JoygameInventory.Business.Services
                 return false;
             }
         }
-        public async Task<bool> CreateMaintenance(Maintenance maintenance)
+        public async Task<bool> CreateMaintenance(ProductEditViewModel model)
         {
-            try
+            if (model.ProductBarkod != null)
             {
+                var maintenance = new Maintenance
+                {
+                    ProductBarkod = model.ProductBarkod,
+                    ServiceAdress = model.ServiceAdress,
+                    ServiceTitle = model.ServiceTitle,
+                    CreatedAt = DateTime.Now,
+                    MaintenanceDescription = model.MaintenanceDescription
+                };
                 _context.Maintenance.Add(maintenance);
                 await _context.SaveChangesAsync();
-                return true; 
+                return true;
             }
-            catch (Exception ex)
+            else
             {
                 return false;
             }
+
+
         }
         public async Task DeleteMaintenanceAsync(int id)
         {

@@ -88,11 +88,14 @@ namespace JoygameInventory.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> LicenceDelete(int id)
         {
+            // Lisans silme işlemi
             await _licenceService.DeleteLicenceAsync(id);
-            return RedirectToAction("LicenceDetails", "Management");
+
+            // Başarı durumunda JSON cevabı döndür
+            return Json(new { success = true, message = "Lisans başarıyla silindi!" });
         }
     }
 }

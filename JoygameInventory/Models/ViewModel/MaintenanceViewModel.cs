@@ -10,6 +10,8 @@ namespace JoygameInventory.Models.ViewModel
         public DateTime MaintenanceCreated { get; set; } // Servis oluşturulma tarihi
         public DateTime? MaintenanceEndDate { get; set; } // Servisin bitiş tarihi
 
+        public string ProductBarkod { get; set; }
+
         // Hangi ürüne ait olduğunu belirtiyoruz
         public string SelectedProductBarkod { get; set; }
 

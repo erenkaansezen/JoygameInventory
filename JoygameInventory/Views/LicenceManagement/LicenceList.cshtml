@@ -2,11 +2,11 @@
 @{
     Layout = "_Layout";
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-
     <style>
         .table-container {
             margin-top: 20px;
@@ -69,7 +69,7 @@
             </div>
         }
 
-        <!-- Kullanıcılar Tablosu -->
+        <!-- Lisanslar Tablosu -->
         <div class="table-container">
             <table id="licenceTable" class="table table-striped">
                 <thead>
@@ -77,12 +77,13 @@
                         <th></th>
                         <th>Lisans Adı</th>
                         <th>Bitiş Süresi</th>
+                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var lisans in Model)
                     {
-                        <tr>
+                        <tr data-id="@lisans.Id">
                             <td>@lisans.Id</td>
                             <td>@lisans.LicenceName</td>
                             <td>@lisans.LicenceEndDate.ToString("dd-MM-yyyy")</td>
@@ -90,52 +91,11 @@
                                 <!-- Align buttons to the right -->
                                 <a asp-action="LicenceDetails" asp-route-id="@lisans.Id" class="btn btn-outline-dark btn-custom">Lisans Detayı</a>
 
-                                <form id="deleteForm" asp-controller="Management" asp-action="StaffDelete" method="post" style="display: inline;">
-                                    <input type="hidden" value="@lisans.Id" name="id">
-                                    <button type="button" class="btn btn-danger btn-custom" id="deleteButton">Lisansı Sil</button>
-                                </form>
-
-                                <script>
-                                    $(document).ready(function () {
-                                    $('#searchTerm').on('keyup', function () {
-                                        var searchTerm = $(this).val().toLowerCase();  // Arama terimini al
-
-                                        // Tablo satırlarını kontrol et
-                                        $('#licenceTable tbody tr').each(function () {
-                                            var row = $(this);  // Her bir satır
-                                            var text = row.text().toLowerCase();  // Satırdaki tüm yazıyı al
-
-                                            // Eğer satırda arama terimi bulunuyorsa, satırı göster
-                                            if (text.indexOf(searchTerm) !== -1) {
-                                                row.show();
-                                            } else {
-                                                row.hide();  // Arama terimi satırda yoksa, satırı gizle
-                                            }
-                                        });
-                                    });
-                                        // Silme butonuna tıklama olayını ekliyoruz
-                                        $('#deleteButton').click(function () {
-                                            // Silme işlemi için onay alıyoruz
-                                            if (confirm('Emin misiniz?')) {
-                                                var form = $('#deleteForm');  // Formu alıyoruz
-                                                var formData = form.serialize();  // Form verilerini serialize ediyoruz
-
-                                                $.ajax({
-                                                    url: form.attr('action'),  // Formun action URL'sini alıyoruz
-                                                    type: form.attr('method'),  // Formun method'ünü alıyoruz
-                                                    data: formData,  // Form verilerini gönderiyoruz
-                                                    success: function (response) {
-                                                        alert('Lisans başarıyla silindi!');
-                                                        row.remove();                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        alert('Bir hata oluştu: ' + error);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    });
-                                </script>
-
+                                <button type="button" class="btn btn-danger btn-custom deleteButton"
+                                        data-id="@lisans.Id"
+                                        data-action="@Url.Action("LicenceDelete", "LicenceManagement")">
+                                    Lisansı Sil
+                                </button>
                             </td>
                         </tr>
                     }
@@ -144,9 +104,56 @@
         </div>
     </div>
 
-
     <!-- Bootstrap ve jQuery JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Arama işlevi
+            $('#searchTerm').on('keyup', function () {
+                var searchTerm = $(this).val().toLowerCase();  // Arama terimini al
+
+                // Tablo satırlarını kontrol et
+                $('#licenceTable tbody tr').each(function () {
+                    var row = $(this);  // Her bir satır
+                    var text = row.text().toLowerCase();  // Satırdaki tüm yazıyı al
+
+                    // Eğer satırda arama terimi bulunuyorsa, satırı göster
+                    if (text.indexOf(searchTerm) !== -1) {
+                        row.show();
+                    } else {
+                        row.hide();  // Arama terimi satırda yoksa, satırı gizle
+                    }
+                });
+            });
+
+            // Silme butonuna tıklama işlemi
+            $(document).on('click', '.deleteButton', function () {
+                var button = $(this);
+                var licenceId = button.data('id');  // Lisans ID'sini butondan al
+                var deleteUrl = button.data('action');  // Silme işlemi için URL'yi al
+
+                // Silme işlemi için onay penceresi
+                if (confirm('Emin misiniz?')) {
+                    $.ajax({
+                        url: deleteUrl,  // URL burada dinamik olarak geliyor
+                        type: 'DELETE',
+                        data: {
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                            id: licenceId  // Silinecek lisans ID'si
+                        },
+                        success: function (response) {
+                            alert('Lisans başarıyla silindi!');
+                            button.closest('tr').remove();  // Silinen lisans satırını DOM'dan kaldır
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Bir hata oluştu: ' + error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </div>
 </html>

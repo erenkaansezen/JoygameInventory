@@ -1,4 +1,5 @@
 ﻿using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace JoygameInventory.Business.Services
     {
         // Tüm bakım hizmetlerini al
         Task<List<Maintenance>> GetAllServiceAsync();
+
+        // Tüm bakım hizmetlerini sırala yada arama terimine göre sırala
+        Task<IEnumerable<Maintenance>> GetServiceAsync(string searchTerm);
+
 
         // Ürün barkoduna göre bakım hizmetini al
         Task<Maintenance> GetProductServiceAsync(string productBarkod);
@@ -25,7 +30,7 @@ namespace JoygameInventory.Business.Services
         Task<bool> MaintenanceHistoryAdd(MaintenanceHistory maintenance);
 
         // Yeni bir bakım hizmeti ekle
-        Task<bool> CreateMaintenance(Maintenance maintenance);
+        Task<bool> CreateMaintenance(ProductEditViewModel model);
 
         // Bakım hizmetini sil
         Task DeleteMaintenanceAsync(int id);

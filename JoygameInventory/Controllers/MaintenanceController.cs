@@ -20,46 +20,26 @@ namespace JoygameInventory.Controllers
 
         public async Task<IActionResult> MaintenanceList(string searchTerm)
         {
-            var maintenances = await _maintenanceService.SearchMaintenanceService(searchTerm);
-
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                maintenances = await _maintenanceService.GetAllServiceAsync();
-            }
-
+            var maintenance = await _maintenanceService.GetServiceAsync(searchTerm);
             ViewBag.SearchTerm = searchTerm;
-            return View(maintenances);
+            return View(maintenance);
         }
 
         [HttpPost]
         public async Task<IActionResult> MaintenanceCreate(ProductEditViewModel model)
         {
-            var maintenanceList = await _maintenanceService.GetAllServiceAsync();
             if (!await _maintenanceService.IsProductBarkodUnique(model.ProductBarkod))
             {
                 TempData["ErrorMessage"] = $"{model.ProductBarkod} ürüne ait devam eden servis var, lütfen kontrol sağlayınız.";
                 return RedirectToAction("MaintenanceList");
             }
-
-            if (model.ProductBarkod != null)
-            {
-                var maintenance = new Maintenance
-                {
-                    ProductBarkod = model.ProductBarkod,
-                    ServiceAdress = model.ServiceAdress,
-                    ServiceTitle = model.ServiceTitle,
-                    CreatedAt = DateTime.Now,
-                    MaintenanceDescription = model.MaintenanceDescription
-                };
-
-                var result = await _maintenanceService.CreateMaintenance(maintenance);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"{model.ProductBarkod} ürünün başarıyla servis kaydı oluşturuldu";
-                    return RedirectToAction("MaintenanceList");
-                }
-            }
-            return View(model);
+           var result = await _maintenanceService.CreateMaintenance(model);
+           if (result)
+           {
+               TempData["SuccessMessage"] = $"{model.ProductBarkod} ürünün başarıyla servis kaydı oluşturuldu";
+               return RedirectToAction("MaintenanceList");
+           }
+           return View(model);
         }
 
         [HttpPost]
