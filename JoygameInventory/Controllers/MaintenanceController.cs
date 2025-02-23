@@ -42,7 +42,7 @@ namespace JoygameInventory.Controllers
            return View(model);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> MaintenanceDelete(int id)
         {
             await _maintenanceService.DeleteMaintenanceAsync(id);
@@ -52,30 +52,15 @@ namespace JoygameInventory.Controllers
         [HttpPost]
         public async Task<IActionResult> MaintenanceHistory(int id)
         {
-            var maintenance = await _maintenanceService.GetMaintenanceByIdAsync(id);
-            if (maintenance != null)
-            {
-                var history = new MaintenanceHistory
-                {
-                    ProductBarkod = maintenance.ProductBarkod,
-                    ServiceAdress = maintenance.ServiceAdress,
-                    ServiceTitle = maintenance.ServiceTitle,
-                    MaintenanceDescription = maintenance.MaintenanceDescription,
-                    CreatedAt = maintenance.CreatedAt,
-                    EndDate = DateTime.Now
-                };
+           var maintenance = await _maintenanceService.GetMaintenanceByIdAsync(id);
+           var result = await _maintenanceService.MaintenanceHistoryAdd(id);
+           if (result)
+           {
+              TempData["SuccessMessage"] = $"{maintenance.ProductBarkod} Ürünün servis durumu tamamlanmıştır.";
+              await _maintenanceService.DeleteMaintenanceAsync(id);
+              return RedirectToAction("MaintenanceList");
+           }
 
-                var result = await _maintenanceService.MaintenanceHistoryAdd(history);
-
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"{maintenance.ProductBarkod} Ürünün servis durumu tamamlanmıştır.";
-                    await _maintenanceService.DeleteMaintenanceAsync(id);
-                    return RedirectToAction("MaintenanceList");
-                }
-
-                return View(maintenance);
-            }
             return RedirectToAction("MaintenanceList");
         }
     }

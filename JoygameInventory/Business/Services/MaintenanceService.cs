@@ -79,18 +79,23 @@ namespace JoygameInventory.Business.Services
             return maintenance;
         }
 
-        public async Task<bool> MaintenanceHistoryAdd(MaintenanceHistory maintenance)
+        public async Task<bool> MaintenanceHistoryAdd(int id)
         {
-            try
-            {
-                _context.MaintenanceHistory.Add(maintenance);
+
+                var maintenance = await GetMaintenanceByIdAsync(id);
+                var history = new MaintenanceHistory
+                {
+                    ProductBarkod = maintenance.ProductBarkod,
+                    ServiceAdress = maintenance.ServiceAdress,
+                    ServiceTitle = maintenance.ServiceTitle,
+                    MaintenanceDescription = maintenance.MaintenanceDescription,
+                    CreatedAt = maintenance.CreatedAt,
+                    EndDate = DateTime.Now
+                };
+                _context.MaintenanceHistory.Add(history);
                 await _context.SaveChangesAsync();
                 return true;  
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+           
         }
         public async Task<bool> CreateMaintenance(ProductEditViewModel model)
         {

@@ -27,7 +27,7 @@ namespace JoygameInventory.Business.Services
         Task<Maintenance> GetMaintenanceByIdAsync(int id);
 
         // Bakım geçmişi ekle
-        Task<bool> MaintenanceHistoryAdd(MaintenanceHistory maintenance);
+        Task<bool> MaintenanceHistoryAdd(int id);
 
         // Yeni bir bakım hizmeti ekle
         Task<bool> CreateMaintenance(ProductEditViewModel model);

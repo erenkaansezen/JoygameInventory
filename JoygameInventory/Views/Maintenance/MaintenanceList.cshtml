@@ -135,7 +135,7 @@
 
                                     $.ajax({
                                         url: form.attr('action'),  // Formun action URL'sini alıyoruz
-                                        type: form.attr('method'),  // Formun method'ünü alıyoruz
+                                        type: 'DELETE',  // Formun method'ünü alıyoruz
                                         data: formData,  // Form verilerini gönderiyoruz
                                         success: function (response) {
                                             alert('Servis kaydı başarıyla silindi!');
