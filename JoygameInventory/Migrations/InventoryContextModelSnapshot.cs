@@ -126,7 +126,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 1,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5073),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(371),
                             PreviusAssigmenId = 3,
                             ProductId = 1,
                             UserId = 1
@@ -134,7 +134,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 2,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5075),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(373),
                             PreviusAssigmenId = 3,
                             ProductId = 2,
                             UserId = 2
@@ -142,7 +142,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 3,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5076),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(374),
                             PreviusAssigmenId = 3,
                             ProductId = 3,
                             UserId = 1
@@ -150,7 +150,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 4,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5078),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(375),
                             PreviusAssigmenId = 3,
                             ProductId = 4,
                             UserId = 2
@@ -158,7 +158,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 5,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5083),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(376),
                             PreviusAssigmenId = 3,
                             ProductId = 5,
                             UserId = 3
@@ -166,7 +166,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 6,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5085),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(378),
                             PreviusAssigmenId = 3,
                             ProductId = 16,
                             UserId = 4
@@ -174,7 +174,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 7,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5086),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(379),
                             PreviusAssigmenId = 3,
                             ProductId = 18,
                             UserId = 5
@@ -182,7 +182,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 8,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5087),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(380),
                             PreviusAssigmenId = 3,
                             ProductId = 19,
                             UserId = 6
@@ -190,7 +190,7 @@ namespace JoygameInventory.Migrations
                         new
                         {
                             Id = 9,
-                            AssignmentDate = new DateTime(2025, 2, 12, 11, 46, 21, 202, DateTimeKind.Utc).AddTicks(5089),
+                            AssignmentDate = new DateTime(2025, 2, 23, 21, 15, 22, 323, DateTimeKind.Utc).AddTicks(381),
                             PreviusAssigmenId = 3,
                             ProductId = 20,
                             UserId = 6
@@ -438,14 +438,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "abd528fb-0a2f-4a21-8892-dfe182c0b03f",
+                            ConcurrencyStamp = "911fb35c-b8aa-4c03-97f2-01300816849b",
                             Email = "eren.sezen@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Eren",
                             LastName = "Sezen",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5afa5d71-9e0f-44eb-bf1f-491c88f007fd",
+                            SecurityStamp = "09314e61-e559-47c6-92b5-10be47897a79",
                             TwoFactorEnabled = false,
                             UserName = "eren_sezen"
                         },
@@ -453,14 +453,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dae66b93-cd1e-472a-94fd-449dc6933136",
+                            ConcurrencyStamp = "f07c791f-e4b5-4825-82ee-f4abf830677c",
                             Email = "osman.benlice@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Jane",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2528af84-9c3b-4e31-88b5-9f48b3b34dc8",
+                            SecurityStamp = "faa9068a-fbfb-4359-a948-8b1b302fe914",
                             TwoFactorEnabled = false,
                             UserName = "osman_benlice"
                         },
@@ -468,14 +468,14 @@ namespace JoygameInventory.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd195a90-39a4-40ad-93fb-2711a99033cf",
+                            ConcurrencyStamp = "a5e6d529-638b-4820-bc1a-e0cde2160979",
                             Email = "onur.unlu@joygame.com",
                             EmailConfirmed = false,
                             FirstName = "Onur",
                             LastName = "Ünlü",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6badeaa7-2cb7-4346-9678-e87c784c0a0c",
+                            SecurityStamp = "fac6f2a3-dc14-4da2-b307-a6562238b67a",
                             TwoFactorEnabled = false,
                             UserName = "onur.unlu"
                         });

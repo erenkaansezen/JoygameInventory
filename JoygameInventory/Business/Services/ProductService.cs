@@ -11,16 +11,18 @@ namespace JoygameInventory.Business.Services
     {
         private readonly InventoryContext _context;
         private readonly IMaintenanceService _maintenanceService;
+        private readonly EmailService _emailService;
         private readonly IAssigmentService _assignmentService;
         private readonly IJoyStaffService _staffManager;
         private readonly ICategoryService _categoryService;
-        public ProductService(InventoryContext context,IMaintenanceService maintenanceService,IAssigmentService assigmentService,IJoyStaffService joyStaffService,ICategoryService categoryService)
+        public ProductService(InventoryContext context,IMaintenanceService maintenanceService,IAssigmentService assigmentService,IJoyStaffService joyStaffService,ICategoryService categoryService,EmailService emailService)
         {
             _context = context;
             _assignmentService = assigmentService;
             _maintenanceService = maintenanceService;
             _staffManager = joyStaffService;
             _categoryService = categoryService;
+            _emailService = emailService;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -88,18 +90,60 @@ namespace JoygameInventory.Business.Services
             };
         }
 
-        public async Task<bool> CreateProduct(Product product)
+        public async Task<bool> CreateProduct(ProductEditViewModel model)
         {
-            var category = await GetAllCategoriesAsync();
-            var model = new ProductEditViewModel
+            // Ürünü oluştur
+            var product = new Product
             {
-                Categories = category
-            }; 
+                ProductName = model.ProductName,
+                ProductBarkod = model.ProductBarkod,
+                Description = model.Description,
+                SerialNumber = model.SerialNumber,
+                ProductBrand = model.ProductBrand,
+                ProductModel = model.ProductModel
+            };
+
+            // Ürünü kaydet
             _context.Products.Add(product);
             var result = await _context.SaveChangesAsync();
 
-            return result > 0;
+            // Eğer ürün başarılı bir şekilde kaydedildiyse
+            if (result > 0)
+            {
+                model.Id = product.Id;
+                var productCategory = new ProductCategory
+                {
+                    ProductId = product.Id,
+                    CategoryId = model.SelectedCategoryId
+                };
+
+                await AddProductCategory(productCategory);
+
+                // Mail gönderme işlemi
+                var toEmailAddress = "itsupport@joygame.com"; // ya da dinamik olarak seçilen kullanıcı e-posta adresi
+                var subject = "Envantere Yeni Ürün Eklendi!";
+                var body = $"<html><head></head><body>" +
+                           $"<p>Merhaba,</p>" +
+                           $"<p>Aşağıda belirtilen ürün Joygame Zimmetine eklenmiştir.</p>" +
+                           $"<p><strong>Ürün :</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                           $"<p><strong>Ürünün Seri Numarası :</strong> {model.SerialNumber}</p>" +
+                           $"<p><strong>Envanter Barkodu :</strong> {model.ProductBarkod}</p>" +
+                           $"<p>Teşekkürler</p>" +
+                           $"</body></html>";
+
+                var attachmentPaths = new List<string>(); // Ek dosya varsa burada tanımlayabilirsiniz
+                await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+
+                return true; // Başarılı şekilde işlem tamamlandı
+            }
+
+            return false; // Eğer ürün kaydedilemediyse false döner
         }
+
+        
+
+
+
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             return await _context.Categories.ToListAsync();
@@ -178,20 +222,147 @@ namespace JoygameInventory.Business.Services
              await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task UpdateProductAsync(ProductEditViewModel model)
         {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            var product = await _context.Products.FindAsync(model.Id);
+            if (product == null) throw new Exception("Ürün bulunamadı");
+
+            product.ProductName = model.ProductName;
+            product.SerialNumber = model.SerialNumber;
+            product.ProductBrand = model.ProductBrand;
+            product.ProductModel = model.ProductModel;
+            product.Description = model.Description;
+            product.ProductAddDate = DateTime.Now;
+            product.Storage = model.Storage;
+            product.Ram = model.Ram;
+            product.Processor = model.Processor;
+            product.GraphicsCard = model.GraphicsCard;
+            product.Categories = model.Categories;
+
+            var currentCategory = await _context.ProductCategories.FirstOrDefaultAsync(pc => pc.ProductId == model.Id);
+            if (currentCategory == null || currentCategory.CategoryId != model.SelectedCategoryId)
+            {
+                await UpdateProductCategoryAsync(model.Id, model.SelectedCategoryId);
+            }
+
+
+            // Kullanıcı ataması işlemi
+            await HandleProductAssignmentAsync(model);
+
+            
+            _context.Update(product);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // İçerideki hatayı loglayabilirsiniz.
+                Console.WriteLine(ex.InnerException?.Message); // Veya log kaydı
+                throw;
+            }
+
+        }
+        public async Task HandleProductAssignmentAsync(ProductEditViewModel model)
+        {
+            var product = await _context.Products.FindAsync(model.Id);
+            var currentAssignments = await _assignmentService.GetProductAssignmentsAsync(product.Id);
+
+            if (currentAssignments != null && currentAssignments.Any())
+            {
+                var currentAssignment = currentAssignments.FirstOrDefault();
+                if (currentAssignment != null)
+                {
+                    if (currentAssignment.UserId != model.SelectedUserId && model.SelectedUserId != null)
+                    {
+                        await _assignmentService.AddAssignmentHistoryAsync(new AssigmentHistory
+                        {
+                            ProductId = currentAssignment.ProductId,
+                            UserId = currentAssignment.UserId,
+                            AssignmentDate = DateTime.Now
+                        });
+
+                        currentAssignment.PreviusAssigmenId = currentAssignment.UserId;
+                        currentAssignment.UserId = model.SelectedUserId.Value;
+                        currentAssignment.AssignmentDate = DateTime.Now;
+
+                        var newUser = await _staffManager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                        if (newUser != null)
+                        {
+                            var toEmailAddress = newUser.Email;
+                            var subject = "Yeni Ürün Ataması";
+                            var body = $"<html><head></head><body><p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                                       $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
+                                       $"<p><strong>Ürün:</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                                       $"<p><strong>Envanter Barkodu:</strong> {model.ProductBarkod}</p>" +
+                                       $"<p>Teşekkürler,</p><p>İyi Çalışmalar</p></body></html>";
+                            var attachmentPaths = new List<string>();
+                            await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                        }
+                    }
+                }
+            }
+            else if (model.SelectedUserId.HasValue && model.SelectedUserId.Value != 0)
+            {
+                var newAssignment = new InventoryAssigment
+                {
+                    ProductId = product.Id,
+                    UserId = model.SelectedUserId.Value,
+                    AssignmentDate = DateTime.Now
+                };
+
+                await _assignmentService.AddAssignmentAsync(newAssignment);
+
+                var newUser = await _staffManager.GetStaffByIdAsync(model.SelectedUserId.Value);
+                if (newUser != null)
+                {
+                    var toEmailAddress = newUser.Email;
+                    var subject = "Yeni Ürün Ataması";
+                    var body = $"<html><head></head><body><p>Merhaba <strong>{newUser.Name}</strong>,</p>" +
+                               $"<p>Aşağıda belirtilen ürün zimmetinize eklenmiştir.</p>" +
+                               $"<p><strong>Ürün:</strong> {model.ProductBrand} {model.ProductModel}</p>" +
+                               $"<p><strong>Envanter Barkodu:</strong> {model.ProductBarkod}</p>" +
+                               $"<p>Teşekkürler,</p><p>İyi Çalışmalar</p></body></html>";
+                    var attachmentPaths = new List<string>();
+                    await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                }
+            }
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int id)
         {
+            var product = await GetIdProductAsync(id);  
             var deleteProduct = await _context.Products.FindAsync(id);
             if (deleteProduct != null)
             {
                 _context.Products.Remove(deleteProduct);
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync();
+                // Mail gönderme işlemi
+                var toEmailAddress = "itsupport@joygame.com";
+                var subject = "Envanterden Ürün Çıkarılması Hakkında";
+                var body = $"<html><head></head><body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                           $"<div style='margin: 20px; background-color: white; padding: 20px; text-align: center'>" +
+                           $"<p style='text-align: center;'>" +
+                           $"<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQckotOde3DMZ24VrcgME7-tMTF_FcQvODrbQ&s' alt='Ürün Fotoğrafı' style='max-width: 50%; height: auto;'/>" +
+                           $"</p>" +
+                           $"<p>Merhaba</p>" +
+                           $"<p>Aşağıda belirtilen ürün Joygame Zimmetinden çıkarılmıştır.</p>" +
+                           $"<p><strong>Ürün :</strong> {product.ProductBrand} {product.ProductModel}</p>" +
+                           $"<p><strong>Ürünün Seri Numarası :</strong> {product.SerialNumber}</p>" +
+                           $"<p><strong>Envanter Barkodu :</strong> {product.ProductBarkod}</p>" +
+                           $"<p>Teşekkürler</p>" +
+                           $"<p>İyi Çalışmalar</p>" +
+                           $"</div></body></html>";
+
+                var attachmentPaths = new List<string>(); // Ek dosya varsa burada tanımlayabilirsiniz
+                await _emailService.SendEmailAsync(toEmailAddress, subject, body, attachmentPaths);
+                return true;
             }
+            else
+            {
+                return false;
+            }
+
         }
 
         public async Task<IEnumerable<Product>> SearchProduct(string searchTerm)
@@ -222,26 +393,17 @@ namespace JoygameInventory.Business.Services
 
             return product;
         }
-        public async Task UpdateProductCategoryAsync(ProductCategory product, int newCategoryId)
-        {
-                product.CategoryId = newCategoryId;
-                _context.ProductCategories.Update(product);
-                await _context.SaveChangesAsync();
-        }
         public async Task UpdateProductCategoryAsync(int productId, int selectedCategoryId)
         {
-            // Ürünü alıyoruz
-            var productCategory = await _context.ProductCategories
-                .FirstOrDefaultAsync(pc => pc.ProductId == productId); // Burada ProductId ile ilişkilendiriyoruz
-
-            if (productCategory != null)
+            var productCategory = await _context.ProductCategories.FirstOrDefaultAsync(pc => pc.ProductId == productId);
+            if (productCategory.CategoryId != selectedCategoryId)
             {
-                // Kategoriyi güncelliyoruz
                 productCategory.CategoryId = selectedCategoryId;
+                _context.ProductCategories.Update(productCategory);
 
-                // Değişiklikleri kaydediyoruz
-                await _context.SaveChangesAsync();
             }
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task<int?> GetCurrentCategoryIdAsync(int productId)

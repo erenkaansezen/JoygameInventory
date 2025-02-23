@@ -27,7 +27,7 @@ namespace JoygameInventory.Business.Services
 
 
         // Yeni bir ürün ekle
-        Task<bool> CreateProduct(Product product);
+        Task<bool> CreateProduct(ProductEditViewModel model);
 
         // Tüm kategorileri al
         Task<List<Category>> GetAllCategoriesAsync();
@@ -42,11 +42,10 @@ namespace JoygameInventory.Business.Services
         Task AddProductCategory(ProductCategory productCategory);
 
         // Ürünü güncelle
-        Task UpdateProductAsync(Product product);
+        Task UpdateProductAsync(ProductEditViewModel model);
 
-        // Ürünü sil
-        Task DeleteProductAsync(int id);
-
+        Task HandleProductAssignmentAsync(ProductEditViewModel model);
+        Task<bool> DeleteProductAsync(int id);
         // Ürün araması yap
         Task<IEnumerable<Product>> SearchProduct(string searchTerm);
 

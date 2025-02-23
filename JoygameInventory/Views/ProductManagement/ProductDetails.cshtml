@@ -33,14 +33,14 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="ProductBarkod" class="form-label">Ürün Barkodu</label>
-                    <input asp-for="ProductBarkod" id="ProductBarkod" class="form-control" value="@Model.ProductBarkod" required />
+                    <div id="ProductBarkod" class="form-control-plaintext">@Model.ProductBarkod</div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="SelectedCategoryId" class="form-label">Ürün Kategorisi</label>
                     <select asp-for="SelectedCategoryId" class="form-control">
                         @foreach (var category in Model.ProductCategory)
                         {
-                            <option value="@category.Id">
+                            <option value="@category.CategoryId">
                               @category.Category.Name
                             </option>
                         }
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="SerialNumber" class="form-label">Seri Numarası</label>
-                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" required />
+                    <input asp-for="SerialNumber" id="SerialNumber" class="form-control" value="@Model.SerialNumber" />
                 </div>
             </div>
 
@@ -80,19 +80,19 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="Ram" class="form-label">Ram<span class="text-danger">*</span></label>
-                        <input asp-for="Ram" id="Ram" class="form-control" type="number" value="@Model.Ram" required />
+                        <input asp-for="Ram" id="Ram" class="form-control" type="number" value="@Model.Ram"  />
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="Storage" class="form-label">Disk Boyutu <span class="text-danger">*</span></label>
-                        <input asp-for="Storage" id="Storage" class="form-control" value="@Model.Storage" required />
+                        <input asp-for="Storage" id="Storage" class="form-control" value="@Model.Storage"  />
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="Processor" class="form-label">İşlemci <span class="text-danger">*</span></label>
-                        <input asp-for="Processor" id="Processor" class="form-control" value="@Model.Processor" required />
+                        <input asp-for="Processor" id="Processor" class="form-control" value="@Model.Processor"  />
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="GraphicsCard" class="form-label">Ekran Kartı <span class="text-danger">*</span></label>
-                        <input asp-for="GraphicsCard" id="GraphicsCard" class="form-control" value="@Model.GraphicsCard" required />
+                        <input asp-for="GraphicsCard" id="GraphicsCard" class="form-control" value="@Model.GraphicsCard"  />
                     </div>
                 </div>
             }
