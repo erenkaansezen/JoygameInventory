@@ -30,74 +30,29 @@ namespace JoygameInventory.Controllers
         [HttpGet]
         public async Task<IActionResult> ProductList(string category, string searchTerm)
         {
-            var joyProducts = await _productService.GetAllProductsAsync();
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                joyProducts = await _productService.SearchProduct(searchTerm);
-            }
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                joyProducts = await _productService.GetProductsByCategoryAsync(category);
-            }
-
-            return View(joyProducts);
+            var product = await _productService.GetProductAsync(searchTerm,category);
+            ViewBag.SearchTerm = searchTerm;
+            return View(product);
         }
 
         [HttpGet]
         public async Task<IActionResult> ProductDetails(int id)
         {
-            var staff = await _productService.GetIdProductAsync(id);
-            if (staff != null)
+            var model = await _productService.GetProductDetailsAsync(id);
+
+            if (model == null)
             {
-                var maintenance = await _maintenanceService.GetProductServiceAsync(staff.ProductBarkod);
-                var maintenanceHistory = await _maintenanceService.GetProductServiceHistoryAsync(staff.ProductBarkod);
-                var inventoryAssignments = await _assigmentService.GetProductAssignmentsAsync(staff.Id);
-                var productCategory = await _productService.GetProductCategoryAsync(staff.Id);
-                var previousAssignments = await _assigmentService.GetPreviousAssignmentsAsync(staff.Id);
-                var assignmentHistorys = await _assigmentService.GetAssignmentHistoryAsync(id);
-                var category = await _productService.GetAllCategoriesAsync();
-
-                var joyStaff = await _staffManager.GetAllStaffsAsync();
-                var model = new ProductEditViewModel
-                {
-                    Id = staff.Id,
-                    ProductName = staff.ProductName,
-                    ProductBarkod = staff.ProductBarkod,
-                    Description = staff.Description,
-                    SerialNumber = staff.SerialNumber,
-                    ProductAddDate = staff.ProductAddDate,
-                    ProductBrand = staff.ProductBrand,
-                    ProductModel = staff.ProductModel,
-                    Ram = staff.Ram,
-                    Processor = staff.Processor,
-                    GraphicsCard = staff.GraphicsCard,
-                    Storage = staff.Storage,
-                    Status = staff.Status,
-                    InventoryAssigments = inventoryAssignments,
-                    JoyStaffs = joyStaff,
-                    AssigmentHistorys = assignmentHistorys,
-                    Categories = category,
-                    MaintenanceHistorys = maintenanceHistory,
-                    Maintenance = maintenance,
-                    ProductCategory = productCategory,
-                };
-
-                return View(model);
+                TempData["ErrorMessage"] = "Ürünü detayına ulaşılamadı!";
+                return RedirectToAction("ProductList");
             }
-            return RedirectToAction("Index", "Home");
+
+            return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> ProductCreate()
         {
-            var productCategory = await _productService.GetAllProductCategoriesAsync();
-            var category = await _productService.GetAllCategoriesAsync();
-            var model = new ProductEditViewModel
-            {
-                Categories = category
-            };
+            var model = await _productService.GetCreateViewAsync();
             return View(model);
         }
 

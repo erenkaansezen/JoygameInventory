@@ -9,6 +9,7 @@ namespace JoygameInventory.Business.Services
     public class MaintenanceService : IMaintenanceService
     {
         private readonly InventoryContext _context;
+        
 
         public MaintenanceService(InventoryContext context)
         {

@@ -10,11 +10,21 @@ namespace JoygameInventory.Business.Services
         // Tüm ürünleri al
         Task<IEnumerable<Product>> GetAllProductsAsync();
 
+        Task<IEnumerable<Product>> GetProductAsync(string searchTerm,string category);
+
+
         // Ürünü ID ile al
         Task<Product> GetIdProductAsync(int id);
 
         // Belirli bir kategoriye ait ürünleri al
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryUrl);
+
+        //Product Details
+        Task<ProductEditViewModel> GetProductDetailsAsync(int id);
+
+        // Ürünü oluşturmak için view modelini al
+        Task<ProductEditViewModel> GetCreateViewAsync(); // GET için metot
+
 
         // Yeni bir ürün ekle
         Task<bool> CreateProduct(Product product);

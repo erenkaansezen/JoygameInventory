@@ -1,17 +1,26 @@
-﻿using JoygameInventory.Data.Context;
+﻿using JoygameInventory.Business.Interface;
+using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
 using JoygameInventory.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace JoygameInventory.Business.Services
 {
     public class ProductService : IProductService
     {
         private readonly InventoryContext _context;
-
-        public ProductService(InventoryContext context)
+        private readonly IMaintenanceService _maintenanceService;
+        private readonly IAssigmentService _assignmentService;
+        private readonly IJoyStaffService _staffManager;
+        private readonly ICategoryService _categoryService;
+        public ProductService(InventoryContext context,IMaintenanceService maintenanceService,IAssigmentService assigmentService,IJoyStaffService joyStaffService,ICategoryService categoryService)
         {
             _context = context;
+            _assignmentService = assigmentService;
+            _maintenanceService = maintenanceService;
+            _staffManager = joyStaffService;
+            _categoryService = categoryService;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -70,8 +79,22 @@ namespace JoygameInventory.Business.Services
 
         }
 
+        public async Task<ProductEditViewModel> GetCreateViewAsync()
+        {
+            var categories = await GetAllCategoriesAsync();
+            return new ProductEditViewModel
+            {
+                Categories = categories
+            };
+        }
+
         public async Task<bool> CreateProduct(Product product)
         {
+            var category = await GetAllCategoriesAsync();
+            var model = new ProductEditViewModel
+            {
+                Categories = category
+            }; 
             _context.Products.Add(product);
             var result = await _context.SaveChangesAsync();
 
@@ -80,6 +103,22 @@ namespace JoygameInventory.Business.Services
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             return await _context.Categories.ToListAsync();
+        }
+        public async Task<IEnumerable<Product>> GetProductAsync(string searchTerm, string category)
+        {
+            if (!string.IsNullOrEmpty(category))
+            {
+                return await GetProductsByCategoryAsync(category);
+            }
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await GetAllProductsAsync();
+            }
+            else
+            {
+                return await SearchProduct(searchTerm);
+            }
+
         }
         public async Task<IEnumerable<ProductCategory>> GetProductCategoryAsync(int categoryId)
         {
@@ -94,6 +133,44 @@ namespace JoygameInventory.Business.Services
         public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync()
         {
             return await _context.ProductCategories.ToListAsync();
+        }
+        public async Task<ProductEditViewModel> GetProductDetailsAsync(int id)
+        {
+            var staff = await GetIdProductAsync(id);
+            if (staff == null) return null;
+
+            var maintenance = await _maintenanceService.GetProductServiceAsync(staff.ProductBarkod);
+            var maintenanceHistory = await _maintenanceService.GetProductServiceHistoryAsync(staff.ProductBarkod);
+            var inventoryAssignments = await _assignmentService.GetProductAssignmentsAsync(staff.Id);
+            var previousAssignments = await _assignmentService.GetPreviousAssignmentsAsync(staff.Id);
+            var assignmentHistorys = await _assignmentService.GetAssignmentHistoryAsync(id);
+            var productCategory = await GetProductCategoryAsync(staff.Id);
+            var category = await GetAllCategoriesAsync();
+            var joyStaff = await _staffManager.GetAllStaffsAsync();
+
+            return new ProductEditViewModel
+            {
+                Id = staff.Id,
+                ProductName = staff.ProductName,
+                ProductBarkod = staff.ProductBarkod,
+                Description = staff.Description,
+                SerialNumber = staff.SerialNumber,
+                ProductAddDate = staff.ProductAddDate,
+                ProductBrand = staff.ProductBrand,
+                ProductModel = staff.ProductModel,
+                Ram = staff.Ram,
+                Processor = staff.Processor,
+                GraphicsCard = staff.GraphicsCard,
+                Storage = staff.Storage,
+                Status = staff.Status,
+                InventoryAssigments = inventoryAssignments,
+                JoyStaffs = joyStaff,
+                AssigmentHistorys = assignmentHistorys,
+                Categories = category,
+                MaintenanceHistorys = maintenanceHistory,
+                Maintenance = maintenance,
+                ProductCategory = productCategory,
+            };
         }
         public async Task AddProductCategory(ProductCategory productCategory)
         {
