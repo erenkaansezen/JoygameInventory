@@ -1,7 +1,9 @@
 ﻿using JoygameInventory.Data.Context;
 using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace JoygameInventory.Business.Services
 {
@@ -9,10 +11,15 @@ namespace JoygameInventory.Business.Services
     public class JoyStaffService : IJoyStaffService
     {
         private readonly InventoryContext _context;
-
-        public JoyStaffService(InventoryContext context)
+        private readonly IAssigmentService _assignmentService;
+        private readonly ITeamService _teamService;
+        private readonly ILicenceService _licenceService;
+        public JoyStaffService(InventoryContext context, IAssigmentService assignmentService, ITeamService teamService, ILicenceService licenceService)
         {
             _context = context;
+            _assignmentService = assignmentService;
+            _teamService = teamService;
+            _licenceService = licenceService;
         }
 
         public async Task<List<JoyStaff>> GetAllStaffsAsync()
@@ -27,7 +34,7 @@ namespace JoygameInventory.Business.Services
 
         public async Task<bool> CreateStaff(JoyStaff staff)
         {
-             _context.JoyStaffs.Add(staff);
+            _context.JoyStaffs.Add(staff);
             var result = await _context.SaveChangesAsync();
 
             return result > 0;
@@ -37,7 +44,7 @@ namespace JoygameInventory.Business.Services
         {
             _context.JoyStaffs.Update(staff);
             var result = await _context.SaveChangesAsync();
-            return result > 0; 
+            return result > 0;
 
         }
         public async Task DeleteStaffAsync(int id)
@@ -87,7 +94,50 @@ namespace JoygameInventory.Business.Services
 
             return await query.ToListAsync();
         }
-    }
 
+        public async Task<IEnumerable<JoyStaff>> GetStaffListAsync(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await GetAllStaffsAsync();
+            }
+            else
+            {
+                return await SearchStaff(searchTerm);
+            }
+
+        }
+
+        public async Task<StaffEditViewModel> GetStaffDetailsAsync(int id)
+        {
+            var staff = await GetStaffByIdAsync(id);
+            if (staff != null)
+            {
+                var inventoryAssignments = await _assignmentService.GetUserAssignmentsAsync(staff.Id);
+                var userTeams = await _teamService.GetUserAssignmentsAsync(staff.Id);
+                var userLicences = await _licenceService.GetUserLicenceAssignmentsAsync(staff.Id);
+                var teams = await _teamService.GetAllTeamsAsync();
+
+                var model = new StaffEditViewModel
+                {
+                    Id = staff.Id,
+                    Name = staff.Name,
+                    Surname = staff.Surname,
+                    Email = staff.Email,
+                    PhoneNumber = staff.PhoneNumber,
+                    Document = staff.Document,
+                    InventoryAssigments = inventoryAssignments,
+                    UserTeam = userTeams,
+                    Team = teams,
+                    LicencesUser = userLicences
+                };
+
+                return model;
+            }
+            return null;
+
+
+        }
+    }
 }
 

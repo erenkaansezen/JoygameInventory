@@ -1,4 +1,5 @@
 ﻿using JoygameInventory.Data.Entities;
+using JoygameInventory.Models.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,5 +33,8 @@ namespace JoygameInventory.Business.Services
 
         // Panel kullanıcılarını arama yaparak listele
         Task<IEnumerable<JoyUser>> SearchPanelStaff(string searchTerm);
+
+        Task<IEnumerable<JoyStaff>> GetStaffListAsync(string searchTerm);
+        Task<StaffEditViewModel> GetStaffDetailsAsync(int id);
     }
 }

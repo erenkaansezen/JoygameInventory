@@ -34,12 +34,7 @@ namespace JoygameInventory.Controllers
         [HttpGet]
         public async Task<IActionResult> StaffList(string searchTerm)
         {
-            var joyStaffs = await _staffManager.SearchStaff(searchTerm);
-
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                joyStaffs = await _staffManager.GetAllStaffsAsync();
-            }
+            var joyStaffs = await _staffManager.GetStaffListAsync(searchTerm);
 
             ViewBag.SearchTerm = searchTerm;
 
@@ -49,28 +44,9 @@ namespace JoygameInventory.Controllers
         [HttpGet]
         public async Task<IActionResult> StaffDetails(int id)
         {
-            var staff = await _staffManager.GetStaffByIdAsync(id);
-            if (staff != null)
+            var model = await _staffManager.GetStaffDetailsAsync(id);
+            if (model != null)
             {
-                var inventoryAssignments = await _assigmentService.GetUserAssignmentsAsync(staff.Id);
-                var userTeams = await _teamService.GetUserAssignmentsAsync(staff.Id);
-                var userLicences = await _licenceService.GetUserLicenceAssignmentsAsync(staff.Id);
-                var teams = await _teamService.GetAllTeamsAsync();
-
-                var model = new StaffEditViewModel
-                {
-                    Id = staff.Id,
-                    Name = staff.Name,
-                    Surname = staff.Surname,
-                    Email = staff.Email,
-                    PhoneNumber = staff.PhoneNumber,
-                    Document = staff.Document,
-                    InventoryAssigments = inventoryAssignments,
-                    UserTeam = userTeams,
-                    Team = teams,
-                    LicencesUser = userLicences
-                };
-
                 return View(model);
             }
             return RedirectToAction("Index", "Home");
